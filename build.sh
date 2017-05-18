@@ -23,13 +23,13 @@ case "$LICENSE" in
 esac
 
 case "$APPVEYOR_BUILD_WORKER_IMAGE" in
-	Visual Studio 2013)
+	Visual\ Studio\ 2013)
 		TARGET+="-v120"
 		;;
-	Visual Studio 2015)
+	Visual\ Studio\ 2015)
 		TARGET+="-v140"
 		;;
-	Visual Studio 2017)
+	Visual\ Studio\ 2017)
 		TARGET+="-v141"
 		;;
 	*)
