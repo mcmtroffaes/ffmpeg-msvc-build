@@ -1,13 +1,21 @@
 version: 1.0.{build}
-
 image: Visual Studio 2015
-
 environment:
-  FFMPEG_VERSION: 20170330-ad7aff0
-  LINKAGE: shared
-  LICENSE: lgpl3
-  RUNTIME_LIBRARY: md
-
+  global:
+    FFMPEG_VERSION: 20170330-ad7aff0
+  matrix:
+    - LINKAGE: shared
+      LICENSE: lgpl3
+      RUNTIME_LIBRARY: md
+    - LINKAGE: static
+      LICENSE: lgpl3
+      RUNTIME_LIBRARY: md
+    - LINKAGE: shared
+      LICENSE: gpl3
+      RUNTIME_LIBRARY: md
+    - LINKAGE: static
+      LICENSE: gpl3
+      RUNTIME_LIBRARY: md
 platform: x64
 configuration: Release
 install: install.bat
