@@ -101,7 +101,7 @@ which cl
 cl
 
 # run configure
-mkdir "$BUILD_FOLDER/$TARGET/share/doc"
+mkdir -p "$BUILD_FOLDER/$TARGET/share/doc"
 cd "$BUILD_FOLDER/ffmpeg-$FFMPEG_VERSION"
 ./configure --toolchain=msvc $OPTIONS > "$BUILD_FOLDER/$TARGET/share/doc/configure.txt"
 cat "$BUILD_FOLDER/$TARGET/share/doc/configure.txt"
