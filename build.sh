@@ -1,7 +1,7 @@
 # print commands for debugging
 set -x
 
-OPTIONS="--disable-programs --disable-doc --enable-runtime-cpudetect"
+OPTIONS="--disable-programs --disable-doc --enable-runtime-cpudetect --prefix=../result"
 
 case "$LINKAGE" in
 	Dynamic)
@@ -80,3 +80,4 @@ tail -30 config.log
 
 # run make
 make
+make install
