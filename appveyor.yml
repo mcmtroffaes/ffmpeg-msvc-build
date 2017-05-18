@@ -3,9 +3,10 @@ version: 1.0.{build}
 image: Visual Studio 2015
 
 environment:
-  LINKAGE: Dynamic
-  LICENSE: LGPL3
-  RUNTIME_LIBRARY: MD
+  FFMPEG_VERSION: 20170330-ad7aff0
+  LINKAGE: shared
+  LICENSE: lgpl3
+  RUNTIME_LIBRARY: md
 
 platform:
   - x64
@@ -14,10 +15,9 @@ configuration:
   - Release
 
 install:
-  - curl -o ffmpeg.tar.xz https://ffmpeg.zeranoe.com/builds/source/ffmpeg/ffmpeg-20170330-ad7aff0.tar.xz
-  - 7z x ffmpeg.tar.xz
-  - 7z x ffmpeg.tar
-  - rename ffmpeg-20170330-ad7aff0 ffmpeg
+  - curl -o source.tar.xz https://ffmpeg.zeranoe.com/builds/source/ffmpeg/ffmpeg-%FFMPEG_VERSION%.tar.xz
+  - 7z x source.tar.xz
+  - 7z x source.tar
   - mkdir c:\yasm
   - set PATH=c:\yasm;%PATH%
   - if "%PLATFORM%" == "x64" curl -o "c:\yasm\yasm.exe" http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe
