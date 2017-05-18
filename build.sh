@@ -6,19 +6,34 @@ OPTIONS="--disable-programs --disable-doc --enable-runtime-cpudetect"
 
 TARGET+="-$LICENSE"
 case "$LICENSE" in
-	lgpl2)
+	LGPL21)
 		;;
-	lgpl3)
+	LGPL3)
 		OPTIONS+=" --enable-version3"
 		;;
-	gpl2)
+	GPL21)
 		OPTIONS+=" --enable-gpl"
 		;;
-	gpl3)
+	GPL3)
 		OPTIONS+=" --enable-gpl --enable-version3"
 		;;
 	*)
-		echo "LICENSE must be lgpl2, lgpl3, gpl2, or gpl3"
+		echo "LICENSE must be LGPL2, LGPL3, GPL2, or GPL3"
+		exit 1
+esac
+
+case "$APPVEYOR_BUILD_WORKER_IMAGE" in
+	Visual Studio 2013)
+		TARGET+="-v120"
+		;;
+	Visual Studio 2015)
+		TARGET+="-v140"
+		;;
+	Visual Studio 2017)
+		TARGET+="-v141"
+		;;
+	*)
+		echo "worker image $APPVEYOR_BUILD_WORKER_IMAGE not supported"
 		exit 1
 esac
 
@@ -39,6 +54,7 @@ esac
 TARGET+="-$RUNTIME_LIBRARY"
 TARGET+="-$Configuration"
 TARGET+="-$Platform"
+# ensure RUNTIME_CFLAGS are in upper case (build fails if lower case)
 RUNTIME_CFLAGS=`echo "-$RUNTIME_LIBRARY" | tr '[:lower:]' '[:upper:]'`
 case "$Configuration" in
 	Release)
@@ -85,9 +101,10 @@ which cl
 cl
 
 # run configure
+mkdir "$BUILD_FOLDER/$TARGET/share/doc"
 cd "$BUILD_FOLDER/ffmpeg-$FFMPEG_VERSION"
-./configure --toolchain=msvc $OPTIONS > "$BUILD_FOLDER/configure.txt"
-cat "$BUILD_FOLDER/configure.txt"
+./configure --toolchain=msvc $OPTIONS > "$BUILD_FOLDER/$TARGET/share/doc/configure.txt"
+cat "$BUILD_FOLDER/$TARGET/share/doc/configure.txt"
 
 # print last 30 lines from config log file for debugging
 tail -30 config.log

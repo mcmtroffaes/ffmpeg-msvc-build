@@ -5,17 +5,17 @@ environment:
     FFMPEG_VERSION: 20170330-ad7aff0
   matrix:
     - LINKAGE: shared
-      LICENSE: lgpl3
-      RUNTIME_LIBRARY: md
+      LICENSE: LGPL21
+      RUNTIME_LIBRARY: MD
     - LINKAGE: static
-      LICENSE: lgpl3
-      RUNTIME_LIBRARY: md
+      LICENSE: LGPL21
+      RUNTIME_LIBRARY: MD
     - LINKAGE: shared
-      LICENSE: gpl3
-      RUNTIME_LIBRARY: md
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MD
     - LINKAGE: static
-      LICENSE: gpl3
-      RUNTIME_LIBRARY: md
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MD
 platform: x64
 configuration: Release
 install: install.bat
