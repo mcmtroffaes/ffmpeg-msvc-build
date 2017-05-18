@@ -17,12 +17,9 @@
   </metadata>
   <files>
     <file src="FFmpeg.@LICENSE@.targets" target="build\native" />
-    <file src="@LICENSE@.txt" target="build\native\share\doc\ffmpeg-license-@LICENSE@.txt" />
-    <file src="@TARGET@-x64\share\doc\configure.txt" target="build\native\share\doc\ffmpeg-configure.txt" />
-    <file src="@TARGET@-x64\include\**" target="build\native\include" />
-    <file src="@TARGET@-x86\bin\*.lib" target="build\native\lib\Win32" />
-    <file src="@TARGET@-x64\bin\*.lib" target="build\native\lib\x64" />
-    <file src="@TARGET@-x86\bin\*.dll" target="build\native\bin\Win32" />
-    <file src="@TARGET@-x64\bin\*.dll" target="build\native\bin\x64" />
+    <file src="@TARGET@\share\doc\**" target="build\native\share\doc" />
+    <file src="@TARGET@\include\**" target="build\native\include" />
+    <file src="@TARGET@\bin\*.lib" target="build\native\lib\@PLATFORM@" />
+    <file src="@TARGET@\bin\*.dll" target="build\native\bin\@PLATFORM@" />
   </files>
 </package>

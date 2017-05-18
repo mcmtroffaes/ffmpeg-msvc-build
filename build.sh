@@ -7,18 +7,22 @@ OPTIONS="--disable-programs --disable-doc --enable-runtime-cpudetect"
 TARGET+="-$LICENSE"
 case "$LICENSE" in
 	LGPL21)
+		LICENSE_FILE="COPYING.LGPLv2.1"
 		;;
 	LGPL3)
+		LICENSE_FILE="COPYING.LGPLv3"
 		OPTIONS+=" --enable-version3"
 		;;
-	GPL21)
+	GPL2)
+		LICENSE_FILE="COPYING.GPLv2"
 		OPTIONS+=" --enable-gpl"
 		;;
 	GPL3)
+		LICENSE_FILE="COPYING.GPLv3"
 		OPTIONS+=" --enable-gpl --enable-version3"
 		;;
 	*)
-		echo "LICENSE must be LGPL2, LGPL3, GPL2, or GPL3"
+		echo "LICENSE must be LGPL21, LGPL3, GPL2, or GPL3"
 		exit 1
 esac
 
@@ -100,11 +104,14 @@ which link
 which cl
 cl
 
-# run configure
+# install license file
 mkdir -p "$BUILD_FOLDER/$TARGET/share/doc"
+cp "$BUILD_FOLDER/ffmpeg-$FFMPEG_VERSION/$LICENSE_FILE" "$BUILD_FOLDER/$TARGET/share/doc/ffmpeg-license.txt"
+
+# run configure and save output (lists all enabled features and mentions license at the end)
 cd "$BUILD_FOLDER/ffmpeg-$FFMPEG_VERSION"
-./configure --toolchain=msvc $OPTIONS > "$BUILD_FOLDER/$TARGET/share/doc/configure.txt"
-cat "$BUILD_FOLDER/$TARGET/share/doc/configure.txt"
+./configure --toolchain=msvc $OPTIONS > "$BUILD_FOLDER/$TARGET/share/doc/ffmpeg-configure.txt"
+cat "$BUILD_FOLDER/$TARGET/share/doc/ffmpeg-configure.txt"
 
 # print last 30 lines from config log file for debugging
 tail -30 config.log
@@ -115,4 +122,4 @@ make install
 
 # zip the result
 cd "$BUILD_FOLDER"
-7z a -tzip -r "$TARGET.zip" $TARGET configure.txt
+7z a -tzip -r "$TARGET.zip" $TARGET
