@@ -19,7 +19,7 @@ case "$LICENSE" in
 	LGPL2)
 		;;
 	LGPL3)
-		OPTIONS+="  --enable-version3"
+		OPTIONS+=" --enable-version3"
 		;;
 	GPL2)
 		OPTIONS+=" --enable-gpl"
@@ -73,7 +73,8 @@ cl
 
 # run configure
 cd $APPVEYOR_BUILD_FOLDER/ffmpeg
-./configure --toolchain=msvc $OPTIONS
+./configure --toolchain=msvc $OPTIONS > ../configure.txt
+cat ../configure.txt
 
 # print last 30 lines from config log file for debugging
 tail -30 config.log
