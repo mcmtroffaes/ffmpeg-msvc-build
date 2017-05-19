@@ -175,7 +175,7 @@ function make_zip() {
 # PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 function make_nuget() {
 	local fullnuspec=FFmpeg.$2.$3.$4.$5.$6.nuspec
-	if [ $6 = "x86" || $6 = "X86" ]
+	if [ "$6" = "x86" ] || [ "$6" = "X86" ]
 	then
 		local platform="Win32"
 	else
@@ -193,7 +193,7 @@ function make_nuget() {
 		> $fullnuspec
 	cat $fullnuspec  # for debugging
 	# postproc requires GPL3 license
-	if [ $2 = "GPL3" || $2 = "LGPL3" ]
+	if [ "$2" = "GPL3" ] || [ "$2" = "LGPL3" ]
 	then
 		cat FFmpeg.targets.in \
 			| sed "s/;postproc.lib//g"
