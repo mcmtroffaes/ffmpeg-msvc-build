@@ -14,5 +14,3 @@ build_script: build.bat
 test: off
 artifacts:
   - path: '*.zip'
-cache:
-  - ffmpeg
