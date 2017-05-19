@@ -173,6 +173,39 @@ function make_zip() {
 	7z a -tzip -r "$1.zip" $1
 }
 
+# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
+function make_nuget() {
+	local fullnuspec=FFmpeg.$2.$3.$4.$5.$6.nuspec
+	if [ $6 = "x86" || $6 = "X86" ]
+	then
+		local platform="Win32"
+	else
+		local platform="x64"
+	fi
+	cat FFmpeg.nuspec.in \
+		| sed "s/@FFMPEG_DATE@/$(ffmpeg_date)/g" \
+		| sed "s/@FFMPEG_HASH@/$(ffmpeg_hash)/g" \
+		| sed "s/@PREFIX@/$1/g" \
+		| sed "s/@LICENSE@/$2/g" \
+		| sed "s/@LINKAGE@/$3/g" \
+		| sed "s/@RUNTIME_LIBRARY@/$4/g" \
+		| sed "s/@CONFIGURATION@/$5/g" \
+		| sed "s/@PLATFORM@/$platform/g" \
+		> $fullnuspec
+	cat $fullnuspec  # for debugging
+	# postproc requires GPL3 license
+	if [ $2 = "GPL3" || $2 = "LGPL3" ]
+	then
+		cat FFmpeg.targets.in \
+			| sed "s/;postproc.lib//g"
+			> FFmpeg.targets
+	else
+		cp FFmpeg.targets.in FFmpeg.targets
+	fi
+	cat FFmpeg.targets  # for debugging
+	nuget pack $fullnuspec
+}
+
 # LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 function make_all() {
 	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
@@ -181,8 +214,8 @@ function make_all() {
 	build_ffmpeg "$prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
 	make_zip "$prefix"
+	make_nuget "$prefix" "$1" "$3" "$4" "$5" "$6"
 }
-
 
 function appveyor_main() {
 	# bash starts in msys home folder, so first go to project folder
