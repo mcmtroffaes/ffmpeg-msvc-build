@@ -162,6 +162,7 @@ function build_ffmpeg() {
 	#tail -30 config.log  # for debugging
 	make
 	make install
+	git clean -xfd
 	popd
 
 	mv /usr/bin/link1 /usr/bin/link
