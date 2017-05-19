@@ -172,22 +172,27 @@ function make_zip() {
 	7z a -tzip -r "$1.zip" $1
 }
 
-function appveyor_main() {
-	cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
+# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
+function make_all() {
 	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-	local prefix=$(target_id \
-		$LICENSE "$APPVEYOR_BUILD_WORKER_IMAGE" $LINKAGE $RUNTIME_LIBRARY \
-		$Configuration $Platform)
+	local prefix=$(target_id "$1" "$2" "$3" "$4" "$5" "$6")
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
-	build_ffmpeg $prefix $LICENSE $LINKAGE $RUNTIME_LIBRARY $Configuration
-	make_zip $prefix
+	build_ffmpeg "$prefix" "$1" "$3" "$4" "$5"
+	# FOLDER
+	make_zip "$prefix"
+}
+
+
+function appveyor_main() {
+	# bash starts in msys home folder, so first go to project folder
+	cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
+	make_all "$LICENSE" "$APPVEYOR_BUILD_WORKER_IMAGE" \
+		"$LINKAGE" "$RUNTIME_LIBRARY" "$Configuration" "$Platform"
 }
 
 function local_main() {
-	local prefix=$(target_id \
-		$LICENSE "$VISUAL_STUDIO" $LINKAGE $RUNTIME_LIBRARY $CONFIGURATION $PLATFORM)
-	build_ffmpeg $prefix $LICENSE $LINKAGE $RUNTIME_LIBRARY $CONFIGURATION
-	make_zip $prefix
+	make_all "$LICENSE" "$VISUAL_STUDIO" \
+		"$LINKAGE" "$RUNTIME_LIBRARY" "$CONFIGURATION" "$PLATFORM"
 }
 
 set -x
