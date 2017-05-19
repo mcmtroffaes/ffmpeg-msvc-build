@@ -174,13 +174,13 @@ function make_zip() {
 
 # PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 function make_nuget() {
-	if [ "${6:1}" = "86" ]
+	if [ "${6,,}" = "x86" ]
 	then
 		local platform="Win32"
 	else
 		local platform="x64"
 	fi
-	local fullnuspec="FFmpeg.$2.${3^}.$4.$5.$6.nuspec"
+	local fullnuspec="FFmpeg.$2.${3^}.$4.$5.${6,,}.nuspec"
 	cat FFmpeg.nuspec.in \
 		| sed "s/@FFMPEG_DATE@/$(ffmpeg_date)/g" \
 		| sed "s/@FFMPEG_HASH@/$(ffmpeg_hash)/g" \
