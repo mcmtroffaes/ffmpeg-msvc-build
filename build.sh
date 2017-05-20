@@ -11,7 +11,7 @@ git_date() {
 # FOLDER
 git_hash() {
 	pushd "$1" > /dev/null
-	git show -s --format=%t HEAD
+	git show -s --format=%h HEAD
 	popd > /dev/null
 }
 
