@@ -233,11 +233,15 @@ function make_all() {
 	# ensure cl.exe can be called
 	which cl
 	cl
+	if [ "$1" = "GPL2" ] || [ "$1" = "GPL3" ]
+	then
+		# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
+		local x264_prefix=$(target_id "x264" "GPL2" "$2" "static" "$4" "$5" "$6")
+		# PREFIX RUNTIME_LIBRARY
+		build_x264 "$x264_prefix" "$4" "$5"
+	fi
 	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-	local x264_prefix=$(target_id "x264" "GPL2" "$2" "static" "$4" "$5" "$6")
 	local ffmpeg_prefix=$(target_id "ffmpeg" "$1" "$2" "$3" "$4" "$5" "$6")
-	# PREFIX RUNTIME_LIBRARY
-	build_x264 "$x264_prefix" "$4" "$5"
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
