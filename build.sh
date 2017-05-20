@@ -164,6 +164,7 @@ function build_ffmpeg() {
 # PREFIX RUNTIME_LIBRARY CONFIGURATION
 x264_options () {
 	echo -n " --prefix=$1"
+	echo -n " --disable-cli"
 	echo -n " --enable-static"
 	echo -n " --extra-cflags=$(cflags_runtime $2 $3)"
 }
@@ -239,11 +240,13 @@ function make_all() {
 	local ffmpeg_prefix=$(target_id "ffmpeg" "$1" "$2" "$3" "$4" "$5" "$6")
 	# PREFIX RUNTIME_LIBRARY
 	build_x264 "$x264_prefix" "$4" "$5"
+	# FOLDER
+	make_zip "$x264_prefix"
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
-	make_zip "$prefix"
-	make_nuget "$prefix" "$1" "$3" "$4" "$5" "$6"
+	make_zip "$ffmpeg_prefix"
+	make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
 
 	mv /usr/bin/link1 /usr/bin/link
 }
