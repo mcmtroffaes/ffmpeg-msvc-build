@@ -122,7 +122,7 @@ ffmpeg_options_debug() {
 
 # PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 ffmpeg_options () {
-	echo -n "--disable-programs --disable-doc --enable-runtime-cpudetect"
+	echo -n "--disable-doc --enable-runtime-cpudetect"
 	echo -n " --prefix=$1"
 	echo -n " $(ffmpeg_options_license $2)"
 	echo -n " $(ffmpeg_options_linkage $3)"
@@ -261,7 +261,8 @@ function make_all() {
 	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
 	make_zip "$ffmpeg_prefix"
-	make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
+	# TODO fix static builds and enable nuget
+	#make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
 	mv /usr/bin/link1 /usr/bin/link
 }
 
