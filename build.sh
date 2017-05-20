@@ -106,6 +106,20 @@ ffmpeg_options_runtime() {
 	echo "--extra-cflags=$cflags --extra-cxxflags=$cflags"
 }
 
+# CONFIGURATION
+ffmpeg_options_debug() {
+	case "$1" in
+		Release)
+			echo "--disable-debug"
+			;;
+		Debug)
+			echo ""
+			;;
+		*)
+			return 1
+	esac
+}
+
 # PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 ffmpeg_options () {
 	echo -n "--disable-programs --disable-doc --enable-runtime-cpudetect"
@@ -113,6 +127,7 @@ ffmpeg_options () {
 	echo -n " $(ffmpeg_options_license $2)"
 	echo -n " $(ffmpeg_options_linkage $3)"
 	echo -n " $(ffmpeg_options_runtime $4 $5)"
+	echo -n " $(ffmpeg_options_debug $5)"
 }
 
 # BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
