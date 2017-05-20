@@ -61,10 +61,10 @@ ffmpeg_options_license() {
 			echo "--enable-version3"
 			;;
 		GPL2)
-			echo "--enable-gpl"
+			echo "--enable-gpl --enable-libx264"
 			;;
 		GPL3)
-			echo "--enable-gpl --enable-version3"
+			echo "--enable-gpl --enable-version3  --enable-libx264"
 			;;
 		*)
 			return 1
@@ -181,6 +181,8 @@ function build_x264() {
 	CC=cl ./configure $(x264_options $abs1 $2 $3) || (tail -30 config.log && exit 1)
 	make
 	make install
+	INCLUDE="$INCLUDE;$(cygpath -w $abs1/include)"
+	LIB="$LIB;$(cygpath -w $abs1/include)"
 	popd
 }
 

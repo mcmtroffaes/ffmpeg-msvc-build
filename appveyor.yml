@@ -5,7 +5,7 @@ environment:
     FFMPEG_VERSION: 20170330-ad7aff0
   matrix:
     - LINKAGE: shared
-      LICENSE: LGPL21
+      LICENSE: GPL3
       RUNTIME_LIBRARY: MD
 platform: x64
 configuration: Release
