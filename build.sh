@@ -162,17 +162,25 @@ function build_ffmpeg() {
 	local abs1=$(readlink -f $1)
 
 	# install license file
-	mkdir -p "$abs1/share/doc"
-	cp "ffmpeg/$(license_file $2)" "$abs1/share/doc/ffmpeg-license.txt"
+	mkdir -p "$abs1/share/doc/ffmpeg"
+	cp "ffmpeg/$(license_file $2)" "$abs1/share/doc/ffmpeg/license.txt"
 
 	# run configure and save output (lists all enabled features and mentions license at the end)
 	pushd ffmpeg
 	./configure --toolchain=msvc $(ffmpeg_options $abs1 $2 $3 $4 $5) \
-		> "$abs1/share/doc/ffmpeg-configure.txt" || (tail -30 config.log && exit 1)
-	cat "$abs1/share/doc/ffmpeg-configure.txt"
+		> "$abs1/share/doc/ffmpeg/configure.txt" || (tail -30 config.log && exit 1)
+	cat "$abs1/share/doc/ffmpeg/configure.txt"
 	#tail -30 config.log  # for debugging
 	make
 	make install
+	# fix extension of static libraries
+	pushd "$abs1/lib"
+	for file in *.a; do mv "$file" "${file/.a/.lib}"; done
+	popd
+	# move import libraries to lib folder
+	pushd "$abs1/bin"
+	for file in *.lib; do mv "$file" "../lib/$file"; done
+	popd
 	popd
 }
 
