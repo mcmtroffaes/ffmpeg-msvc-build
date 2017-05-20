@@ -1,16 +1,18 @@
 # exit immediately upon error
 set -e
 
-ffmpeg_date() {
-	cd ffmpeg
+# FOLDER
+git_date() {
+	pushd "$1" > /dev/null
 	git show -s --format=%ci HEAD | sed 's/\([0-9]\{4\}\)-\([0-9][0-9]\)-\([0-9][0-9]\).*/\1\2\3/'
-	cd ..
+	popd > /dev/null
 }
 
-ffmpeg_hash() {
-	cd ffmpeg
+# FOLDER
+git_hash() {
+	pushd "$1" > /dev/null
 	git show -s --format=%t HEAD
-	cd ..
+	popd > /dev/null
 }
 
 # VISUAL_STUDIO
@@ -113,10 +115,12 @@ ffmpeg_options () {
 	echo -n " $(ffmpeg_options_runtime $4 $5)"
 }
 
-# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
+# BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 target_id () {
-	local ts=$(toolset "$2")
-	echo "ffmpeg-$(ffmpeg_date)-$(ffmpeg_hash)-$1-$ts-$3-$4-$5-$6" | tr '[:upper:]' '[:lower:]'
+	local toolset_=$(toolset "$3")
+	local date_=$(git_date "$1")
+	local hash_=$(git_hash "$1")
+	echo "$1-${date_}-${hash_}-$2-${toolset_}-$4-$5-$6-$7" | tr '[:upper:]' '[:lower:]'
 }
 
 # assumes we are in the ffmpeg folder
@@ -142,14 +146,6 @@ function build_ffmpeg() {
 	# find absolute path for prefix
 	local abs1=$(readlink -f $1)
 
-	# ensure link.exe is the one from msvc
-	mv /usr/bin/link /usr/bin/link1
-	which link
-
-	# ensure cl.exe can be called
-	which cl
-	cl
-
 	# install license file
 	mkdir -p "$abs1/share/doc"
 	cp "ffmpeg/$(license_file $2)" "$abs1/share/doc/ffmpeg-license.txt"
@@ -163,8 +159,29 @@ function build_ffmpeg() {
 	make
 	make install
 	popd
+}
 
-	mv /usr/bin/link1 /usr/bin/link
+# PREFIX RUNTIME_LIBRARY CONFIGURATION
+x264_options () {
+	echo -n " --prefix=$1"
+	echo -n " --enable-static"
+	echo -n " --extra-cflags=$(cflags_runtime $2 $3)"
+}
+
+# PREFIX RUNTIME_LIBRARY CONFIGURATION
+function build_x264() {
+	# find absolute path for prefix
+	local abs1=$(readlink -f $1)
+
+	pushd x264
+	# use latest config.guess to ensure that we can detect msys2
+	curl "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" > config.guess
+	# hotpatch configure script so we get the right compiler, compiler_style, and compiler flags
+	sed -i 's/host_os = mingw/host_os = msys/' configure
+	CC=cl ./configure $(x264_options $abs1 $2 $3) || (tail -30 config.log && exit 1)
+	make
+	make install
+	popd
 }
 
 # FOLDER
@@ -182,8 +199,8 @@ function make_nuget() {
 	fi
 	local fullnuspec="FFmpeg.$2.${3^}.$4.$5.${6,,}.nuspec"
 	cat FFmpeg.nuspec.in \
-		| sed "s/@FFMPEG_DATE@/$(ffmpeg_date)/g" \
-		| sed "s/@FFMPEG_HASH@/$(ffmpeg_hash)/g" \
+		| sed "s/@FFMPEG_DATE@/$(git_date ffmpeg)/g" \
+		| sed "s/@FFMPEG_HASH@/$(git_hash ffmpeg)/g" \
 		| sed "s/@PREFIX@/$1/g" \
 		| sed "s/@LICENSE@/$2/g" \
 		| sed "s/@LINKAGE@/${3^}/g" \
@@ -207,13 +224,26 @@ function make_nuget() {
 
 # LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 function make_all() {
+	# ensure link.exe is the one from msvc
+	mv /usr/bin/link /usr/bin/link1
+	which link
+
+	# ensure cl.exe can be called
+	which cl
+	cl
+
 	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-	local prefix=$(target_id "$1" "$2" "$3" "$4" "$5" "$6")
+	local x264_prefix=$(target_id "x264" "GPL2" "$2" "static" "$4" "$5" "$6")
+	local ffmpeg_prefix=$(target_id "ffmpeg" "$1" "$2" "$3" "$4" "$5" "$6")
+	# PREFIX RUNTIME_LIBRARY
+	build_x264 "$x264_prefix" "$4" "$5"
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
-	build_ffmpeg "$prefix" "$1" "$3" "$4" "$5"
+	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
 	make_zip "$prefix"
 	make_nuget "$prefix" "$1" "$3" "$4" "$5" "$6"
+
+	mv /usr/bin/link1 /usr/bin/link
 }
 
 function appveyor_main() {
