@@ -64,7 +64,7 @@ ffmpeg_options_license() {
 			echo "--enable-gpl --enable-libx264"
 			;;
 		GPL3)
-			echo "--enable-gpl --enable-version3  --enable-libx264"
+			echo "--enable-gpl --enable-version3 --enable-libx264"
 			;;
 		*)
 			return 1
@@ -153,7 +153,7 @@ function build_ffmpeg() {
 	# run configure and save output (lists all enabled features and mentions license at the end)
 	pushd ffmpeg
 	./configure --toolchain=msvc $(ffmpeg_options $abs1 $2 $3 $4 $5) \
-		> "$abs1/share/doc/ffmpeg-configure.txt"
+		> "$abs1/share/doc/ffmpeg-configure.txt" || (tail -30 config.log && exit 1)
 	cat "$abs1/share/doc/ffmpeg-configure.txt"
 	#tail -30 config.log  # for debugging
 	make
