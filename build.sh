@@ -212,8 +212,8 @@ function make_nuget() {
 		| sed "s/@PLATFORM@/$platform/g" \
 		> $fullnuspec
 	cat $fullnuspec  # for debugging
-	# postproc requires GPL3 license
-	if [ "$2" = "GPL3" ] || [ "$2" = "LGPL3" ]
+	# postproc requires GPL license
+	if [ "$2" = "LGPL21" ] || [ "$2" = "LGPL3" ]
 	then
 		cat FFmpeg.targets.in \
 			| sed "s/;postproc.lib//g"
