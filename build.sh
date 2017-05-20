@@ -230,24 +230,19 @@ function make_all() {
 	# ensure link.exe is the one from msvc
 	mv /usr/bin/link /usr/bin/link1
 	which link
-
 	# ensure cl.exe can be called
 	which cl
 	cl
-
 	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 	local x264_prefix=$(target_id "x264" "GPL2" "$2" "static" "$4" "$5" "$6")
 	local ffmpeg_prefix=$(target_id "ffmpeg" "$1" "$2" "$3" "$4" "$5" "$6")
 	# PREFIX RUNTIME_LIBRARY
 	build_x264 "$x264_prefix" "$4" "$5"
-	# FOLDER
-	make_zip "$x264_prefix"
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
 	make_zip "$ffmpeg_prefix"
 	make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
-
 	mv /usr/bin/link1 /usr/bin/link
 }
 
