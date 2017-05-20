@@ -183,7 +183,7 @@ function build_x264() {
 	make
 	make install
 	INCLUDE="$INCLUDE;$(cygpath -w $abs1/include)"
-	LIB="$LIB;$(cygpath -w $abs1/include)"
+	LIB="$LIB;$(cygpath -w $abs1/lib)"
 	popd
 }
 
