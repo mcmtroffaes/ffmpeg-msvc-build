@@ -7,6 +7,27 @@ environment:
     - LINKAGE: shared
       LICENSE: GPL3
       RUNTIME_LIBRARY: MD
+    - LINKAGE: static
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MD
+    - LINKAGE: shared
+      LICENSE: LGPL21
+      RUNTIME_LIBRARY: MD
+    - LINKAGE: static
+      LICENSE: LGPL21
+      RUNTIME_LIBRARY: MD
+    - LINKAGE: shared
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MT
+    - LINKAGE: static
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MT
+    - LINKAGE: shared
+      LICENSE: LGPL21
+      RUNTIME_LIBRARY: MT
+    - LINKAGE: static
+      LICENSE: LGPL21
+      RUNTIME_LIBRARY: MT
 platform: x64
 configuration: Release
 install: install.bat
