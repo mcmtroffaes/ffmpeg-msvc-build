@@ -174,13 +174,15 @@ function build_ffmpeg() {
 	make
 	make install
 	# fix extension of static libraries
-	pushd "$abs1/lib"
-	for file in *.a; do mv "$file" "${file/.a/.lib}"; done
-	popd
+	if [ "$3" = "static" ]
+	then
+		for file in "$abs1/lib/*.a"; do mv "$file" "${file/.a/.lib}"; done
+	fi
 	# move import libraries to lib folder
-	pushd "$abs1/bin"
-	for file in *.lib; do mv "$file" "../lib/$file"; done
-	popd
+	if [ "$3" = "shared" ]
+	then
+		for file in "$abs1/bin/*.lib"; do mv "$file" "$abs1/lib/$file"; done
+	fi
 	popd
 }
 
