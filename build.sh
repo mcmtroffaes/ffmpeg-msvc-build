@@ -176,12 +176,12 @@ function build_ffmpeg() {
 	# fix extension of static libraries
 	if [ "$3" = "static" ]
 	then
-		for file in "$abs1/lib/*.a"; do mv "$file" "${file/.a/.lib}"; done
+		for file in "$abs1/lib/"*.a; do mv "$file" "${file/.a/.lib}"; done
 	fi
 	# move import libraries to lib folder
 	if [ "$3" = "shared" ]
 	then
-		for file in "$abs1/bin/*.lib"; do mv "$file" "$abs1/lib/$file"; done
+		for file in "$abs1/bin/"*.lib; do mv "$file" "$abs1/lib/$file"; done
 	fi
 	popd
 }
