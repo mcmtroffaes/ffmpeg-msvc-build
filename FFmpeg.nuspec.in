@@ -17,9 +17,9 @@
   </metadata>
   <files>
     <file src="FFmpeg.targets" target="build\native" />
-    <file src="@PREFIX@\share\doc\**" target="build\native\share\doc" />
+    <file src="@PREFIX@\share\doc\ffmpeg\**" target="build\native\share\doc\ffmpeg" />
     <file src="@PREFIX@\include\**" target="build\native\include" />
-    <file src="@PREFIX@\bin\*.lib" target="build\native\lib\@PLATFORM@" />
-    <file src="@PREFIX@\bin\*.dll" target="build\native\bin\@PLATFORM@" />
+    <file src="@PREFIX@\bin\**" target="build\native\bin\@PLATFORM@" />
+    <file src="@PREFIX@\lib\**" target="build\native\lib\@PLATFORM@" />
   </files>
 </package>

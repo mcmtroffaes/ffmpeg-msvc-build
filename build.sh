@@ -271,8 +271,7 @@ function make_all() {
 	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
 	make_zip "$ffmpeg_prefix"
-	# TODO fix static builds and enable nuget
-	#make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
+	make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
 	mv /usr/bin/link1 /usr/bin/link
 }
 
