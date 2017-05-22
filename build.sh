@@ -2,21 +2,27 @@
 set -e
 
 # FOLDER
-git_date() {
+function make_zip() {
+	find "$1"  # prints paths of all files to be zipped
+	7z a -tzip -r "$1.zip" $1
+}
+
+# FOLDER
+get_git_date() {
 	pushd "$1" > /dev/null
 	git show -s --format=%ci HEAD | sed 's/\([0-9]\{4\}\)-\([0-9][0-9]\)-\([0-9][0-9]\).*/\1\2\3/'
 	popd > /dev/null
 }
 
 # FOLDER
-git_hash() {
+get_git_hash() {
 	pushd "$1" > /dev/null
 	git show -s --format=%h HEAD
 	popd > /dev/null
 }
 
 # VISUAL_STUDIO
-toolset () {
+get_toolset () {
 	case "$1" in
 		Visual\ Studio\ 2013)
 			echo -n "v120"
@@ -30,6 +36,29 @@ toolset () {
 		*)
 			return 1
 	esac
+}
+
+# RUNTIME_LIBRARY CONFIGURATION
+cflags_runtime() {
+	echo -n "-$1" | tr '[:lower:]' '[:upper:]'
+	case "$2" in
+		Release)
+			echo ""
+			;;
+		Debug)
+			echo "d"
+			;;
+		*)
+			return 1
+	esac
+}
+
+# BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
+target_id () {
+	local toolset_=$(get_toolset "$3")
+	local date_=$(get_git_date "$1")
+	local hash_=$(get_git_hash "$1")
+	echo "$1-${date_}-${hash_}-$2-${toolset_}-$4-$5-$6-$7" | tr '[:upper:]' '[:lower:]'
 }
 
 # LICENSE
@@ -86,21 +115,6 @@ ffmpeg_options_linkage() {
 }
 
 # RUNTIME_LIBRARY CONFIGURATION
-cflags_runtime() {
-	echo -n "-$1" | tr '[:lower:]' '[:upper:]'
-	case "$2" in
-		Release)
-			echo ""
-			;;
-		Debug)
-			echo "d"
-			;;
-		*)
-			return 1
-	esac
-}
-
-# RUNTIME_LIBRARY CONFIGURATION
 ffmpeg_options_runtime() {
 	cflags=`cflags_runtime $1 $2`
 	echo "--extra-cflags=$cflags --extra-cxxflags=$cflags"
@@ -128,14 +142,6 @@ ffmpeg_options () {
 	echo -n " $(ffmpeg_options_linkage $3)"
 	echo -n " $(ffmpeg_options_runtime $4 $5)"
 	echo -n " $(ffmpeg_options_debug $5)"
-}
-
-# BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-target_id () {
-	local toolset_=$(toolset "$3")
-	local date_=$(git_date "$1")
-	local hash_=$(git_hash "$1")
-	echo "$1-${date_}-${hash_}-$2-${toolset_}-$4-$5-$6-$7" | tr '[:upper:]' '[:lower:]'
 }
 
 # assumes we are in the ffmpeg folder
@@ -216,11 +222,6 @@ function build_x264() {
 	popd
 }
 
-# FOLDER
-function make_zip() {
-	7z a -tzip -r "$1.zip" $1
-}
-
 # PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 function make_nuget() {
 	if [ "${6,,}" = "x86" ]
@@ -231,8 +232,8 @@ function make_nuget() {
 	fi
 	local fullnuspec="FFmpeg.$2.${3^}.$4.$5.${6,,}.nuspec"
 	cat FFmpeg.nuspec.in \
-		| sed "s/@FFMPEG_DATE@/$(git_date ffmpeg)/g" \
-		| sed "s/@FFMPEG_HASH@/$(git_hash ffmpeg)/g" \
+		| sed "s/@FFMPEG_DATE@/$(get_git_date ffmpeg)/g" \
+		| sed "s/@FFMPEG_HASH@/$(get_git_hash ffmpeg)/g" \
 		| sed "s/@PREFIX@/$1/g" \
 		| sed "s/@LICENSE@/$2/g" \
 		| sed "s/@LINKAGE@/${3^}/g" \
