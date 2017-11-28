@@ -54,7 +54,7 @@ cflags_runtime() {
 }
 
 # BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-target_id () {
+target_id() {
 	local toolset_=$(get_toolset "$3")
 	local date_=$(get_git_date "$1")
 	local hash_=$(get_git_hash "$1")
@@ -62,7 +62,7 @@ target_id () {
 }
 
 # LICENSE
-license_file () {
+license_file() {
 	case "$1" in
 		LGPL21)
 			echo "COPYING.LGPLv2.1"
