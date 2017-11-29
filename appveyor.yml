@@ -1,8 +1,6 @@
 version: 1.0.{build}
 image: Visual Studio 2015
 environment:
-  global:
-    FFMPEG_VERSION: 20170330-ad7aff0
   matrix:
     - LINKAGE: shared
       LICENSE: GPL3
