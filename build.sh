@@ -280,7 +280,7 @@ get_appveyor_visual_studio() {
 	esac
 }
 
-set -x
+set -xe
 # bash starts in msys home folder, so first go to project folder
 cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
 make_all \
