@@ -27,7 +27,7 @@ get_git_hash() {
 get_toolset() {
 	local visual_studio
 	local "${@}"
-	case "$1" in
+	case "$visual_studio" in
 		Visual\ Studio\ 2013)
 			echo -n "v120"
 			;;
@@ -59,12 +59,19 @@ cflags_runtime() {
 	esac
 }
 
-# BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 target_id() {
-	local toolset_=$(get_toolset visual_studio="$3")
-	local date_=$(get_git_date folder="$1")
-	local hash_=$(get_git_hash folder="$1")
-	echo "$1-${date_}-${hash_}-$2-${toolset_}-$4-$5-$6-$7" | tr '[:upper:]' '[:lower:]'
+	local base
+	local license
+	local visual_studio
+	local linkage
+	local runtime
+	local configuration
+	local platform
+	local "${@}"
+	local toolset_=$(get_toolset visual_studio="$visual_studio")
+	local date_=$(get_git_date folder="$base")
+	local hash_=$(get_git_hash folder="$base")
+	echo "${base}-${date_}-${hash_}-${license}-${toolset_}-${linkage}-${runtime}-${configuration}-${platform}" | tr '[:upper:]' '[:lower:]'
 }
 
 # LICENSE
@@ -248,13 +255,11 @@ function make_all() {
 	cl
 	if [ "$license" = "GPL2" ] || [ "$license" = "GPL3" ]
 	then
-		# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-		local x264_prefix=$(target_id "x264" "GPL2" "$visual_studio" "static" "$runtime" "$configuration" "$platform")
+		local x264_prefix=$(target_id base="x264" license="GPL2" visual_studio="$visual_studio" linkage="static" runtime="$runtime" configuration="$configuration" platform="$platform")
 		# PREFIX RUNTIME_LIBRARY
 		#build_x264 "$x264_prefix" "$runtime" "$configuration"
 	fi
-	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-	local ffmpeg_prefix=$(target_id "ffmpeg" "$license" "$visual_studio" "$linkage" "$runtime" "$configuration" "$platform")
+	local ffmpeg_prefix=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 	#build_ffmpeg "$ffmpeg_prefix" "$license" "$linkage" "$runtime" "$configuration"
 	mkdir "$ffmpeg_prefix" # TODO remove
