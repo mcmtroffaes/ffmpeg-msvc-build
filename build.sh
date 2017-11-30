@@ -169,16 +169,21 @@ ffmpeg_options() {
 }
 
 # assumes we are in the ffmpeg folder
-# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 function build_ffmpeg() {
+	local prefix
+	local license
+	local linkage
+	local runtime
+	local configuration
+	local "${@}"
 	echo "==============================================================================="
 	echo "build_ffmpeg"
 	echo "==============================================================================="
-	echo "PREFIX=$1"
-	echo "LICENSE=$2"
-	echo "LINKAGE=$3"
-	echo "RUNTIME_LIBRARY=$4"
-	echo "CONFIGURATION=$5"
+	echo "PREFIX=$prefix"
+	echo "LICENSE=$license"
+	echo "LINKAGE=$linkage"
+	echo "RUNTIME_LIBRARY=$runtime"
+	echo "CONFIGURATION=$configuration"
 	echo "-------------------------------------------------------------------------------"
 	echo "PATH=$PATH"
 	echo "INCLUDE=$INCLUDE"
@@ -189,11 +194,11 @@ function build_ffmpeg() {
 	echo "-------------------------------------------------------------------------------"
 
 	# find absolute path for prefix
-	local abs1=$(readlink -f $1)
+	local abs1=$(readlink -f $prefix)
 
 	# install license file
 	mkdir -p "$abs1/share/doc/ffmpeg"
-	cp "ffmpeg/$(license_file license=$2)" "$abs1/share/doc/ffmpeg/license.txt"
+	cp "ffmpeg/$(license_file license=$license)" "$abs1/share/doc/ffmpeg/license.txt"
 
 	# run configure and save output (lists all enabled features and mentions license at the end)
 	pushd ffmpeg
@@ -201,21 +206,21 @@ function build_ffmpeg() {
 	sed -i 's/#include <windows.h>/#define Rectangle WindowsRectangle\n#include <windows.h>\n#undef Rectangle\n#undef near/' compat/atomics/win32/stdatomic.h
 	# temporary fix for C99 syntax error on msvc, patch already on mailing list
 	sed -i 's/MXFPackage packages\[2\] = {};/MXFPackage packages\[2\] = {{0}};/' libavformat/mxfenc.c
-	./configure --toolchain=msvc $(ffmpeg_options prefix=$abs1 license=$2 linkage=$3 runtime=$4 configuration=$5) \
+	./configure --toolchain=msvc $(ffmpeg_options prefix=$abs1 license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
 		> "$abs1/share/doc/ffmpeg/configure.txt" || (tail -30 config.log && exit 1)
 	cat "$abs1/share/doc/ffmpeg/configure.txt"
 	#tail -30 config.log  # for debugging
 	make
 	make install
 	# fix extension of static libraries
-	if [ "$3" = "static" ]
+	if [ "$linkage" = "static" ]
 	then
 		pushd "$abs1/lib/"
 		for file in *.a; do mv "$file" "${file/.a/.lib}"; done
 		popd
 	fi
 	# move import libraries to lib folder
-	if [ "$3" = "shared" ]
+	if [ "$linkage" = "shared" ]
 	then
 		pushd "$abs1/bin/"
 		for file in *.lib; do mv "$file" ../lib/; done
@@ -271,9 +276,7 @@ function make_all() {
 		#build_x264 "$x264_prefix" "$runtime" "$configuration"
 	fi
 	local ffmpeg_prefix=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
-	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
-	#build_ffmpeg "$ffmpeg_prefix" "$license" "$linkage" "$runtime" "$configuration"
-	mkdir "$ffmpeg_prefix" # TODO remove
+	build_ffmpeg prefix="$ffmpeg_prefix" license="$license" linkage="$linkage" runtime="$runtime" configuration="$configuration"
 	make_zip folder="$ffmpeg_prefix"
 	mv /usr/bin/link1 /usr/bin/link
 }
