@@ -95,9 +95,10 @@ license_file() {
 	esac
 }
 
-# LICENSE
 ffmpeg_options_license() {
-	case "$1" in
+	local license
+	local "${@}"
+	case "$license" in
 		LGPL21)
 			;;
 		LGPL3)
@@ -114,9 +115,10 @@ ffmpeg_options_license() {
 	esac
 }
 
-# LINKAGE
 ffmpeg_options_linkage() {
-	case "$1" in
+	local linkage
+	local "${@}"
+	case "$linkage" in
 		shared)
 			echo "--disable-static --enable-shared"
 			;;
@@ -128,15 +130,18 @@ ffmpeg_options_linkage() {
 	esac
 }
 
-# RUNTIME_LIBRARY CONFIGURATION
 ffmpeg_options_runtime() {
-	cflags=`cflags_runtime runtime=$1 configuration=$2`
+	local runtime
+	local configuration
+	local "${@}"
+	local cflags=`cflags_runtime runtime="$runtime" configuration="$configuration"`
 	echo "--extra-cflags=$cflags --extra-cxxflags=$cflags"
 }
 
-# CONFIGURATION
 ffmpeg_options_debug() {
-	case "$1" in
+	local configuration
+	local "${@}"
+	case "$configuration" in
 		Release)
 			echo "--disable-debug"
 			;;
@@ -148,14 +153,19 @@ ffmpeg_options_debug() {
 	esac
 }
 
-# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 ffmpeg_options() {
+	local prefix
+	local license
+	local linkage
+	local runtime
+	local configuration
+	local "${@}"
 	echo -n "--disable-doc --enable-runtime-cpudetect"
-	echo -n " --prefix=$1"
-	echo -n " $(ffmpeg_options_license $2)"
-	echo -n " $(ffmpeg_options_linkage $3)"
-	echo -n " $(ffmpeg_options_runtime $4 $5)"
-	echo -n " $(ffmpeg_options_debug $5)"
+	echo -n " --prefix=$prefix"
+	echo -n " $(ffmpeg_options_license license=$license)"
+	echo -n " $(ffmpeg_options_linkage linkage=$linkage)"
+	echo -n " $(ffmpeg_options_runtime runtime=$runtime configuration=$configuration)"
+	echo -n " $(ffmpeg_options_debug configuration=$configuration)"
 }
 
 # assumes we are in the ffmpeg folder
@@ -191,7 +201,7 @@ function build_ffmpeg() {
 	sed -i 's/#include <windows.h>/#define Rectangle WindowsRectangle\n#include <windows.h>\n#undef Rectangle\n#undef near/' compat/atomics/win32/stdatomic.h
 	# temporary fix for C99 syntax error on msvc, patch already on mailing list
 	sed -i 's/MXFPackage packages\[2\] = {};/MXFPackage packages\[2\] = {{0}};/' libavformat/mxfenc.c
-	./configure --toolchain=msvc $(ffmpeg_options $abs1 $2 $3 $4 $5) \
+	./configure --toolchain=msvc $(ffmpeg_options prefix=$abs1 license=$2 linkage=$3 runtime=$4 configuration=$5) \
 		> "$abs1/share/doc/ffmpeg/configure.txt" || (tail -30 config.log && exit 1)
 	cat "$abs1/share/doc/ffmpeg/configure.txt"
 	#tail -30 config.log  # for debugging
