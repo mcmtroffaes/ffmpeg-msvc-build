@@ -24,8 +24,9 @@ get_git_hash() {
 	popd > /dev/null
 }
 
-# VISUAL_STUDIO
-get_toolset () {
+get_toolset() {
+	local visual_studio
+	local "${@}"
 	case "$1" in
 		Visual\ Studio\ 2013)
 			echo -n "v120"
@@ -58,7 +59,7 @@ cflags_runtime() {
 
 # BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 target_id() {
-	local toolset_=$(get_toolset "$3")
+	local toolset_=$(get_toolset visual_studio="$3")
 	local date_=$(get_git_date folder="$1")
 	local hash_=$(get_git_hash folder="$1")
 	echo "$1-${date_}-${hash_}-$2-${toolset_}-$4-$5-$6-$7" | tr '[:upper:]' '[:lower:]'
@@ -254,7 +255,6 @@ function make_all() {
 	local ffmpeg_prefix=$(target_id "ffmpeg" "$license" "$visual_studio" "$linkage" "$runtime" "$configuration" "$platform")
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 	#build_ffmpeg "$ffmpeg_prefix" "$license" "$linkage" "$runtime" "$configuration"
-	# FOLDER
 	make_zip folder="$ffmpeg_prefix"
 	mv /usr/bin/link1 /usr/bin/link
 }
