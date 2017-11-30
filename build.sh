@@ -74,9 +74,10 @@ target_id() {
 	echo "${base}-${date_}-${hash_}-${license}-${toolset_}-${linkage}-${runtime}-${configuration}-${platform}" | tr '[:upper:]' '[:lower:]'
 }
 
-# LICENSE
 license_file() {
-	case "$1" in
+	local license
+	local "${@}"
+	case "$license" in
 		LGPL21)
 			echo "COPYING.LGPLv2.1"
 			;;
@@ -148,7 +149,7 @@ ffmpeg_options_debug() {
 }
 
 # PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
-ffmpeg_options () {
+ffmpeg_options() {
 	echo -n "--disable-doc --enable-runtime-cpudetect"
 	echo -n " --prefix=$1"
 	echo -n " $(ffmpeg_options_license $2)"
@@ -182,7 +183,7 @@ function build_ffmpeg() {
 
 	# install license file
 	mkdir -p "$abs1/share/doc/ffmpeg"
-	cp "ffmpeg/$(license_file $2)" "$abs1/share/doc/ffmpeg/license.txt"
+	cp "ffmpeg/$(license_file license=$2)" "$abs1/share/doc/ffmpeg/license.txt"
 
 	# run configure and save output (lists all enabled features and mentions license at the end)
 	pushd ffmpeg
