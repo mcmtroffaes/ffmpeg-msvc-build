@@ -255,6 +255,7 @@ function make_all() {
 	local ffmpeg_prefix=$(target_id "ffmpeg" "$license" "$visual_studio" "$linkage" "$runtime" "$configuration" "$platform")
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 	#build_ffmpeg "$ffmpeg_prefix" "$license" "$linkage" "$runtime" "$configuration"
+	mkdir "$ffmpeg_prefix" # TODO remove
 	make_zip folder="$ffmpeg_prefix"
 	mv /usr/bin/link1 /usr/bin/link
 }
