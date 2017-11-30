@@ -1,22 +1,25 @@
 # exit immediately upon error
 set -e
 
-# FOLDER
 function make_zip() {
-	find "$1"  # prints paths of all files to be zipped
-	7z a -tzip -r "$1.zip" $1
+	local folder
+	local "${@}"
+	find "$folder"  # prints paths of all files to be zipped
+	7z a -tzip -r "$folder.zip" $folder
 }
 
-# FOLDER
 get_git_date() {
-	pushd "$1" > /dev/null
+	local folder
+	local "${@}"
+	pushd "$folder" > /dev/null
 	git show -s --format=%ci HEAD | sed 's/\([0-9]\{4\}\)-\([0-9][0-9]\)-\([0-9][0-9]\).*/\1\2\3/'
 	popd > /dev/null
 }
 
-# FOLDER
 get_git_hash() {
-	pushd "$1" > /dev/null
+	local folder
+	local "${@}"
+	pushd "$folder" > /dev/null
 	git show -s --format=%h HEAD
 	popd > /dev/null
 }
@@ -56,8 +59,8 @@ cflags_runtime() {
 # BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 target_id() {
 	local toolset_=$(get_toolset "$3")
-	local date_=$(get_git_date "$1")
-	local hash_=$(get_git_hash "$1")
+	local date_=$(get_git_date folder="$1")
+	local hash_=$(get_git_hash folder="$1")
 	echo "$1-${date_}-${hash_}-$2-${toolset_}-$4-$5-$6-$7" | tr '[:upper:]' '[:lower:]'
 }
 
@@ -236,8 +239,8 @@ function make_nuget() {
 	fi
 	local fullnuspec="FFmpeg.$2.${3^}.$4.$5.${6,,}.nuspec"
 	cat FFmpeg.nuspec.in \
-		| sed "s/@FFMPEG_DATE@/$(get_git_date ffmpeg)/g" \
-		| sed "s/@FFMPEG_HASH@/$(get_git_hash ffmpeg)/g" \
+		| sed "s/@FFMPEG_DATE@/$(get_git_date folder=ffmpeg)/g" \
+		| sed "s/@FFMPEG_HASH@/$(get_git_hash folder=ffmpeg)/g" \
 		| sed "s/@PREFIX@/$1/g" \
 		| sed "s/@LICENSE@/$2/g" \
 		| sed "s/@LINKAGE@/${3^}/g" \
@@ -279,7 +282,7 @@ function make_all() {
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
 	# FOLDER
-	make_zip "$ffmpeg_prefix"
+	make_zip folder="$ffmpeg_prefix"
 	make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
 	mv /usr/bin/link1 /usr/bin/link
 }
