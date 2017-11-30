@@ -204,7 +204,7 @@ function build_ffmpeg() {
 }
 
 # PREFIX RUNTIME_LIBRARY CONFIGURATION
-x264_options () {
+x264_options() {
 	echo -n " --prefix=$1"
 	echo -n " --disable-cli"
 	echo -n " --enable-static"
@@ -229,75 +229,43 @@ function build_x264() {
 	popd
 }
 
-# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-function make_nuget() {
-	if [ "${6,,}" = "x86" ]
-	then
-		local platform="Win32"
-	else
-		local platform="x64"
-	fi
-	local fullnuspec="FFmpeg.$2.${3^}.$4.$5.${6,,}.nuspec"
-	cat FFmpeg.nuspec.in \
-		| sed "s/@FFMPEG_DATE@/$(get_git_date folder=ffmpeg)/g" \
-		| sed "s/@FFMPEG_HASH@/$(get_git_hash folder=ffmpeg)/g" \
-		| sed "s/@PREFIX@/$1/g" \
-		| sed "s/@LICENSE@/$2/g" \
-		| sed "s/@LINKAGE@/${3^}/g" \
-		| sed "s/@RUNTIME_LIBRARY@/$4/g" \
-		| sed "s/@CONFIGURATION@/$5/g" \
-		| sed "s/@PLATFORM@/$platform/g" \
-		> $fullnuspec
-	cat $fullnuspec  # for debugging
-	# postproc requires GPL license
-	if [ "$2" = "LGPL21" ] || [ "$2" = "LGPL3" ]
-	then
-		cat FFmpeg.targets.in \
-			| sed "s/;postproc.lib//g"
-			> FFmpeg.targets
-	else
-		cp FFmpeg.targets.in FFmpeg.targets
-	fi
-	cat FFmpeg.targets  # for debugging
-	nuget pack $fullnuspec
-}
-
-# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 function make_all() {
+	local license
+	local visual_studio
+	local linkage
+	local runtime
+	local configuration
+	local platform
+	local "${@}"
 	# ensure link.exe is the one from msvc
 	mv /usr/bin/link /usr/bin/link1
 	which link
 	# ensure cl.exe can be called
 	which cl
 	cl
-	if [ "$1" = "GPL2" ] || [ "$1" = "GPL3" ]
+	if [ "$license" = "GPL2" ] || [ "$license" = "GPL3" ]
 	then
 		# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-		local x264_prefix=$(target_id "x264" "GPL2" "$2" "static" "$4" "$5" "$6")
+		local x264_prefix=$(target_id "x264" "GPL2" "$visual_studio" "static" "$runtime" "$configuration" "$platform")
 		# PREFIX RUNTIME_LIBRARY
-		build_x264 "$x264_prefix" "$4" "$5"
+		build_x264 "$x264_prefix" "$runtime" "$configuration"
 	fi
 	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-	local ffmpeg_prefix=$(target_id "ffmpeg" "$1" "$2" "$3" "$4" "$5" "$6")
+	local ffmpeg_prefix=$(target_id "ffmpeg" "$license" "$visual_studio" "$linkage" "$runtime" "$configuration" "$platform")
 	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
-	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
+	#build_ffmpeg "$ffmpeg_prefix" "$license" "$linkage" "$runtime" "$configuration"
 	# FOLDER
 	make_zip folder="$ffmpeg_prefix"
-	make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
 	mv /usr/bin/link1 /usr/bin/link
 }
 
-function appveyor_main() {
-	# bash starts in msys home folder, so first go to project folder
-	cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
-	make_all "$LICENSE" "$APPVEYOR_BUILD_WORKER_IMAGE" \
-		"$LINKAGE" "$RUNTIME_LIBRARY" "$Configuration" "$Platform"
-}
-
-function local_main() {
-	make_all "$LICENSE" "$VISUAL_STUDIO" \
-		"$LINKAGE" "$RUNTIME_LIBRARY" "$CONFIGURATION" "$PLATFORM"
-}
-
 set -x
-appveyor_main
+# bash starts in msys home folder, so first go to project folder
+cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
+make_all \
+	license="$LICENSE" \
+	visual_studio="$APPVEYOR_BUILD_WORKER_IMAGE" \
+	linkage="$LINKAGE" \
+	runtime="$RUNTIME_LIBRARY" \
+	configuration="$Configuration" \
+	platform="$Platform"
