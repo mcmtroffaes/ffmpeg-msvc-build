@@ -42,10 +42,12 @@ get_toolset() {
 	esac
 }
 
-# RUNTIME_LIBRARY CONFIGURATION
 cflags_runtime() {
-	echo -n "-$1" | tr '[:lower:]' '[:upper:]'
-	case "$2" in
+	local runtime
+	local configuration
+	local "${@}"
+	echo -n "-$runtime" | tr '[:lower:]' '[:upper:]'
+	case "$configuration" in
 		Release)
 			echo ""
 			;;
@@ -120,7 +122,7 @@ ffmpeg_options_linkage() {
 
 # RUNTIME_LIBRARY CONFIGURATION
 ffmpeg_options_runtime() {
-	cflags=`cflags_runtime $1 $2`
+	cflags=`cflags_runtime runtime=$1 configuration=$2`
 	echo "--extra-cflags=$cflags --extra-cxxflags=$cflags"
 }
 
@@ -209,7 +211,7 @@ x264_options() {
 	echo -n " --prefix=$1"
 	echo -n " --disable-cli"
 	echo -n " --enable-static"
-	echo -n " --extra-cflags=$(cflags_runtime $2 $3)"
+	echo -n " --extra-cflags=$(cflags_runtime runtime=$2 configuration=$3)"
 }
 
 # PREFIX RUNTIME_LIBRARY CONFIGURATION
