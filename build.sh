@@ -249,7 +249,7 @@ function make_all() {
 		# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 		local x264_prefix=$(target_id "x264" "GPL2" "$visual_studio" "static" "$runtime" "$configuration" "$platform")
 		# PREFIX RUNTIME_LIBRARY
-		build_x264 "$x264_prefix" "$runtime" "$configuration"
+		#build_x264 "$x264_prefix" "$runtime" "$configuration"
 	fi
 	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 	local ffmpeg_prefix=$(target_id "ffmpeg" "$license" "$visual_studio" "$linkage" "$runtime" "$configuration" "$platform")
