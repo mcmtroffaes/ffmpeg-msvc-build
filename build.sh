@@ -285,7 +285,7 @@ set -xe
 cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
 make_all \
 	license="$LICENSE" \
-	visual_studio="$(get_appveyor_visual_studio visual_studio_fullname=$APPVEYOR_BUILD_WORKER_IMAGE)" \
+	visual_studio=$(get_appveyor_visual_studio visual_studio_fullname="$APPVEYOR_BUILD_WORKER_IMAGE") \
 	linkage="$LINKAGE" \
 	runtime="$RUNTIME_LIBRARY" \
 	configuration="$Configuration" \
