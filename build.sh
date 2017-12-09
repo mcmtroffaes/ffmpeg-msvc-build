@@ -1,47 +1,35 @@
 # exit immediately upon error
 set -e
 
-# FOLDER
 function make_zip() {
-	find "$1"  # prints paths of all files to be zipped
-	7z a -tzip -r "$1.zip" $1
+	local folder
+	local "${@}"
+	find "$folder"  # prints paths of all files to be zipped
+	7z a -tzip -r "$folder.zip" $folder
 }
 
-# FOLDER
 get_git_date() {
-	pushd "$1" > /dev/null
+	local folder
+	local "${@}"
+	pushd "$folder" > /dev/null
 	git show -s --format=%ci HEAD | sed 's/\([0-9]\{4\}\)-\([0-9][0-9]\)-\([0-9][0-9]\).*/\1\2\3/'
 	popd > /dev/null
 }
 
-# FOLDER
 get_git_hash() {
-	pushd "$1" > /dev/null
+	local folder
+	local "${@}"
+	pushd "$folder" > /dev/null
 	git show -s --format=%h HEAD
 	popd > /dev/null
 }
 
-# VISUAL_STUDIO
-get_toolset () {
-	case "$1" in
-		Visual\ Studio\ 2013)
-			echo -n "v120"
-			;;
-		Visual\ Studio\ 2015)
-			echo -n "v140"
-			;;
-		Visual\ Studio\ 2017)
-			echo -n "v141"
-			;;
-		*)
-			return 1
-	esac
-}
-
-# RUNTIME_LIBRARY CONFIGURATION
 cflags_runtime() {
-	echo -n "-$1" | tr '[:lower:]' '[:upper:]'
-	case "$2" in
+	local runtime
+	local configuration
+	local "${@}"
+	echo -n "-$runtime" | tr '[:lower:]' '[:upper:]'
+	case "$configuration" in
 		Release)
 			echo ""
 			;;
@@ -53,17 +41,24 @@ cflags_runtime() {
 	esac
 }
 
-# BASE LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 target_id() {
-	local toolset_=$(get_toolset "$3")
-	local date_=$(get_git_date "$1")
-	local hash_=$(get_git_hash "$1")
-	echo "$1-${date_}-${hash_}-$2-${toolset_}-$4-$5-$6-$7" | tr '[:upper:]' '[:lower:]'
+	local base
+	local license
+	local visual_studio
+	local linkage
+	local runtime
+	local configuration
+	local platform
+	local "${@}"
+	local date_=$(get_git_date folder="$base")
+	local hash_=$(get_git_hash folder="$base")
+	echo "${base}-${date_}-${hash_}-${license}-${visual_studio}-${linkage}-${runtime}-${configuration}-${platform}" | tr '[:upper:]' '[:lower:]'
 }
 
-# LICENSE
 license_file() {
-	case "$1" in
+	local license
+	local "${@}"
+	case "$license" in
 		LGPL21)
 			echo "COPYING.LGPLv2.1"
 			;;
@@ -81,9 +76,10 @@ license_file() {
 	esac
 }
 
-# LICENSE
 ffmpeg_options_license() {
-	case "$1" in
+	local license
+	local "${@}"
+	case "$license" in
 		LGPL21)
 			;;
 		LGPL3)
@@ -100,9 +96,10 @@ ffmpeg_options_license() {
 	esac
 }
 
-# LINKAGE
 ffmpeg_options_linkage() {
-	case "$1" in
+	local linkage
+	local "${@}"
+	case "$linkage" in
 		shared)
 			echo "--disable-static --enable-shared"
 			;;
@@ -114,15 +111,18 @@ ffmpeg_options_linkage() {
 	esac
 }
 
-# RUNTIME_LIBRARY CONFIGURATION
 ffmpeg_options_runtime() {
-	cflags=`cflags_runtime $1 $2`
+	local runtime
+	local configuration
+	local "${@}"
+	local cflags=`cflags_runtime runtime="$runtime" configuration="$configuration"`
 	echo "--extra-cflags=$cflags --extra-cxxflags=$cflags"
 }
 
-# CONFIGURATION
 ffmpeg_options_debug() {
-	case "$1" in
+	local configuration
+	local "${@}"
+	case "$configuration" in
 		Release)
 			echo "--disable-debug"
 			;;
@@ -134,27 +134,37 @@ ffmpeg_options_debug() {
 	esac
 }
 
-# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
-ffmpeg_options () {
+ffmpeg_options() {
+	local prefix
+	local license
+	local linkage
+	local runtime
+	local configuration
+	local "${@}"
 	echo -n "--disable-doc --enable-runtime-cpudetect"
-	echo -n " --prefix=$1"
-	echo -n " $(ffmpeg_options_license $2)"
-	echo -n " $(ffmpeg_options_linkage $3)"
-	echo -n " $(ffmpeg_options_runtime $4 $5)"
-	echo -n " $(ffmpeg_options_debug $5)"
+	echo -n " --prefix=$prefix"
+	echo -n " $(ffmpeg_options_license license=$license)"
+	echo -n " $(ffmpeg_options_linkage linkage=$linkage)"
+	echo -n " $(ffmpeg_options_runtime runtime=$runtime configuration=$configuration)"
+	echo -n " $(ffmpeg_options_debug configuration=$configuration)"
 }
 
 # assumes we are in the ffmpeg folder
-# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
 function build_ffmpeg() {
+	local prefix
+	local license
+	local linkage
+	local runtime
+	local configuration
+	local "${@}"
 	echo "==============================================================================="
 	echo "build_ffmpeg"
 	echo "==============================================================================="
-	echo "PREFIX=$1"
-	echo "LICENSE=$2"
-	echo "LINKAGE=$3"
-	echo "RUNTIME_LIBRARY=$4"
-	echo "CONFIGURATION=$5"
+	echo "PREFIX=$prefix"
+	echo "LICENSE=$license"
+	echo "LINKAGE=$linkage"
+	echo "RUNTIME_LIBRARY=$runtime"
+	echo "CONFIGURATION=$configuration"
 	echo "-------------------------------------------------------------------------------"
 	echo "PATH=$PATH"
 	echo "INCLUDE=$INCLUDE"
@@ -165,11 +175,11 @@ function build_ffmpeg() {
 	echo "-------------------------------------------------------------------------------"
 
 	# find absolute path for prefix
-	local abs1=$(readlink -f $1)
+	local abs1=$(readlink -f $prefix)
 
 	# install license file
 	mkdir -p "$abs1/share/doc/ffmpeg"
-	cp "ffmpeg/$(license_file $2)" "$abs1/share/doc/ffmpeg/license.txt"
+	cp "ffmpeg/$(license_file license=$license)" "$abs1/share/doc/ffmpeg/license.txt"
 
 	# run configure and save output (lists all enabled features and mentions license at the end)
 	pushd ffmpeg
@@ -177,21 +187,21 @@ function build_ffmpeg() {
 	sed -i 's/#include <windows.h>/#define Rectangle WindowsRectangle\n#include <windows.h>\n#undef Rectangle\n#undef near/' compat/atomics/win32/stdatomic.h
 	# temporary fix for C99 syntax error on msvc, patch already on mailing list
 	sed -i 's/MXFPackage packages\[2\] = {};/MXFPackage packages\[2\] = {{0}};/' libavformat/mxfenc.c
-	./configure --toolchain=msvc $(ffmpeg_options $abs1 $2 $3 $4 $5) \
-		> "$abs1/share/doc/ffmpeg/configure.txt" || (tail -30 config.log && exit 1)
+	./configure --toolchain=msvc $(ffmpeg_options prefix=$abs1 license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
+		> "$abs1/share/doc/ffmpeg/configure.txt" || (ls && tail -30 config.log && exit 1)
 	cat "$abs1/share/doc/ffmpeg/configure.txt"
 	#tail -30 config.log  # for debugging
 	make
 	make install
 	# fix extension of static libraries
-	if [ "$3" = "static" ]
+	if [ "$linkage" = "static" ]
 	then
 		pushd "$abs1/lib/"
 		for file in *.a; do mv "$file" "${file/.a/.lib}"; done
 		popd
 	fi
 	# move import libraries to lib folder
-	if [ "$3" = "shared" ]
+	if [ "$linkage" = "shared" ]
 	then
 		pushd "$abs1/bin/"
 		for file in *.lib; do mv "$file" ../lib/; done
@@ -201,24 +211,33 @@ function build_ffmpeg() {
 }
 
 # PREFIX RUNTIME_LIBRARY CONFIGURATION
-x264_options () {
-	echo -n " --prefix=$1"
+x264_options() {
+	local prefix
+	local runtime
+	local configuration
+	local "${@}"
+	echo -n " --prefix=$prefix"
 	echo -n " --disable-cli"
 	echo -n " --enable-static"
-	echo -n " --extra-cflags=$(cflags_runtime $2 $3)"
+	echo -n " --extra-cflags=$(cflags_runtime runtime=$runtime configuration=$configuration)"
 }
 
 # PREFIX RUNTIME_LIBRARY CONFIGURATION
 function build_x264() {
+	local prefix
+	local runtime
+	local configuration
+	local "${@}"
+
 	# find absolute path for prefix
-	local abs1=$(readlink -f $1)
+	local abs1=$(readlink -f $prefix)
 
 	pushd x264
 	# use latest config.guess to ensure that we can detect msys2
 	curl "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" > config.guess
 	# hotpatch configure script so we get the right compiler, compiler_style, and compiler flags
 	sed -i 's/host_os = mingw/host_os = msys/' configure
-	CC=cl ./configure $(x264_options $abs1 $2 $3) || (tail -30 config.log && exit 1)
+	CC=cl ./configure $(x264_options prefix=$prefix runtime=$runtime configuration=$configuration) || (tail -30 config.log && exit 1)
 	make
 	make install
 	INCLUDE="$INCLUDE;$(cygpath -w $abs1/include)"
@@ -226,75 +245,55 @@ function build_x264() {
 	popd
 }
 
-# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-function make_nuget() {
-	if [ "${6,,}" = "x86" ]
-	then
-		local platform="Win32"
-	else
-		local platform="x64"
-	fi
-	local fullnuspec="FFmpeg.$2.${3^}.$4.$5.${6,,}.nuspec"
-	cat FFmpeg.nuspec.in \
-		| sed "s/@FFMPEG_DATE@/$(get_git_date ffmpeg)/g" \
-		| sed "s/@FFMPEG_HASH@/$(get_git_hash ffmpeg)/g" \
-		| sed "s/@PREFIX@/$1/g" \
-		| sed "s/@LICENSE@/$2/g" \
-		| sed "s/@LINKAGE@/${3^}/g" \
-		| sed "s/@RUNTIME_LIBRARY@/$4/g" \
-		| sed "s/@CONFIGURATION@/$5/g" \
-		| sed "s/@PLATFORM@/$platform/g" \
-		> $fullnuspec
-	cat $fullnuspec  # for debugging
-	# postproc requires GPL license
-	if [ "$2" = "LGPL21" ] || [ "$2" = "LGPL3" ]
-	then
-		cat FFmpeg.targets.in \
-			| sed "s/;postproc.lib//g"
-			> FFmpeg.targets
-	else
-		cp FFmpeg.targets.in FFmpeg.targets
-	fi
-	cat FFmpeg.targets  # for debugging
-	nuget pack $fullnuspec
-}
-
-# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
 function make_all() {
+	local license
+	local visual_studio
+	local linkage
+	local runtime
+	local configuration
+	local platform
+	local "${@}"
 	# ensure link.exe is the one from msvc
 	mv /usr/bin/link /usr/bin/link1
 	which link
 	# ensure cl.exe can be called
 	which cl
 	cl
-	if [ "$1" = "GPL2" ] || [ "$1" = "GPL3" ]
+	if [ "$license" = "GPL2" ] || [ "$license" = "GPL3" ]
 	then
-		# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-		local x264_prefix=$(target_id "x264" "GPL2" "$2" "static" "$4" "$5" "$6")
+		local x264_prefix=$(target_id base="x264" license="GPL2" visual_studio="$visual_studio" linkage="static" runtime="$runtime" configuration="$configuration" platform="$platform")
 		# PREFIX RUNTIME_LIBRARY
-		build_x264 "$x264_prefix" "$4" "$5"
+		build_x264 prefix=$x264_prefix runtime=$runtime configuration=$configuration
 	fi
-	# LICENSE VISUAL_STUDIO LINKAGE RUNTIME_LIBRARY CONFIGURATION PLATFORM
-	local ffmpeg_prefix=$(target_id "ffmpeg" "$1" "$2" "$3" "$4" "$5" "$6")
-	# PREFIX LICENSE LINKAGE RUNTIME_LIBRARY CONFIGURATION
-	build_ffmpeg "$ffmpeg_prefix" "$1" "$3" "$4" "$5"
-	# FOLDER
-	make_zip "$ffmpeg_prefix"
-	make_nuget "$ffmpeg_prefix" "$1" "$3" "$4" "$5" "$6"
+	local ffmpeg_prefix=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
+	build_ffmpeg prefix="$ffmpeg_prefix" license="$license" linkage="$linkage" runtime="$runtime" configuration="$configuration"
+	make_zip folder="$ffmpeg_prefix"
 	mv /usr/bin/link1 /usr/bin/link
 }
 
-function appveyor_main() {
-	# bash starts in msys home folder, so first go to project folder
-	cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
-	make_all "$LICENSE" "$APPVEYOR_BUILD_WORKER_IMAGE" \
-		"$LINKAGE" "$RUNTIME_LIBRARY" "$Configuration" "$Platform"
+get_appveyor_visual_studio() {
+	case "$APPVEYOR_BUILD_WORKER_IMAGE" in
+		Visual\ Studio\ 2013)
+			echo -n "v120"
+			;;
+		Visual\ Studio\ 2015)
+			echo -n "v140"
+			;;
+		Visual\ Studio\ 2017)
+			echo -n "v141"
+			;;
+		*)
+			return 1
+	esac
 }
 
-function local_main() {
-	make_all "$LICENSE" "$VISUAL_STUDIO" \
-		"$LINKAGE" "$RUNTIME_LIBRARY" "$CONFIGURATION" "$PLATFORM"
-}
-
-set -x
-appveyor_main
+set -xe
+# bash starts in msys home folder, so first go to project folder
+cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
+make_all \
+	license="$LICENSE" \
+	visual_studio=$(get_appveyor_visual_studio) \
+	linkage="$LINKAGE" \
+	runtime="$RUNTIME_LIBRARY" \
+	configuration="$Configuration" \
+	platform="$Platform"
