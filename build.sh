@@ -185,8 +185,6 @@ function build_ffmpeg() {
 	pushd ffmpeg
 	# reduce clashing windows.h imports ("near", "Rectangle")
 	sed -i 's/#include <windows.h>/#define Rectangle WindowsRectangle\n#include <windows.h>\n#undef Rectangle\n#undef near/' compat/atomics/win32/stdatomic.h
-	# temporary fix for C99 syntax error on msvc, patch already on mailing list
-	sed -i 's/MXFPackage packages\[2\] = {};/MXFPackage packages\[2\] = {{0}};/' libavformat/mxfenc.c
 	./configure --toolchain=msvc $(ffmpeg_options prefix=$abs1 license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
 		> "$abs1/share/doc/ffmpeg/configure.txt" || (ls && tail -30 config.log && exit 1)
 	cat "$abs1/share/doc/ffmpeg/configure.txt"
