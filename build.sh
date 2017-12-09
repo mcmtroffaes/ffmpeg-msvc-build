@@ -174,34 +174,31 @@ function build_ffmpeg() {
 	echo "_CL_=$_CL_"
 	echo "-------------------------------------------------------------------------------"
 
-	# find absolute path for prefix
-	local abs1=$(readlink -f $prefix)
-
 	# install license file
-	mkdir -p "$abs1/share/doc/ffmpeg"
-	cp "ffmpeg/$(license_file license=$license)" "$abs1/share/doc/ffmpeg/license.txt"
+	mkdir -p "$prefix/share/doc/ffmpeg"
+	cp "ffmpeg/$(license_file license=$license)" "$prefix/share/doc/ffmpeg/license.txt"
 
 	# run configure and save output (lists all enabled features and mentions license at the end)
 	pushd ffmpeg
 	# reduce clashing windows.h imports ("near", "Rectangle")
 	sed -i 's/#include <windows.h>/#define Rectangle WindowsRectangle\n#include <windows.h>\n#undef Rectangle\n#undef near/' compat/atomics/win32/stdatomic.h
-	./configure --toolchain=msvc $(ffmpeg_options prefix=$abs1 license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
-		> "$abs1/share/doc/ffmpeg/configure.txt" || (ls && tail -30 config.log && exit 1)
-	cat "$abs1/share/doc/ffmpeg/configure.txt"
+	./configure --toolchain=msvc $(ffmpeg_options prefix=$prefix license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
+		> "$prefix/share/doc/ffmpeg/configure.txt" || (ls && tail -30 config.log && exit 1)
+	cat "$prefix/share/doc/ffmpeg/configure.txt"
 	#tail -30 config.log  # for debugging
 	make
 	make install
 	# fix extension of static libraries
 	if [ "$linkage" = "static" ]
 	then
-		pushd "$abs1/lib/"
+		pushd "$prefix/lib/"
 		for file in *.a; do mv "$file" "${file/.a/.lib}"; done
 		popd
 	fi
 	# move import libraries to lib folder
 	if [ "$linkage" = "shared" ]
 	then
-		pushd "$abs1/bin/"
+		pushd "$prefix/bin/"
 		for file in *.lib; do mv "$file" ../lib/; done
 		popd
 	fi
@@ -259,9 +256,10 @@ function make_all() {
 		local x264_prefix=$(readlink -f $x264_folder)
 		build_x264 prefix=$x264_prefix runtime=$runtime configuration=$configuration
 	fi
-	local ffmpeg_prefix=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
-	build_ffmpeg prefix="$ffmpeg_prefix" license="$license" linkage="$linkage" runtime="$runtime" configuration="$configuration"
-	make_zip folder="$ffmpeg_prefix"
+	local ffmpeg_folder=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
+	local ffmpeg_prefix=$(readlink -f $ffmpeg_folder)
+	build_ffmpeg prefix=$ffmpeg_prefix license=$license linkage=$linkage runtime=$runtime configuration=$configuration
+	make_zip folder=$ffmpeg_folder
 	mv /usr/bin/link1 /usr/bin/link
 }
 
