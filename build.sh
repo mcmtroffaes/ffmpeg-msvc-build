@@ -188,7 +188,7 @@ function build_ffmpeg() {
 	# temporary fix for C99 syntax error on msvc, patch already on mailing list
 	sed -i 's/MXFPackage packages\[2\] = {};/MXFPackage packages\[2\] = {{0}};/' libavformat/mxfenc.c
 	./configure --toolchain=msvc $(ffmpeg_options prefix=$abs1 license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
-		> "$abs1/share/doc/ffmpeg/configure.txt" #|| (ls && tail -30 config.log && exit 1)
+		> "$abs1/share/doc/ffmpeg/configure.txt" || (ls && tail -30 config.log && exit 1)
 	cat "$abs1/share/doc/ffmpeg/configure.txt"
 	#tail -30 config.log  # for debugging
 	make
@@ -254,7 +254,7 @@ function make_all() {
 	then
 		local x264_prefix=$(target_id base="x264" license="GPL2" visual_studio="$visual_studio" linkage="static" runtime="$runtime" configuration="$configuration" platform="$platform")
 		# PREFIX RUNTIME_LIBRARY
-		#build_x264 "$x264_prefix" "$runtime" "$configuration"
+		build_x264 "$x264_prefix" "$runtime" "$configuration"
 	fi
 	local ffmpeg_prefix=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
 	build_ffmpeg prefix="$ffmpeg_prefix" license="$license" linkage="$linkage" runtime="$runtime" configuration="$configuration"
