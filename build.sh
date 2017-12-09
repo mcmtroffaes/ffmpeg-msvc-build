@@ -212,23 +212,32 @@ function build_ffmpeg() {
 
 # PREFIX RUNTIME_LIBRARY CONFIGURATION
 x264_options() {
-	echo -n " --prefix=$1"
+	local prefix
+	local runtime
+	local configuration
+	local "${@}"
+	echo -n " --prefix=$prefix"
 	echo -n " --disable-cli"
 	echo -n " --enable-static"
-	echo -n " --extra-cflags=$(cflags_runtime runtime=$2 configuration=$3)"
+	echo -n " --extra-cflags=$(cflags_runtime runtime=$runtime configuration=$configuration)"
 }
 
 # PREFIX RUNTIME_LIBRARY CONFIGURATION
 function build_x264() {
+	local prefix
+	local runtime
+	local configuration
+	local "${@}"
+
 	# find absolute path for prefix
-	local abs1=$(readlink -f $1)
+	local abs1=$(readlink -f $prefix)
 
 	pushd x264
 	# use latest config.guess to ensure that we can detect msys2
 	curl "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" > config.guess
 	# hotpatch configure script so we get the right compiler, compiler_style, and compiler flags
 	sed -i 's/host_os = mingw/host_os = msys/' configure
-	CC=cl ./configure $(x264_options $abs1 $2 $3) || (tail -30 config.log && exit 1)
+	CC=cl ./configure $(x264_options prefix=$prefix runtime=$runtime configuration=$configuration) || (tail -30 config.log && exit 1)
 	make
 	make install
 	INCLUDE="$INCLUDE;$(cygpath -w $abs1/include)"
@@ -254,7 +263,7 @@ function make_all() {
 	then
 		local x264_prefix=$(target_id base="x264" license="GPL2" visual_studio="$visual_studio" linkage="static" runtime="$runtime" configuration="$configuration" platform="$platform")
 		# PREFIX RUNTIME_LIBRARY
-		build_x264 "$x264_prefix" "$runtime" "$configuration"
+		build_x264 prefix=$x264_prefix runtime=$runtime configuration=$configuration
 	fi
 	local ffmpeg_prefix=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
 	build_ffmpeg prefix="$ffmpeg_prefix" license="$license" linkage="$linkage" runtime="$runtime" configuration="$configuration"
