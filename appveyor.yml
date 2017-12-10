@@ -21,3 +21,14 @@ build_script: build.bat
 test: off
 artifacts:
   - path: '*.zip'
+deploy:
+  description: 'Headers, static/shared libraries, and executables for FFmpeg, built with msvc.'
+  provider: GitHub
+  auth_token:
+    secure: QSdxjkooPHApqh95gD9duaZBxmv/5zWzDcukjNQGmbedwEu0BvzgA6HUEXpvni25
+  artifact: /.*\.zip/
+  draft: true
+  prerelease: false
+  on:
+    branch: master
+    appveyor_repo_tag: true
