@@ -43,7 +43,7 @@ cflags_runtime() {
 
 target_id() {
 	local base
-	local license
+	local extra
 	local visual_studio
 	local linkage
 	local runtime
@@ -52,7 +52,7 @@ target_id() {
 	local "${@}"
 	local date_=$(get_git_date folder="$base")
 	local hash_=$(get_git_hash folder="$base")
-	echo "${base}-${date_}-${hash_}-${license}-${visual_studio}-${linkage}-${runtime}-${configuration}-${platform}" | tr '[:upper:]' '[:lower:]'
+	echo "${base}-${date_}-${hash_}-${extra}-${visual_studio}-${linkage}-${runtime}-${configuration}-${platform}" | tr '[:upper:]' '[:lower:]'
 }
 
 license_file() {
@@ -250,11 +250,11 @@ function make_all() {
 	cl
 	if [ "$license" = "GPL2" ] || [ "$license" = "GPL3" ]
 	then
-		local x264_folder=$(target_id base="x264" license="GPL2" visual_studio="$visual_studio" linkage="static" runtime="$runtime" configuration="$configuration" platform="$platform")
+		local x264_folder=$(target_id base="x264" extra="GPL2" visual_studio="$visual_studio" linkage="static" runtime="$runtime" configuration="$configuration" platform="$platform")
 		local x264_prefix=$(readlink -f $x264_folder)
 		build_x264 prefix=$x264_prefix runtime=$runtime configuration=$configuration
 	fi
-	local ffmpeg_folder=$(target_id base="ffmpeg" license="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
+	local ffmpeg_folder=$(target_id base="ffmpeg" extra="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
 	local ffmpeg_prefix=$(readlink -f $ffmpeg_folder)
 	build_ffmpeg prefix=$ffmpeg_prefix license=$license linkage=$linkage runtime=$runtime configuration=$configuration
 	make_zip folder=$ffmpeg_folder
