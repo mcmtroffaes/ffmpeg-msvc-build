@@ -205,7 +205,6 @@ function build_ffmpeg() {
 	popd
 }
 
-# PREFIX RUNTIME_LIBRARY CONFIGURATION
 x264_options() {
 	local prefix
 	local runtime
@@ -217,7 +216,6 @@ x264_options() {
 	echo -n " --extra-cflags=$(cflags_runtime runtime=$runtime configuration=$configuration)"
 }
 
-# PREFIX RUNTIME_LIBRARY CONFIGURATION
 function build_x264() {
 	local prefix
 	local runtime
