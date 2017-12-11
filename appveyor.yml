@@ -14,7 +14,9 @@ environment:
     - LINKAGE: static
       LICENSE: LGPL21
       RUNTIME_LIBRARY: MD
-platform: x64
+platform:
+  - x86
+  - x64
 configuration: Release
 install: install.bat
 build_script: build.bat
