@@ -68,16 +68,16 @@ license_file() {
 	local license
 	local "${@}"
 	case "$license" in
-		LGPL21)
+		lgpl21)
 			echo "COPYING.LGPLv2.1"
 			;;
-		LGPL3)
+		lgpl3)
 			echo "COPYING.LGPLv3"
 			;;
-		GPL2)
+		gpl2)
 			echo "COPYING.GPLv2"
 			;;
-		GPL3)
+		gpl3)
 			echo "COPYING.GPLv3"
 			;;
 		*)
@@ -89,15 +89,15 @@ ffmpeg_options_license() {
 	local license
 	local "${@}"
 	case "$license" in
-		LGPL21)
+		lgpl21)
 			;;
-		LGPL3)
+		lgpl3)
 			echo "--enable-version3"
 			;;
-		GPL2)
+		gpl2)
 			echo "--enable-gpl --enable-libx264"
 			;;
-		GPL3)
+		gpl3)
 			echo "--enable-gpl --enable-version3 --enable-libx264"
 			;;
 		*)
@@ -255,7 +255,7 @@ function make_all() {
 	# ensure cl.exe can be called
 	which cl
 	cl
-	if [ "$license" = "GPL2" ] || [ "$license" = "GPL3" ]
+	if [ "$license" = "gpl2" ] || [ "$license" = "gpl3" ]
 	then
 		build_x264 runtime=$runtime configuration=$configuration platform=$platform
 	fi
@@ -286,9 +286,9 @@ set -xe
 # bash starts in msys home folder, so first go to project folder
 cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
 make_all \
-	license="$LICENSE" \
+	license="${LICENSE,,}" \
 	visual_studio=$(get_appveyor_visual_studio) \
-	linkage="$LINKAGE" \
-	runtime="$RUNTIME_LIBRARY" \
-	configuration="$Configuration" \
-	platform="$Platform"
+	linkage="${LINKAGE,,}" \
+	runtime="${RUNTIME_LIBRARY,,}" \
+	configuration="${Configuration,,}" \
+	platform="${Platform,,}"
