@@ -237,7 +237,6 @@ function build_x264() {
 	7z x $prefix.zip
 	INCLUDE="$INCLUDE;$(cygpath -w $prefix/include)"
 	LIB="$LIB;$(cygpath -w $prefix/lib)"
-	popd
 }
 
 function make_all() {
