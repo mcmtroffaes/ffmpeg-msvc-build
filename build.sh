@@ -1,6 +1,9 @@
 # exit immediately upon error
 set -e
 
+MINOR=0
+PATCH=2
+
 function make_zip() {
 	local folder
 	local "${@}"
@@ -22,6 +25,12 @@ get_git_hash() {
 	pushd "$folder" > /dev/null
 	git show -s --format=%h HEAD
 	popd > /dev/null
+}
+
+get_version() {
+	local folder
+	local "${@}"
+	echo -n "$(get_git_date folder=$folder).$MINOR.$PATCH-$(get_git_hash folder=$folder)"
 }
 
 cflags_runtime() {
@@ -50,9 +59,9 @@ target_id() {
 	local configuration
 	local platform
 	local "${@}"
-	local date_=$(get_git_date folder="$base")
-	local hash_=$(get_git_hash folder="$base")
-	echo "${base}-${date_}-${hash_}-${extra}-${visual_studio}-${linkage}-${runtime}-${configuration}-${platform}" | tr '[:upper:]' '[:lower:]'
+	echo -n "$base-$(get_version folder=$base)" | tr '[:upper:]' '[:lower:]'
+	[[ !  -z  $extra  ]] && echo -n "-${extra}" | tr '[:upper:]' '[:lower:]'
+	echo -n "-$visual_studio-$linkage-$runtime-$configuration-$platform" | tr '[:upper:]' '[:lower:]'
 }
 
 license_file() {
@@ -217,18 +226,15 @@ x264_options() {
 }
 
 function build_x264() {
-	local prefix
 	local runtime
 	local configuration
+	local platform
 	local "${@}"
-	pushd x264
-	# use latest config.guess to ensure that we can detect msys2
-	curl "http://git.savannah.gnu.org/gitweb/?p=config.git;a=blob_plain;f=config.guess;hb=HEAD" > config.guess
-	# hotpatch configure script so we get the right compiler, compiler_style, and compiler flags
-	sed -i 's/host_os = mingw/host_os = msys/' configure
-	CC=cl ./configure $(x264_options prefix=$prefix runtime=$runtime configuration=$configuration) || (tail -30 config.log && exit 1)
-	make
-	make install
+	local version=20170626.0.1
+	local hash=ba24899
+	local prefix=x264-$version-$hash-$visual_studio-static-$runtime-$configuration-$platform
+	curl "https://github.com/mcmtroffaes/x264-msvc-build/releases/download/$version/$prefix.zip"
+	7z x $prefix.zip
 	INCLUDE="$INCLUDE;$(cygpath -w $prefix/include)"
 	LIB="$LIB;$(cygpath -w $prefix/lib)"
 	popd
@@ -250,9 +256,7 @@ function make_all() {
 	cl
 	if [ "$license" = "GPL2" ] || [ "$license" = "GPL3" ]
 	then
-		local x264_folder=$(target_id base="x264" extra="GPL2" visual_studio="$visual_studio" linkage="static" runtime="$runtime" configuration="$configuration" platform="$platform")
-		local x264_prefix=$(readlink -f $x264_folder)
-		build_x264 prefix=$x264_prefix runtime=$runtime configuration=$configuration
+		build_x264 runtime=$runtime configuration=$configuration platform=$platform
 	fi
 	local ffmpeg_folder=$(target_id base="ffmpeg" extra="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
 	local ffmpeg_prefix=$(readlink -f $ffmpeg_folder)
