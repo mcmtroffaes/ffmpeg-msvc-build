@@ -37,12 +37,12 @@ cflags_runtime() {
 	local runtime
 	local configuration
 	local "${@}"
-	echo -n "-$runtime" | tr '[:lower:]' '[:upper:]'
+	echo -n "-$runtime"
 	case "$configuration" in
-		Release)
+		release)
 			echo ""
 			;;
-		Debug)
+		debug)
 			echo "d"
 			;;
 		*)
@@ -59,9 +59,9 @@ target_id() {
 	local configuration
 	local platform
 	local "${@}"
-	echo -n "$base-$(get_version folder=$base)" | tr '[:upper:]' '[:lower:]'
-	[[ !  -z  $extra  ]] && echo -n "-${extra}" | tr '[:upper:]' '[:lower:]'
-	echo -n "-$visual_studio-$linkage-$runtime-$configuration-$platform" | tr '[:upper:]' '[:lower:]'
+	echo -n "$base-$(get_version folder=$base)"
+	[[ !  -z  $extra  ]] && echo -n "-${extra}"
+	echo -n "-$visual_studio-$linkage-$runtime-$configuration-$platform"
 }
 
 license_file() {
@@ -132,10 +132,10 @@ ffmpeg_options_debug() {
 	local configuration
 	local "${@}"
 	case "$configuration" in
-		Release)
+		release)
 			echo "--disable-debug"
 			;;
-		Debug)
+		debug)
 			echo ""
 			;;
 		*)
@@ -232,7 +232,7 @@ function build_x264() {
 	local "${@}"
 	local version=20170626.0.1
 	local hash=ba24899
-	local folder=x264-$version-$hash-$visual_studio-static-${runtime,,}-${configuration,,}-${platform,,}
+	local folder=x264-$version-$hash-$visual_studio-static-$runtime-$configuration-$platform
 	curl -L "https://github.com/mcmtroffaes/x264-msvc-build/releases/download/$version/$folder.zip" -o $folder.zip
 	7z x $folder.zip
 	local prefix=$(readlink -f $folder)
