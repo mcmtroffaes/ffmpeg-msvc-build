@@ -235,6 +235,7 @@ function build_x264() {
 	local prefix=x264-$version-$hash-$visual_studio-static-${runtime,,}-${configuration,,}-${platform,,}
 	curl -L "https://github.com/mcmtroffaes/x264-msvc-build/releases/download/$version/$prefix.zip" -o $prefix.zip
 	7z x $prefix.zip
+	find "$prefix"  # prints paths of all files that have been unzipped
 	INCLUDE="$INCLUDE;$(cygpath -w $prefix/include)"
 	LIB="$LIB;$(cygpath -w $prefix/lib)"
 }
