@@ -232,8 +232,8 @@ function build_x264() {
 	local "${@}"
 	local version=20170626.0.1
 	local hash=ba24899
-	local prefix=x264-$version-$hash-$visual_studio-static-$runtime-$configuration-$platform
-	curl "https://github.com/mcmtroffaes/x264-msvc-build/releases/download/$version/$prefix.zip"
+	local prefix=x264-$version-$hash-$visual_studio-static-${runtime,,}-${configuration,,}-${platform,,}
+	curl -L "https://github.com/mcmtroffaes/x264-msvc-build/releases/download/$version/$prefix.zip" -o $prefix.zip
 	7z x $prefix.zip
 	INCLUDE="$INCLUDE;$(cygpath -w $prefix/include)"
 	LIB="$LIB;$(cygpath -w $prefix/lib)"
