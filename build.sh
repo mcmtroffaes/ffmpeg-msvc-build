@@ -211,6 +211,12 @@ function build_ffmpeg() {
 		for file in *.lib; do mv "$file" ../lib/; done
 		popd
 	fi
+	# delete pkgconfig files (not useful for msvc)
+	rm -rf "$prefix/lib/pkgconfig"
+	# delete .def files (not useful for msvc)
+	pushd "$prefix/lib/"
+	for file in *.def; do rm "$file"; done
+	popd
 	popd
 }
 
