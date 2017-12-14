@@ -37,7 +37,7 @@ cflags_runtime() {
 	local runtime
 	local configuration
 	local "${@}"
-	echo -n "-$runtime"
+	echo -n "-${runtime^^}"
 	case "$configuration" in
 		release)
 			echo ""
