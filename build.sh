@@ -220,17 +220,6 @@ function build_ffmpeg() {
 	popd
 }
 
-x264_options() {
-	local prefix
-	local runtime
-	local configuration
-	local "${@}"
-	echo -n " --prefix=$prefix"
-	echo -n " --disable-cli"
-	echo -n " --enable-static"
-	echo -n " --extra-cflags=$(cflags_runtime runtime=$runtime configuration=$configuration)"
-}
-
 function build_x264() {
 	local runtime
 	local configuration
