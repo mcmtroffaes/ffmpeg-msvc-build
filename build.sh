@@ -205,18 +205,18 @@ function build_ffmpeg() {
 		popd
 	fi
 	# move import libraries to lib folder
+	# delete .def files (not useful for msvc)
 	if [ "$linkage" = "shared" ]
 	then
 		pushd "$prefix/bin/"
 		for file in *.lib; do mv "$file" ../lib/; done
 		popd
+		pushd "$prefix/lib/"
+		for file in *.def; do rm "$file"; done
+		popd
 	fi
 	# delete pkgconfig files (not useful for msvc)
 	rm -rf "$prefix/lib/pkgconfig"
-	# delete .def files (not useful for msvc)
-	pushd "$prefix/lib/"
-	for file in *.def; do rm "$file"; done
-	popd
 	popd
 }
 
