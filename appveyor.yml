@@ -34,6 +34,8 @@ environment:
       LICENSE: LGPL21
       RUNTIME_LIBRARY: MD
       TOOLSET: v140
+matrix:
+  fast_finish: true
 platform:
   - x86
   - x64
