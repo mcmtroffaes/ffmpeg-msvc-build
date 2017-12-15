@@ -1,19 +1,23 @@
 version: 1.0.{build}
-image: Visual Studio 2015
+image: Visual Studio 2017
 environment:
   matrix:
     - LINKAGE: shared
       LICENSE: GPL3
       RUNTIME_LIBRARY: MD
+      TOOLSET: v140
     - LINKAGE: static
       LICENSE: GPL3
       RUNTIME_LIBRARY: MD
+      TOOLSET: v140
     - LINKAGE: shared
       LICENSE: LGPL21
       RUNTIME_LIBRARY: MD
+      TOOLSET: v140
     - LINKAGE: static
       LICENSE: LGPL21
       RUNTIME_LIBRARY: MD
+      TOOLSET: v140
 platform:
   - x86
   - x64

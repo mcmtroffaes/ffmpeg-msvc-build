@@ -262,29 +262,13 @@ function make_all() {
 	mv /usr/bin/link1 /usr/bin/link
 }
 
-get_appveyor_visual_studio() {
-	case "$APPVEYOR_BUILD_WORKER_IMAGE" in
-		Visual\ Studio\ 2013)
-			echo -n "v120"
-			;;
-		Visual\ Studio\ 2015)
-			echo -n "v140"
-			;;
-		Visual\ Studio\ 2017)
-			echo -n "v141"
-			;;
-		*)
-			return 1
-	esac
-}
-
 set -xe
 # bash starts in msys home folder, so first go to project folder
 cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
 make_all \
-	license="${LICENSE,,}" \
-	visual_studio=$(get_appveyor_visual_studio) \
-	linkage="${LINKAGE,,}" \
-	runtime="${RUNTIME_LIBRARY,,}" \
-	configuration="${Configuration,,}" \
-	platform="${Platform,,}"
+	license=${LICENSE,,} \
+	visual_studio=${TOOLSET,,} \
+	linkage=${LINKAGE,,} \
+	runtime=${RUNTIME_LIBRARY,,} \
+	configuration=${Configuration,,} \
+	platform=${Platform,,}
