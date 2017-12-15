@@ -255,7 +255,7 @@ function make_all() {
 	then
 		build_x264 runtime=$runtime configuration=$configuration platform=$platform
 	fi
-	local ffmpeg_folder=$(target_id base="ffmpeg" extra="$license" visual_studio="$visual_studio" linkage="$linkage" runtime="$runtime" configuration="$configuration" platform="$platform")
+	local ffmpeg_folder=$(target_id base=ffmpeg extra=$license visual_studio=$visual_studio linkage=$linkage runtime=$runtime configuration=$configuration platform=$platform)
 	local ffmpeg_prefix=$(readlink -f $ffmpeg_folder)
 	build_ffmpeg prefix=$ffmpeg_prefix license=$license linkage=$linkage runtime=$runtime configuration=$configuration
 	make_zip folder=$ffmpeg_folder
