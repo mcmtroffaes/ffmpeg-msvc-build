@@ -3,6 +3,14 @@ image: Visual Studio 2017
 environment:
   matrix:
     - LINKAGE: shared
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v141
+    - LINKAGE: static
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v141
+    - LINKAGE: shared
       LICENSE: LGPL21
       RUNTIME_LIBRARY: MD
       TOOLSET: v141
@@ -10,6 +18,14 @@ environment:
       LICENSE: LGPL21
       RUNTIME_LIBRARY: MD
       TOOLSET: v141
+    - LINKAGE: shared
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v140
+    - LINKAGE: static
+      LICENSE: GPL3
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v140
     - LINKAGE: shared
       LICENSE: LGPL21
       RUNTIME_LIBRARY: MD
