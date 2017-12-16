@@ -55,3 +55,5 @@ deploy:
   prerelease: false
   on:
     appveyor_repo_tag: true
+cache:
+  - c:\nasm-2.13.01-win64.zip
