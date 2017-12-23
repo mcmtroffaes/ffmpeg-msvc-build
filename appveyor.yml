@@ -3,37 +3,133 @@ image: Visual Studio 2017
 environment:
   matrix:
     - LINKAGE: shared
-      LICENSE: GPL3
       RUNTIME_LIBRARY: MD
-      TOOLSET: v141
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      LICENSE: LGPL21
     - LINKAGE: static
-      LICENSE: GPL3
       RUNTIME_LIBRARY: MD
-      TOOLSET: v141
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      LICENSE: LGPL21
     - LINKAGE: shared
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
       LICENSE: LGPL21
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      LICENSE: LGPL21
+
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      LICENSE: GPL3
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      LICENSE: GPL3
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      LICENSE: GPL3
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v120
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2013
+      LICENSE: GPL3
+
+
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: LGPL21
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: LGPL21
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: LGPL21
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: LGPL21
+
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: GPL3
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: GPL3
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: GPL3
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v140
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2015
+      LICENSE: GPL3
+
+
+    - LINKAGE: shared
       RUNTIME_LIBRARY: MD
       TOOLSET: v141
-    - LINKAGE: static
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       LICENSE: LGPL21
+    - LINKAGE: static
       RUNTIME_LIBRARY: MD
       TOOLSET: v141
-    - LINKAGE: shared
-      LICENSE: GPL3
-      RUNTIME_LIBRARY: MD
-      TOOLSET: v140
-    - LINKAGE: static
-      LICENSE: GPL3
-      RUNTIME_LIBRARY: MD
-      TOOLSET: v140
-    - LINKAGE: shared
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       LICENSE: LGPL21
-      RUNTIME_LIBRARY: MD
-      TOOLSET: v140
-    - LINKAGE: static
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v141
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       LICENSE: LGPL21
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v141
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      LICENSE: LGPL21
+
+    - LINKAGE: shared
       RUNTIME_LIBRARY: MD
-      TOOLSET: v140
+      TOOLSET: v141
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      LICENSE: GPL3
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MD
+      TOOLSET: v141
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      LICENSE: GPL3
+    - LINKAGE: shared
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v141
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      LICENSE: GPL3
+    - LINKAGE: static
+      RUNTIME_LIBRARY: MT
+      TOOLSET: v141
+      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
+      LICENSE: GPL3
+
 matrix:
   fast_finish: true
 platform:
