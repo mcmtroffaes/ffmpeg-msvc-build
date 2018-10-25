@@ -29,4 +29,4 @@ deploy:
   on:
     appveyor_repo_tag: true
 cache:
-  - c:\nasm-2.13.01-win64.zip
+  - c:\nasm-2.13.03-win64.zip
