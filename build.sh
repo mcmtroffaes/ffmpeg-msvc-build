@@ -226,7 +226,7 @@ function build_x264() {
 	local platform
 	local "${@}"
 	local version=20190306.0.0
-	local hash=ba24899
+	local hash=d4099dd
 	local folder=x264-$version-$hash-$visual_studio-static-$runtime-$configuration-$platform
 	curl -L "https://github.com/mcmtroffaes/x264-msvc-build/releases/download/$version/$folder.zip" -o $folder.zip
 	7z x $folder.zip
