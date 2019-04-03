@@ -189,8 +189,6 @@ function build_ffmpeg() {
 
 	# run configure and save output (lists all enabled features and mentions license at the end)
 	pushd ffmpeg
-	# reduce clashing windows.h imports ("near", "Rectangle")
-	sed -i 's/#include <windows.h>/#define Rectangle WindowsRectangle\n#include <windows.h>\n#undef Rectangle\n#undef near/' compat/atomics/win32/stdatomic.h
 	./configure --toolchain=msvc $(ffmpeg_options prefix=$prefix license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
 		> "$prefix/share/doc/ffmpeg/configure.txt" || (ls && tail -30 config.log && exit 1)
 	cat "$prefix/share/doc/ffmpeg/configure.txt"
