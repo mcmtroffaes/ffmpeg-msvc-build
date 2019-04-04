@@ -27,6 +27,7 @@ environment:
 matrix:
   fast_finish: true
 platform:
+  - x86
   - x64
 configuration: Release
 install: install.bat
