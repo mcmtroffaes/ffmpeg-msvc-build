@@ -13,7 +13,9 @@ matrix:
 platform:
   - x86
   - x64
-configuration: Release
+configuration:
+  - Debug
+  - Release
 install: install.bat
 build_script: build.bat
 test: off
