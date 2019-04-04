@@ -2,27 +2,11 @@ version: 1.0.{build}
 image: Visual Studio 2017
 environment:
   matrix:
-    - LINKAGE: shared
-      RUNTIME_LIBRARY: MD
-      TOOLSET: v141
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      LICENSE: LGPL21
     - LINKAGE: static
       RUNTIME_LIBRARY: MD
       TOOLSET: v141
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
       LICENSE: LGPL21
-
-    - LINKAGE: shared
-      RUNTIME_LIBRARY: MD
-      TOOLSET: v141
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      LICENSE: GPL3
-    - LINKAGE: static
-      RUNTIME_LIBRARY: MD
-      TOOLSET: v141
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2017
-      LICENSE: GPL3
 
 matrix:
   fast_finish: true
