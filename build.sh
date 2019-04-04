@@ -136,7 +136,7 @@ ffmpeg_options_debug() {
 			echo "--disable-debug"
 			;;
 		debug)
-			echo ""
+			echo "--enable-debug"
 			;;
 		*)
 			return 1
