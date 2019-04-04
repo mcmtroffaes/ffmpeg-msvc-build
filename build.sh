@@ -195,13 +195,6 @@ function build_ffmpeg() {
 	#tail -30 config.log  # for debugging
 	make
 	make install
-	# fix extension of static libraries
-	if [ "$linkage" = "static" ]
-	then
-		pushd "$prefix/lib/"
-		for file in *.a; do mv "$file" "${file/.a/.lib}"; done
-		popd
-	fi
 	# move import libraries to lib folder
 	# delete .def files (not useful for msvc)
 	if [ "$linkage" = "shared" ]
