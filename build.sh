@@ -150,7 +150,7 @@ ffmpeg_options() {
 	local runtime
 	local configuration
 	local "${@}"
-	echo -n "--disable-doc --enable-runtime-cpudetect"
+	echo -n "--disable-doc --disable-programs --enable-runtime-cpudetect"
 	echo -n " --prefix=$prefix"
 	echo -n " $(ffmpeg_options_license license=$license)"
 	echo -n " $(ffmpeg_options_linkage linkage=$linkage)"
