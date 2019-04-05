@@ -1,6 +1,3 @@
-# exit immediately upon error
-set -e
-
 MINOR=0
 PATCH=0
 
@@ -252,14 +249,3 @@ function make_all() {
 	make_zip folder=$ffmpeg_folder
 	mv /usr/bin/link1 /usr/bin/link
 }
-
-set -xe
-# bash starts in msys home folder, so first go to project folder
-cd $(cygpath "$APPVEYOR_BUILD_FOLDER")
-make_all \
-	license=${LICENSE,,} \
-	visual_studio=${TOOLSET,,} \
-	linkage=${LINKAGE,,} \
-	runtime=${RUNTIME_LIBRARY,,} \
-	configuration=${Configuration,,} \
-	platform=${Platform,,}
