@@ -22,7 +22,7 @@ test: off
 artifacts:
   - path: '*.zip'
 deploy:
-  description: 'Headers, libraries, and executables for FFmpeg.'
+  description: 'Headers and libraries for FFmpeg.'
   provider: GitHub
   auth_token:
     secure: QSdxjkooPHApqh95gD9duaZBxmv/5zWzDcukjNQGmbedwEu0BvzgA6HUEXpvni25
