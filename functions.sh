@@ -1,6 +1,3 @@
-MINOR=0
-PATCH=0
-
 function make_zip() {
 	local folder
 	local "${@}"
@@ -27,7 +24,7 @@ get_git_hash() {
 get_version() {
 	local folder
 	local "${@}"
-	echo -n "$(get_git_date folder=$folder).$MINOR.$PATCH-$(get_git_hash folder=$folder)"
+	echo -n "`cat VERSION | head -n 1`-$(get_git_hash folder=$folder)"
 }
 
 cflags_runtime() {
