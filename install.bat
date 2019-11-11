@@ -2,6 +2,7 @@
 git submodule update --init --recursive --depth 1000
 pushd ffmpeg
 git apply ../create-lib-libraries.patch
+git apply ../dvdec-restrict.patch
 popd
 if not exist c:\nasm-2.14.02-win64.zip ( curl -o c:\nasm-2.14.02-win64.zip https://www.nasm.us/pub/nasm/releasebuilds/2.14.02/win64/nasm-2.14.02-win64.zip )
 7z x c:\nasm-2.14.02-win64.zip -oc:\
