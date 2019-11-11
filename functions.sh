@@ -186,6 +186,7 @@ function build_ffmpeg() {
 	./configure --toolchain=msvc $(ffmpeg_options prefix=$prefix license=$license linkage=$linkage runtime=$runtime configuration=$configuration) \
 		> "$prefix/share/doc/ffmpeg/configure.txt" || (ls && tail -30 config.log && exit 1)
 	cat "$prefix/share/doc/ffmpeg/configure.txt"
+	cat "config.h"  # for debugging
 	#tail -30 config.log  # for debugging
 	make
 	make install
