@@ -18,14 +18,14 @@ easily modified to allow different configurations to be built as well.
 
 ## Usage
 
-Prebuilt static LGPL builds with Visual Studio 2017 (toolset v141) can be found [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases). If you want to build your own version on your local machine, then:
+Prebuilt static LGPL builds with Visual Studio 2019 (toolset v142) can be found [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases). If you want to build your own version on your local machine, then:
 
   * Optional: apply ``create-lib-libraries.patch`` (this ensures that
     the build will produce .lib files instead of .a files).
   * Ensure nasm is in your path; if not, add it.
   * Set the following variables:
       - APPVEYOR_BUILD_FOLDER (should be set to the project folder where ``build.sh`` resides)
-      - TOOLSET (v120, v140, v141)
+      - TOOLSET (v120, v140, v141, v142)
       - PLATFORM (x86, x64)
       - CONFIGURATION (Release, Debug)
       - LINKAGE (shared, static)
