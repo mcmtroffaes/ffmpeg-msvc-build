@@ -6,8 +6,9 @@ if [[ `git rev-parse HEAD` == $ZERANOE_FFMPEG_HASH* ]] && [[ "$1" != "--force" ]
 then
     echo "Already up to date."
     exit 0
+else
+    git checkout $ZERANOE_FFMPEG_HASH || exit 1
 fi
-git checkout $ZERANOE_FFMPEG_HASH
 popd
 
 OLD_NUGET_VERSION=`cat VERSION | head -n 1`
