@@ -40,4 +40,4 @@ deploy:
   on:
     appveyor_repo_tag: true
 cache:
-  - c:\nasm-2.14.02-win64.zip
+  - c:\tools\vcpkg\installed\
