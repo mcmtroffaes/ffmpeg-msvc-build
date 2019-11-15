@@ -25,7 +25,7 @@ install:
   - vcpkg install ffmpeg:custom-triplet
 build_script:
   - vcpkg export ffmpeg:custom-triplet --output=export --raw
-  - dir /s /b export\installed\custom-triplet\
+  - dir /s /b C:\Tools\vcpkg\export\installed\custom-triplet\
 test: off
 artifacts:
   - path: '*.zip'
