@@ -14,8 +14,11 @@ platform:
   - x64
 configuration:
   - Release
-install: install.bat
-build_script: build.bat
+install:
+  - vcpkg install ffmpeg:x64-windows
+build_script:
+  - vcpkg export ffmpeg:x64-windows --output=export --raw
+  - dir /s /b export\installed\x64-windows\
 test: off
 artifacts:
   - path: '*.zip'
