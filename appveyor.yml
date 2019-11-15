@@ -15,10 +15,14 @@ platform:
 configuration:
   - Release
 install:
-  - vcpkg install ffmpeg:x64-windows
+  - echo "set(VCPKG_TARGET_ARCHITECTURE %PLATFORM%)" > C:\Tools\vcpkg\triplets\custom-triplet.cmake
+  - echo "set(VCPKG_CRT_LINKAGE dynamic)" >> C:\Tools\vcpkg\triplets\custom-triplet.cmake
+  - echo "set(VCPKG_LIBRARY_LINKAGE %LINKAGE%)" >> C:\Tools\vcpkg\triplets\custom-triplet.cmake
+  - echo "set(VCPKG_PLATFORM_TOOLSET %TOOLSET%)"  >> C:\Tools\vcpkg\triplets\custom-triplet.cmake
+  - vcpkg install ffmpeg:custom-triplet
 build_script:
-  - vcpkg export ffmpeg:x64-windows --output=export --raw
-  - dir /s /b export\installed\x64-windows\
+  - vcpkg export ffmpeg:custom-triplet --output=export --raw
+  - dir /s /b export\installed\custom-triplet\
 test: off
 artifacts:
   - path: '*.zip'
