@@ -23,9 +23,9 @@ install:
     # TODO get this from %Configuration% (to lower case)
   - echo set(VCPKG_BUILD_TYPE release) >> C:\Tools\vcpkg\triplets\custom-triplet.cmake
   - type C:\Tools\vcpkg\triplets\custom-triplet.cmake
-  - vcpkg install ffmpeg[openssl,vpx,opencl,lzma,bzip2]:custom-triplet --recurse
+  - vcpkg install ffmpeg[vpx,opencl,lzma,bzip2]:custom-triplet --recurse
 build_script:
-  - vcpkg export  ffmpeg[openssl,vpx,opencl,lzma,bzip2]:custom-triplet --output=export --raw
+  - vcpkg export  ffmpeg[vpx,opencl,lzma,bzip2]:custom-triplet --output=export --raw
   - dir /s /b C:\Tools\vcpkg\export\installed\custom-triplet\
 test: off
 artifacts:
