@@ -11,10 +11,8 @@ environment:
 matrix:
   fast_finish: true
 platform:
-  - x86
   - x64
 configuration:
-  - Debug
   - Release
 install: install.bat
 build_script: build.bat
