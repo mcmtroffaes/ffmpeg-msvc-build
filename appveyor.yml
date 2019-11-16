@@ -13,11 +13,8 @@ matrix:
 platform:
   - x86
   - x64
-configuration:
-  - Debug
-  - Release
 build_script:
-  - ps: .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET -configuration $env:Configuration
+  - ps: .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET
 test: off
 artifacts:
   - path: '*.zip'
