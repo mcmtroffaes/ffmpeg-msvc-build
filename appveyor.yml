@@ -15,7 +15,7 @@ platform:
 configuration:
   - Release
 build_script:
-  - ps: build.ps -platform %PLATFORM% -runtime_library %RUNTIME_LIBRARY% -linkage %LINKAGE% -toolset %TOOLSET% -configuration $Configuration%
+  - ps: .\build.ps1 -platform %PLATFORM% -runtime_library %RUNTIME_LIBRARY% -linkage %LINKAGE% -toolset %TOOLSET% -configuration $Configuration%
 test: off
 artifacts:
   - path: '*.zip'
