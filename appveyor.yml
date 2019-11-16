@@ -7,7 +7,7 @@ environment:
       TOOLSET: v142
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       LICENSE: LGPL21
-      FEATURES: core,zlib,vpx
+      FEATURES: core,vpx
 
 matrix:
   fast_finish: true
