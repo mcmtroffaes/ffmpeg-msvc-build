@@ -2,8 +2,9 @@ param (
     [string]$vcpkg = "C:\Tools\vcpkg", 
     [string]$platform = "x64", 
     [string]$runtime_library = "MD",
-    [string]$linkage = "static",
-    [string]$toolset = "v142"
+    [string]$linkage = "dynamic",
+    [string]$toolset = "v142",
+    [string]$features = "core"
 )
 
 # create vcpkg triplet
@@ -12,6 +13,7 @@ $platform = $platform.tolower()
 $runtime_library = $runtime_library.tolower()
 $linkage = $linkage.tolower()
 $toolset = $toolset.tolower()
+$features = $features.tolower()
 
 switch ($runtime_library) {
   "md" { $crt_linkage = "dynamic" }
@@ -30,8 +32,8 @@ Write-Output `
 
 # run vcpkg install and export
 
-& "$vcpkg\vcpkg" install "ffmpeg[vpx]:$triplet" --recurse
-& "$vcpkg\vcpkg" export "ffmpeg[vpx]:$triplet" --output=export --raw
+& "$vcpkg\vcpkg" install "ffmpeg[$features]:$triplet" --recurse
+& "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=export --raw
 
 # create zip archive
 

@@ -1,4 +1,5 @@
-. functions.sh
+# TODO: update this script
+
 ZERANOE_FFMPEG_HASH=`curl https://ffmpeg.zeranoe.com/builds/ | grep -Po 'value="[0-9]+-\K[a-z0-9]+' | head -n 1`
 pushd ffmpeg
 git fetch
