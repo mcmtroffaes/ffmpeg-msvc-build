@@ -48,13 +48,12 @@ $control[1] = "Version: $version_vcpkg"
 $control -join "`n" | Set-Content "$vcpkg\ports\ffmpeg\CONTROL" -Encoding Ascii -NoNewline
 Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
 
+$sha512 = Get-Content "SHA512" -First 1 -Encoding Ascii
+
 $portfile = Get-Content "$vcpkg\ports\ffmpeg\portfile.cmake"
 if (-Not $portfile[5].StartsWith("    REF")) { throw "could not find REF field in portfile" }
 if (-Not $portfile[6].StartsWith("    SHA512")) { throw "could not find SHA512 field in portfile" }
 $portfile[5] = "    REF $version_hash"
-$wc = New-Object System.Net.WebClient
-$wc.DownloadFile("https://github.com/ffmpeg/ffmpeg/archive/$version_hash.tar.gz", "$env:temp\$version_hash.tar.gz")
-$sha512 = (Get-FileHash -Algorithm SHA512 "$env:temp\$version_hash.tar.gz").Hash.ToLower()
 $portfile[6] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "$vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii -NoNewline
 Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[2..14] ""
