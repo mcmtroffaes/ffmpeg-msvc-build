@@ -30,6 +30,8 @@ Write-Output `
   "set(VCPKG_PLATFORM_TOOLSET $toolset)" `
   | Out-File -FilePath "$vcpkg\triplets\$triplet.cmake" -Encoding ascii
 
+# TODO: modify port file to fetch desired version
+
 # run vcpkg install and export
 
 & "$vcpkg\vcpkg" install "ffmpeg[$features]:$triplet" --recurse
@@ -37,10 +39,11 @@ Write-Output `
 
 # create zip archive
 
+$ffmpeg = "ffmpeg-$triplet" # TODO "ffmpeg-$version-$license-$triplet"
 Get-ChildItem -Recurse -Path "$vcpkg\export\installed\$triplet" `
   -Include pkgconfig | Remove-Item -Verbose -Recurse
 Get-ChildItem -Recurse -Path "$vcpkg\export\installed\$triplet\share" `
   -Include *.cmake,vcpkg_abi_info.txt,usage | Remove-Item -Verbose
-Rename-Item -Path "$vcpkg\export\installed\$triplet" -NewName "$vcpkg\export\installed\ffmpeg-$triplet"
-Get-ChildItem -Recurse -Path "$vcpkg\export\installed\ffmpeg-$triplet"
-Compress-Archive "$vcpkg\export\installed\ffmpeg-$triplet" -DestinationPath "ffmpeg-$triplet.zip"
+Move-Item -Path "$vcpkg\export\installed\$triplet" -Destination $ffmpeg
+Get-ChildItem -Recurse -Path $ffmpeg
+Compress-Archive $ffmpeg -DestinationPath "$ffmpeg.zip"
