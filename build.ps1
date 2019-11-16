@@ -7,6 +7,8 @@ param (
     [string]$configuration = "Release"
 )
 
+# create vcpkg triplet
+
 $platform = $platform.tolower()
 $runtime_library = $runtime_library.tolower()
 $linkage = $linkage.tolower()
@@ -21,7 +23,7 @@ switch ($runtime_library) {
 
 $triplet = "$platform-windows-$linkage-$runtime_library-$toolset-$configuration"
 
-echo `
+Write-Output `
   "set(VCPKG_TARGET_ARCHITECTURE $platform)" `
   "set(VCPKG_CRT_LINKAGE $crt_linkage)" `
   "set(VCPKG_LIBRARY_LINKAGE $linkage)" `
@@ -29,6 +31,17 @@ echo `
   "set(VCPKG_BUILD_TYPE $configuration)" `
   | Out-File -FilePath "$vcpkg\triplets\$triplet.cmake" -Encoding ascii
 
+# run vcpkg install and export
+
 & "$vcpkg\vcpkg" install "ffmpeg[vpx]:$triplet" --recurse
 & "$vcpkg\vcpkg" export "ffmpeg[vpx]:$triplet" --output=export --raw
-dir /s /b "$vcpkg\export\installed\$triplet\"
+
+# create zip archive
+
+Get-ChildItem -Recurse -Path "$vcpkg\export\installed\$triplet" `
+  -Include pkgconfig | Remove-Item -Verbose -Recurse
+Get-ChildItem -Recurse -Path "$vcpkg\export\installed\$triplet\share" `
+  -Include *.cmake,vcpkg_abi_info.txt,usage | Remove-Item -Verbose
+Rename-Item -Path "$vcpkg\export\installed\$triplet" -NewName "$vcpkg\export\installed\ffmpeg-$triplet"
+Get-ChildItem -Recurse -Path "$vcpkg\export\installed\ffmpeg-$triplet"
+Compress-Archive "$vcpkg\export\installed\ffmpeg-$triplet" -DestinationPath "ffmpeg-$triplet.zip"

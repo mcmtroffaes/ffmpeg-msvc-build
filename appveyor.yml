@@ -11,8 +11,10 @@ environment:
 matrix:
   fast_finish: true
 platform:
+  - x86
   - x64
 configuration:
+  - Debug
   - Release
 build_script:
   - ps: .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET -configuration $env:Configuration
@@ -29,5 +31,5 @@ deploy:
   prerelease: false
   on:
     appveyor_repo_tag: true
-cache:
-  - c:\tools\vcpkg\installed\
+#cache:
+#  - c:\tools\vcpkg\installed\
