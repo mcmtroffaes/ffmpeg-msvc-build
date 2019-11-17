@@ -68,7 +68,11 @@ $ErrorActionPreference = "Continue"
 $ErrorActionPreference = "Stop"
 Get-ChildItem -Recurse -Name -File -Path "$vcpkg\installed\$triplet"
 
-# export 7z file
+# export installation
 
 $ffmpeg = "ffmpeg-$version-$license-$triplet"
 & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
+
+# export logs (for inspection)
+
+& 7z a "logs.7z" *.log -r
