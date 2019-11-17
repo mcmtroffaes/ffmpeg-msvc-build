@@ -62,7 +62,11 @@ Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[2..14] ""
 
 # run vcpkg install and export
 
+# install gives an error on appveyor due to msys2 gpg
+$ErrorActionPreference = "Continue"
 & "$vcpkg\vcpkg" install "ffmpeg[$features]:$triplet" --recurse
+
+$ErrorActionPreference = "Stop"
 & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=export --raw
 
 # create zip archive
