@@ -24,7 +24,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: QSdxjkooPHApqh95gD9duaZBxmv/5zWzDcukjNQGmbedwEu0BvzgA6HUEXpvni25
-  artifact: /.*\.zip/
+  artifact: /.*\.7z/
   draft: false
   prerelease: false
   on:

@@ -60,22 +60,15 @@ $portfile[6] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "$vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii -NoNewline
 Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[2..14] ""
 
-# run vcpkg install and export
+# install
 
-# install gives an error on appveyor due to msys2 gpg
+# vcpkg install gives an error on appveyor for weird reason during msys2 pacman-key command
 $ErrorActionPreference = "Continue"
 & "$vcpkg\vcpkg" install "ffmpeg[$features]:$triplet" --recurse
-
 $ErrorActionPreference = "Stop"
-& "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=export --raw
+Get-ChildItem -Recurse -Name -File -Path "$vcpkg\installed\$triplet"
 
-# create zip archive
+# export 7z file
 
 $ffmpeg = "ffmpeg-$version-$license-$triplet"
-Get-ChildItem -Recurse -Path "$vcpkg\export\installed\$triplet" `
-  -Include pkgconfig | Remove-Item -Verbose -Recurse
-Get-ChildItem -Recurse -Path "$vcpkg\export\installed\$triplet\share" `
-  -Include *.cmake,vcpkg_abi_info.txt,usage | Remove-Item -Verbose
-Move-Item -Path "$vcpkg\export\installed\$triplet" -Destination $ffmpeg
-Get-ChildItem -Recurse -Name -Path $ffmpeg
-Compress-Archive $ffmpeg -DestinationPath "$ffmpeg.zip"
+& "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
