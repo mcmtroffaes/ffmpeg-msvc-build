@@ -68,10 +68,7 @@ if ($env:APPVEYOR) {
 
 # install
 
-# vcpkg install gives an error on appveyor for weird reason during msys2 pacman-key command
-$ErrorActionPreference = "Continue"
 & "$vcpkg\vcpkg" install "ffmpeg[$features]:$triplet" --recurse
-$ErrorActionPreference = "Stop"
 Get-ChildItem -Recurse -Name -File -Path "$vcpkg\installed\$triplet"
 
 # export installation
