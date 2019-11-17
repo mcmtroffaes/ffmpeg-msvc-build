@@ -29,5 +29,3 @@ deploy:
   prerelease: false
   on:
     appveyor_repo_tag: true
-cache:
-  - c:\tools\vcpkg\installed\
