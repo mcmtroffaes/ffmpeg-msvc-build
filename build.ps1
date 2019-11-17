@@ -10,9 +10,6 @@ param (
 
 $ErrorActionPreference = "Stop"
 
-# TEST APPVEYOR FAILURE
-Try-Execute-Non-Existing-Script
-
 # create vcpkg triplet
 
 $platform = $platform.tolower()
