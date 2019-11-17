@@ -78,4 +78,4 @@ $ffmpeg = "ffmpeg-$version-$license-$triplet"
 
 # export logs (for inspection)
 
-& 7z a "logs.7z" *.log -r
+& 7z a logs.7z -ir!".\*.log"
