@@ -18,13 +18,13 @@ build_script:
   - ps: .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET -license $env:LICENSE -features $env:FEATURES
 test: off
 artifacts:
-  - path: '*.zip'
+  - path: '*.7z'
 deploy:
   description: 'Headers and libraries for FFmpeg.'
   provider: GitHub
   auth_token:
     secure: QSdxjkooPHApqh95gD9duaZBxmv/5zWzDcukjNQGmbedwEu0BvzgA6HUEXpvni25
-  artifact: /.*\.7z/
+  artifact: /ffmpeg.*\.7z/
   draft: false
   prerelease: false
   on:
