@@ -60,6 +60,12 @@ $portfile[6] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "$vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii -NoNewline
 Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[2..14] ""
 
+# update vcpkg_acquire_msys to use the appveyor version of msys64
+
+if ($env:APPVEYOR) {
+  Copy-Item -Path "vcpkg_acquire_msys.cmake" -Destination "$vcpkg\scripts\cmake\"
+}
+
 # install
 
 # vcpkg install gives an error on appveyor for weird reason during msys2 pacman-key command
