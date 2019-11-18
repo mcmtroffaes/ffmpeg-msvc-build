@@ -19,7 +19,7 @@ index 71bea6e95..661998341 100644
 -set(OPTIONS_RELEASE "")
 +# Note: --debug is a non-official option, added by 0004-fix-debug-build.patch, to make sure the linker finds the appropriate debug libraries for some dependencies
 +# Note: --disable-optimizations can't be used due to http://ffmpeg.org/pipermail/libav-user/2013-March/003945.html
-+set(OPTIONS_DEBUG "--debug --enable-debug=3")
++set(OPTIONS_DEBUG "--debug --enable-debug")
 +set(OPTIONS_RELEASE "--disable-debug")
  
  set(OPTIONS "${OPTIONS} ${OPTIONS_CROSS}")
