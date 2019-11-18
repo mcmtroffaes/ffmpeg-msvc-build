@@ -73,7 +73,8 @@ Get-ChildItem -Recurse -Name -File -Path "$vcpkg\installed\$triplet"
 
 # export installation
 
-$ffmpeg = "ffmpeg-$version-$license-$triplet"
+$ffmpeg = "ffmpeg-$version-$license-$toolset-$linkage-$runtime_library-$platform"
+
 & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
 Move-Item -Path "$vcpkg\$ffmpeg.7z" -Destination "."
 
