@@ -1,5 +1,5 @@
 diff --git a/ports/ffmpeg/portfile.cmake b/ports/ffmpeg/portfile.cmake
-index 71bea6e95..eebdbe04d 100644
+index 71bea6e95..661998341 100644
 --- a/ports/ffmpeg/portfile.cmake
 +++ b/ports/ffmpeg/portfile.cmake
 @@ -56,7 +56,7 @@ set(_csc_PROJECT_PATH ffmpeg)
@@ -11,13 +11,15 @@ index 71bea6e95..eebdbe04d 100644
  set(OPTIONS "${OPTIONS} --enable-runtime-cpudetect")
  
  if("nonfree" IN_LIST FEATURES)
-@@ -151,8 +151,8 @@ if(VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
+@@ -151,8 +151,10 @@ if(VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
      set(OPTIONS_CROSS " --enable-cross-compile --target-os=win32 --arch=${VCPKG_TARGET_ARCHITECTURE}")
  endif()
  
 -set(OPTIONS_DEBUG "--debug") # Note: --disable-optimizations can't be used due to http://ffmpeg.org/pipermail/libav-user/2013-March/003945.html
 -set(OPTIONS_RELEASE "")
-+set(OPTIONS_DEBUG "--enable-debug=3") # Note: --disable-optimizations can't be used due to http://ffmpeg.org/pipermail/libav-user/2013-March/003945.html
++# Note: --debug is a non-official option, added by 0004-fix-debug-build.patch, to make sure the linker finds the appropriate debug libraries for some dependencies
++# Note: --disable-optimizations can't be used due to http://ffmpeg.org/pipermail/libav-user/2013-March/003945.html
++set(OPTIONS_DEBUG "--debug --enable-debug=3")
 +set(OPTIONS_RELEASE "--disable-debug")
  
  set(OPTIONS "${OPTIONS} ${OPTIONS_CROSS}")
