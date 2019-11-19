@@ -25,8 +25,8 @@ if (($version_hash -eq $version_hash_old) -and (-not $force)) {
 }
 else {
   if ($version_hash -ne $version_hash_old) {
-    $wc.DownloadFile("https://github.com/ffmpeg/ffmpeg/archive/$version_hash.tar.gz", "$env:temp\$version_hash.tar.gz")
-    $sha512 = (Get-FileHash -Algorithm SHA512 "$env:temp\$version_hash.tar.gz").Hash.ToLower()
+    $wc.DownloadFile("https://github.com/ffmpeg/ffmpeg/archive/$version_hash.tar.gz", "$version_hash.tar.gz")
+    $sha512 = (Get-FileHash -Algorithm SHA512 "$version_hash.tar.gz").Hash.ToLower()
     Write-Output $sha512 | Set-Content "SHA512" -Encoding Ascii -NoNewline
   }
   if ($version_nuget_major -eq $version_nuget_major_old) {
