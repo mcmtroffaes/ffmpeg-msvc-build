@@ -38,4 +38,6 @@ else {
   Write-Output "new major: $version_nuget_major_old" "new minor: $version_nuget_minor" "new hash:  $version_hash"
   $version_nuget = "{0}.{1}.0" -f $version_nuget_major, $version_nuget_minor
   Write-Output "$version_nuget-$version_hash" | Set-Content "VERSION" -Encoding Ascii -NoNewline
+  & git commit -a -m "Update ffmpeg to version $version_nuget-$version_hash."
+  & git tag -a -m "Tagging version $version_nuget." $version_nuget
 }
