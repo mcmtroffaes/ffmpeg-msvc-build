@@ -26,7 +26,6 @@ Prebuilt static LGPL builds with Visual Studio 2019 (toolset v142) can be found 
   -runtime_library {MT,MD} `
   -linkage {dynamic,static} `
   -toolset {v120,v140,v141,v142,...} `
-  -license {LGPL21,LGPL3,GPL2,GPL3} `
   -features {core,vpx,...}
 ```
 

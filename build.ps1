@@ -4,7 +4,6 @@ param (
     [string]$runtime_library = "MD",
     [string]$linkage = "dynamic",
     [string]$toolset = "v142",
-    [string]$license = "LGPL21",
     [string]$features = "core"
 )
 
@@ -16,7 +15,6 @@ $platform = $platform.tolower()
 $runtime_library = $runtime_library.tolower()
 $linkage = $linkage.tolower()
 $toolset = $toolset.tolower()
-$license = $license.tolower()
 $features = $features.tolower()
 
 switch ($runtime_library) {
@@ -72,6 +70,14 @@ if ($env:APPVEYOR) {
 Get-ChildItem -Recurse -Name -File -Path "$vcpkg\installed\$triplet"
 
 # export installation
+
+# TODO check actual installation or build log files to get the right license
+$features_list = $features.Split(",")
+if ($features_list.contains("gpl") -or $features_list.contains("x264")) {
+  $license = "gpl2"
+} else {
+  $license = "lgpl21"
+}
 
 $ffmpeg = "ffmpeg-$version-$license-$toolset-$linkage-$runtime_library-$platform"
 
