@@ -22,6 +22,7 @@ Prebuilt static LGPL builds with Visual Studio 2019 (toolset v142) can be found 
 
 ```
 .\build.ps1 `
+  -vcpkg <path-to-vcpkg-root>
   -platform {x86,x64} `
   -runtime_library {MT,MD} `
   -linkage {dynamic,static} `
