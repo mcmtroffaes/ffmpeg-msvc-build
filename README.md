@@ -4,7 +4,8 @@
 
 Scripts for building FFmpeg with MSVC on AppVeyor.
 
-The script closely follows the [official
+The script uses [vcpkg](https://github.com/microsoft/vcpkg)
+which closely follows the [official
 instructions](https://trac.ffmpeg.org/wiki/CompilationGuide/MSVC). By
 default, only static LGPL builds are generated (in 32 and 64 bit, and
 in debug and release configurations). However, the build matrix can be
@@ -12,26 +13,22 @@ easily modified to allow different configurations to be built as well.
 
 ## Requirements
 
-* [NASM](https://www.nasm.us/)
 * [Visual Studio](https://docs.microsoft.com/en-us/cpp/)
-* [MSYS2](https://www.msys2.org/) (needs to be installed at ``C:\msys64\``)
+* [vcpkg](https://github.com/microsoft/vcpkg)
 
 ## Usage
 
-Prebuilt static LGPL builds with Visual Studio 2019 (toolset v142) can be found [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases). If you want to build your own version on your local machine, then:
+Prebuilt static LGPL builds with Visual Studio 2019 (toolset v142) can be found [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases). If you want to build your own version on your local machine, then execute the build script as follows:
 
-  * Optional: apply ``create-lib-libraries.patch`` (this ensures that
-    the build will produce .lib files instead of .a files).
-  * Ensure nasm is in your path; if not, add it.
-  * Set the following variables:
-      - APPVEYOR_BUILD_FOLDER (should be set to the project folder where ``build.sh`` resides)
-      - TOOLSET (v120, v140, v141, v142)
-      - PLATFORM (x86, x64)
-      - CONFIGURATION (Release, Debug)
-      - LINKAGE (shared, static)
-      - RUNTIME_LIBRARY (MD, MT)
-      - LICENSE (LGPL21, LGPL3, GPL2, GPL3)
-  * Start the build script by running ``build.bat``.
+```
+.\build.ps1 `
+  -platform {x86,x64} `
+  -runtime_library {MT,MD} `
+  -linkage {dynamic,static} `
+  -toolset {v120,v140,v141,v142,...} `
+  -license {LGPL21,LGPL3,GPL2,GPL3} `
+  -features {core,vpx,...}
+```
 
 ## License
 
