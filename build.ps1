@@ -51,18 +51,18 @@ Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
 $sha512 = Get-Content "SHA512" -First 1 -Encoding Ascii
 
 $portfile = Get-Content "$vcpkg\ports\ffmpeg\portfile.cmake"
-if (-Not $portfile[5].StartsWith("    REF")) {
-  Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[1..20] ""
+if (-Not $portfile[3].StartsWith("    REF")) {
+  Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..20] ""
   throw "could not find REF field in portfile"
 }
-if (-Not $portfile[6].StartsWith("    SHA512")) {
-  Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[1..20] ""
+if (-Not $portfile[4].StartsWith("    SHA512")) {
+  Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..20] ""
   throw "could not find SHA512 field in portfile"
 }
-$portfile[5] = "    REF $version_hash"
-$portfile[6] = "    SHA512 $sha512"
+$portfile[3] = "    REF $version_hash"
+$portfile[4] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "$vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii -NoNewline
-Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[2..14] ""
+Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..12] ""
 
 # update vcpkg_acquire_msys to use the appveyor version of msys64
 
