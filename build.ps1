@@ -51,8 +51,14 @@ Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
 $sha512 = Get-Content "SHA512" -First 1 -Encoding Ascii
 
 $portfile = Get-Content "$vcpkg\ports\ffmpeg\portfile.cmake"
-if (-Not $portfile[5].StartsWith("    REF")) { throw "could not find REF field in portfile" }
-if (-Not $portfile[6].StartsWith("    SHA512")) { throw "could not find SHA512 field in portfile" }
+if (-Not $portfile[5].StartsWith("    REF")) {
+  Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[1..20] ""
+  throw "could not find REF field in portfile"
+}
+if (-Not $portfile[6].StartsWith("    SHA512")) {
+  Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[1..20] ""
+  throw "could not find SHA512 field in portfile"
+}
 $portfile[5] = "    REF $version_hash"
 $portfile[6] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "$vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii -NoNewline
