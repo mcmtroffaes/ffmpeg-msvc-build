@@ -73,11 +73,9 @@ if ($env:APPVEYOR) {
 # work around yasm bug, see https://github.com/microsoft/vcpkg/issues/10523
 
 New-Item -ItemType "directory" -Path "$vcpkg\downloads\tools\yasm\1.3.0.6\"
-pushd "$vcpkg\downloads\tools\yasm\1.3.0.6\"
 $wc = New-Object System.Net.WebClient
-$wc.DownloadFile("http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe", "yasm.exe")
-Get-ChildItem -Path . -Recurse
-popd
+$wc.DownloadFile("http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe", "$vcpkg\downloads\tools\yasm\1.3.0.6\yasm.exe")
+Get-ChildItem -Path "$vcpkg\downloads\tools\yasm\1.3.0.6\" -Recurse
 
 # install
 
