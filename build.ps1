@@ -70,13 +70,6 @@ if ($env:APPVEYOR) {
   Copy-Item -Path "vcpkg_acquire_msys.cmake" -Destination "$vcpkg\scripts\cmake\"
 }
 
-# work around yasm bug, see https://github.com/microsoft/vcpkg/issues/10523
-
-New-Item -ItemType "directory" -Path "$vcpkg\downloads\tools\yasm\1.3.0.6\"
-$wc = New-Object System.Net.WebClient
-$wc.DownloadFile("http://www.tortall.net/projects/yasm/snapshots/v1.3.0.6.g1962/yasm-1.3.0.6.g1962.exe", "$vcpkg\downloads\tools\yasm\1.3.0.6\yasm.exe")
-Get-ChildItem -Path "$vcpkg\downloads\tools\yasm\1.3.0.6\" -Recurse
-
 # install
 
 & "$vcpkg\vcpkg" install "ffmpeg[$features]:$triplet" --recurse
