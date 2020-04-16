@@ -76,7 +76,7 @@ New-Item -ItemType "directory" -Path "$vcpkg\downloads\tools\yasm\1.3.0.6\"
 pushd "$vcpkg\downloads\tools\yasm\1.3.0.6\"
 $wc = New-Object System.Net.WebClient
 $wc.DownloadFile("http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe", "yasm.exe")
-dir .
+Get-ChildItem -Path . -Recurse
 popd
 
 # install
