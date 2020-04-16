@@ -73,7 +73,8 @@ if ($env:APPVEYOR) {
 # work around yasm bug, see https://github.com/microsoft/vcpkg/issues/10523
 
 cd "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\Common7\Tools"
-mklink .\yasm.exe $vcpkg\downloads\tools\yasm\1.3.0.6\yasm.exe
+dir .
+copy .\yasm.exe "$vcpkg\downloads\tools\yasm\1.3.0.6\yasm.exe"
 
 # install
 
