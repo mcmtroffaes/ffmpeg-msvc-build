@@ -74,7 +74,7 @@ if ($env:APPVEYOR) {
 
 New-Item -ItemType "directory" -Path "$vcpkg\downloads\tools\yasm\1.3.0.6\"
 $wc = New-Object System.Net.WebClient
-$wc.DownloadFile("http://www.tortall.net/projects/yasm/releases/yasm-1.3.0-win64.exe", "$vcpkg\downloads\tools\yasm\1.3.0.6\yasm.exe")
+$wc.DownloadFile("http://www.tortall.net/projects/yasm/snapshots/v1.3.0.6.g1962/yasm-1.3.0.6.g1962.exe", "$vcpkg\downloads\tools\yasm\1.3.0.6\yasm.exe")
 Get-ChildItem -Path "$vcpkg\downloads\tools\yasm\1.3.0.6\" -Recurse
 
 # install
