@@ -87,8 +87,11 @@ if ($features_list.contains("gpl") -or $features_list.contains("x264")) {
 
 $ffmpeg = "ffmpeg-$version-$license-$toolset-$linkage-$runtime_library-$platform"
 
+# run export, we do not stop on error to ensure we always zip the logs
+
+$ErrorActionPreference = "Continue"
 & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
-Move-Item -Path "$vcpkg\$ffmpeg.7z" -Destination "."
+$ErrorActionPreference = "Stop"
 
 # export logs (for inspection)
 
@@ -96,3 +99,7 @@ pushd $vcpkg
 & 7z a logs.7z -ir!".\*.log"
 popd
 Move-Item -Path "$vcpkg\logs.7z" -Destination "."
+
+# move vcpkg export to the right location (fails if export failed earlier)
+
+Move-Item -Path "$vcpkg\$ffmpeg.7z" -Destination "."
