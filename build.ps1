@@ -95,6 +95,7 @@ $ErrorActionPreference = "Stop"
 
 # export logs (for inspection)
 
+Write-Output "Pushing logs.7z"
 pushd $vcpkg
 & 7z a logs.7z -ir!".\*.log"
 popd
@@ -103,4 +104,6 @@ Push-AppveyorArtifact logs.7z  # this forces push even if build fails
 
 # move vcpkg export to the right location (fails if export failed earlier)
 
+Write-Output "Pushing $ffmpeg.7z"
 Move-Item -Path "$vcpkg\$ffmpeg.7z" -Destination "."
+Push-AppveyorArtifact "$ffmpeg.7z"
