@@ -99,6 +99,7 @@ pushd $vcpkg
 & 7z a logs.7z -ir!".\*.log"
 popd
 Move-Item -Path "$vcpkg\logs.7z" -Destination "."
+Push-AppveyorArtifact logs.7z  # this forces push even if build fails
 
 # move vcpkg export to the right location (fails if export failed earlier)
 
