@@ -87,23 +87,26 @@ if ($features_list.contains("gpl") -or $features_list.contains("x264")) {
 
 $ffmpeg = "ffmpeg-$version-$license-$toolset-$linkage-$runtime_library-$platform"
 
-# run export, we do not stop on error to ensure we always zip the logs
+# run export
 
-$ErrorActionPreference = "Continue"
-& "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
-$ErrorActionPreference = "Stop"
-
-# export logs (for inspection)
-
-Write-Output "Pushing logs.7z"
-pushd $vcpkg
-& 7z a logs.7z -ir!".\*.log"
-popd
-Move-Item -Path "$vcpkg\logs.7z" -Destination "."
-Push-AppveyorArtifact logs.7z  # this forces push even if build fails
+Try {
+  & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
+}
+Finally {
+  pushd $vcpkg
+  & 7z a logs.7z -ir!".\*.log"
+  popd
+  Move-Item -Path "$vcpkg\logs.7z" -Destination "."
+  if ($env:APPVEYOR) {
+    Write-Output "Pushing logs.7z"
+    Push-AppveyorArtifact logs.7z  # this forces push even if build fails
+  }
+}
 
 # move vcpkg export to the right location (fails if export failed earlier)
 
-Write-Output "Pushing $ffmpeg.7z"
 Move-Item -Path "$vcpkg\$ffmpeg.7z" -Destination "."
-Push-AppveyorArtifact "$ffmpeg.7z"
+if ($env:APPVEYOR) {
+  Write-Output "Pushing $ffmpeg.7z"
+  Push-AppveyorArtifact "$ffmpeg.7z"
+}
