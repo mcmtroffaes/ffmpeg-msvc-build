@@ -1,13 +1,3 @@
-diff --git a/ports/libvpx/CONTROL b/ports/libvpx/CONTROL
-index 52727e62251..602a50a8606 100644
---- a/ports/libvpx/CONTROL
-+++ b/ports/libvpx/CONTROL
-@@ -1,4 +1,4 @@
- Source: libvpx
--Version: 1.8.1-1
-+Version: 1.8.1-2
- Homepage: https://github.com/webmproject/libvpx
- Description: The reference software implementation for the video coding formats VP8 and VP9.
 diff --git a/ports/libvpx/portfile.cmake b/ports/libvpx/portfile.cmake
 index 5725b53586d..7a053a6d1f0 100644
 --- a/ports/libvpx/portfile.cmake
@@ -30,20 +20,6 @@ index 5725b53586d..7a053a6d1f0 100644
  endif()
  file(
      INSTALL
-diff --git a/ports/mpg123/CONTROL b/ports/mpg123/CONTROL
-index 47692364eaf..38ba0fa076e 100644
---- a/ports/mpg123/CONTROL
-+++ b/ports/mpg123/CONTROL
-@@ -1,4 +1,4 @@
- Source: mpg123
--Version: 1.25.8-6
-+Version: 1.25.8-7
- Homepage: https://sourceforge.net/projects/mpg123/
--Description: mpg123 is a real time MPEG 1.0/2.0/2.5 audio player/decoder for layers 1, 2 and 3 (MPEG 1.0 layer 3 also known as MP3).
-\ No newline at end of file
-+Description: mpg123 is a real time MPEG 1.0/2.0/2.5 audio player/decoder for layers 1, 2 and 3 (MPEG 1.0 layer 3 also known as MP3).
-diff --git a/ports/mpg123/portfile.cmake b/ports/mpg123/portfile.cmake
-index 0d216b9428b..c067413a6cb 100644
 --- a/ports/mpg123/portfile.cmake
 +++ b/ports/mpg123/portfile.cmake
 @@ -1,5 +1,3 @@
