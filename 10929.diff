@@ -1,0 +1,82 @@
+diff --git a/ports/libvpx/CONTROL b/ports/libvpx/CONTROL
+index 52727e62251..602a50a8606 100644
+--- a/ports/libvpx/CONTROL
++++ b/ports/libvpx/CONTROL
+@@ -1,4 +1,4 @@
+ Source: libvpx
+-Version: 1.8.1-1
++Version: 1.8.1-2
+ Homepage: https://github.com/webmproject/libvpx
+ Description: The reference software implementation for the video coding formats VP8 and VP9.
+diff --git a/ports/libvpx/portfile.cmake b/ports/libvpx/portfile.cmake
+index 5725b53586d..7a053a6d1f0 100644
+--- a/ports/libvpx/portfile.cmake
++++ b/ports/libvpx/portfile.cmake
+@@ -1,5 +1,3 @@
+-include(vcpkg_common_functions)
+-
+ vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
+ 
+ set(LIBVPX_VERSION 1.8.1)
+@@ -95,9 +93,9 @@ if(NOT DEFINED VCPKG_BUILD_TYPE OR VCPKG_BUILD_TYPE STREQUAL "debug")
+ endif()
+ 
+ if(VCPKG_TARGET_ARCHITECTURE STREQUAL arm)
+-    set(LIBVPX_INCLUDE_DIR "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}/vpx-vp8-vp9-nopost-nomt-nodocs-${LIBVPX_TARGET_ARCH}${LIBVPX_CRT_SUFFIX}-${LIBVPX_TARGET_VS}-v${LIBVPX_VERSION}/include/vpx")
++    set(LIBVPX_INCLUDE_DIR "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}/vpx-vp8-vp9-nopost-nomt-${LIBVPX_TARGET_ARCH}${LIBVPX_CRT_SUFFIX}-${LIBVPX_TARGET_VS}-v${LIBVPX_VERSION}/include/vpx")
+ else()
+-    set(LIBVPX_INCLUDE_DIR "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}/vpx-vp8-vp9-nodocs-${LIBVPX_TARGET_ARCH}${LIBVPX_CRT_SUFFIX}-${LIBVPX_TARGET_VS}-v${LIBVPX_VERSION}/include/vpx")
++    set(LIBVPX_INCLUDE_DIR "${CURRENT_BUILDTREES_DIR}/${TARGET_TRIPLET}/vpx-vp8-vp9-${LIBVPX_TARGET_ARCH}${LIBVPX_CRT_SUFFIX}-${LIBVPX_TARGET_VS}-v${LIBVPX_VERSION}/include/vpx")
+ endif()
+ file(
+     INSTALL
+diff --git a/ports/mpg123/CONTROL b/ports/mpg123/CONTROL
+index 47692364eaf..38ba0fa076e 100644
+--- a/ports/mpg123/CONTROL
++++ b/ports/mpg123/CONTROL
+@@ -1,4 +1,4 @@
+ Source: mpg123
+-Version: 1.25.8-6
++Version: 1.25.8-7
+ Homepage: https://sourceforge.net/projects/mpg123/
+-Description: mpg123 is a real time MPEG 1.0/2.0/2.5 audio player/decoder for layers 1, 2 and 3 (MPEG 1.0 layer 3 also known as MP3).
+\ No newline at end of file
++Description: mpg123 is a real time MPEG 1.0/2.0/2.5 audio player/decoder for layers 1, 2 and 3 (MPEG 1.0 layer 3 also known as MP3).
+diff --git a/ports/mpg123/portfile.cmake b/ports/mpg123/portfile.cmake
+index 0d216b9428b..c067413a6cb 100644
+--- a/ports/mpg123/portfile.cmake
++++ b/ports/mpg123/portfile.cmake
+@@ -1,5 +1,3 @@
+-include(vcpkg_common_functions)
+-
+ set(MPG123_VERSION 1.25.8)
+ set(MPG123_HASH f226317dddb07841a13753603fa13c0a867605a5a051626cb30d45cfba266d3d4296f5b8254f65b403bb5eef6addce1784ae8829b671a746854785cda1bad203)
+ 
+diff --git a/scripts/cmake/vcpkg_build_msbuild.cmake b/scripts/cmake/vcpkg_build_msbuild.cmake
+index cfd429da2f2..0bc008bdff0 100644
+--- a/scripts/cmake/vcpkg_build_msbuild.cmake
++++ b/scripts/cmake/vcpkg_build_msbuild.cmake
+@@ -92,7 +92,8 @@ function(vcpkg_build_msbuild)
+     list(APPEND _csc_OPTIONS
+         /t:${_csc_TARGET}
+         /p:Platform=${_csc_PLATFORM}
+-        /p:PlatformToolset=${_csc_PLATFORM_TOOLSET}
++        /p:BasePlatformToolset=${_csc_PLATFORM_TOOLSET}
++        /p:UseEnv=True
+         /p:VCPkgLocalAppDataDisabled=true
+         /p:UseIntelMKL=No
+         /p:WindowsTargetPlatformVersion=${_csc_TARGET_PLATFORM_VERSION}
+diff --git a/scripts/cmake/vcpkg_install_msbuild.cmake b/scripts/cmake/vcpkg_install_msbuild.cmake
+index db2874a9ffd..bfae9f5f1e4 100644
+--- a/scripts/cmake/vcpkg_install_msbuild.cmake
++++ b/scripts/cmake/vcpkg_install_msbuild.cmake
+@@ -132,7 +132,8 @@ function(vcpkg_install_msbuild)
+     list(APPEND _csc_OPTIONS
+         /t:${_csc_TARGET}
+         /p:Platform=${_csc_PLATFORM}
+-        /p:PlatformToolset=${_csc_PLATFORM_TOOLSET}
++        /p:BasePlatformToolset=${_csc_PLATFORM_TOOLSET}
++        /p:UseEnv=True
+         /p:VCPkgLocalAppDataDisabled=true
+         /p:UseIntelMKL=No
+         /p:WindowsTargetPlatformVersion=${_csc_TARGET_PLATFORM_VERSION}
