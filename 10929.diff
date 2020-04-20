@@ -20,6 +20,8 @@ index 5725b53586d..7a053a6d1f0 100644
  endif()
  file(
      INSTALL
+diff --git a/ports/mpg123/portfile.cmake b/ports/mpg123/portfile.cmake
+index 0d216b9428b..c067413a6cb 100644
 --- a/ports/mpg123/portfile.cmake
 +++ b/ports/mpg123/portfile.cmake
 @@ -1,5 +1,3 @@
