@@ -15,6 +15,7 @@ platform:
   - x86
   - x64
 build_script:
+  - pushd C:\Tools\vcpkg && git pull && popd
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\ffmpeg-portfile-fix-debug-symbols.patch" && popd
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\libvpx-portfile-fix-pdb.patch" && popd
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\10929.diff" && popd
