@@ -101,7 +101,7 @@ Finally {
   }
 }
 
-# move vcpkg export to the right location (fails if export failed earlier)
+# move vcpkg export to the right location
 
 Move-Item -Path "$vcpkg\$ffmpeg.7z" -Destination "."
 if ($env:APPVEYOR) {
