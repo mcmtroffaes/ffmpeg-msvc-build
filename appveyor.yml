@@ -7,6 +7,7 @@ environment:
       TOOLSET: v142
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       FEATURES: core,vpx
+      VCPKG_FORCE_SYSTEM_BINARIES: 1
 
 matrix:
   fast_finish: true
@@ -16,9 +17,7 @@ platform:
 build_script:
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\ffmpeg-portfile-fix-debug-symbols.patch" && popd
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\libvpx-portfile-fix-pdb.patch" && popd
-  - ps: >-
-    $env:VCPKG_FORCE_SYSTEM_BINARIES = 1
-    .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET -features $env:FEATURES
+  - ps: .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET -features $env:FEATURES
 test: off
 artifacts:
   - path: '*.7z'
