@@ -7,8 +7,6 @@ param (
     [string]$features = "core"
 )
 
-$ErrorActionPreference = "Stop"
-
 # create vcpkg triplet
 
 $platform = $platform.tolower()
