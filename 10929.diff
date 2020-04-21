@@ -26,8 +26,7 @@ index cfd429da2f2..0bc008bdff0 100644
      list(APPEND _csc_OPTIONS
          /t:${_csc_TARGET}
          /p:Platform=${_csc_PLATFORM}
--        /p:PlatformToolset=${_csc_PLATFORM_TOOLSET}
-+        /p:BasePlatformToolset=${_csc_PLATFORM_TOOLSET}
+         /p:PlatformToolset=${_csc_PLATFORM_TOOLSET}
 +        /p:UseEnv=True
          /p:VCPkgLocalAppDataDisabled=true
          /p:UseIntelMKL=No
@@ -40,8 +39,7 @@ index db2874a9ffd..bfae9f5f1e4 100644
      list(APPEND _csc_OPTIONS
          /t:${_csc_TARGET}
          /p:Platform=${_csc_PLATFORM}
--        /p:PlatformToolset=${_csc_PLATFORM_TOOLSET}
-+        /p:BasePlatformToolset=${_csc_PLATFORM_TOOLSET}
+         /p:PlatformToolset=${_csc_PLATFORM_TOOLSET}
 +        /p:UseEnv=True
          /p:VCPkgLocalAppDataDisabled=true
          /p:UseIntelMKL=No
