@@ -30,6 +30,9 @@ Write-Output `
   "set(VCPKG_PLATFORM_TOOLSET $toolset)" `
   | Out-File -FilePath "$vcpkg\triplets\$triplet.cmake" -Encoding ascii
 
+# DEBUG
+Start-Process -FilePath "$vcpkg\vcpkg" -ArgumentList "install","zlib[core]:$triplet","--recurse" -ErrorAction "Stop"
+
 # update CONTROL and portfile.cmake files to the proper version
 
 $version = Get-Content "VERSION" -First 1 -Encoding Ascii
@@ -88,7 +91,6 @@ $ffmpeg = "ffmpeg-$version-$license-$toolset-$linkage-$runtime_library-$platform
 # run export
 
 Try {
-  & "$vcpkg\vcpkg" export "zlib:$triplet" --output=zlib --7zip
   & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
 }
 Finally {
