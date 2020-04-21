@@ -7,7 +7,6 @@ environment:
       TOOLSET: v142
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       FEATURES: core,vpx
-      VCPKG_FORCE_SYSTEM_BINARIES: 1
 
 matrix:
   fast_finish: true
