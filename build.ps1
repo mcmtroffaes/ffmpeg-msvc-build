@@ -89,7 +89,7 @@ $ffmpeg = "ffmpeg-$version-$license-$toolset-$linkage-$runtime_library-$platform
 # run export
 
 Try {
-  & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
+  #& "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
 }
 Finally {
   pushd $vcpkg
