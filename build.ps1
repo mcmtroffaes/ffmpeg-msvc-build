@@ -77,29 +77,29 @@ Get-ChildItem -Recurse -Name -File -Path "$vcpkg\installed\$triplet"
 
 $copyright = Get-Content "$vcpkg\installed\$triplet\share\ffmpeg\copyright" -First 2 -Encoding Ascii
 Write-Output "" "COPYRIGHT" "~~~~~~~~~" "" $copyright ""
-if ($copyright[0].Trim() == "GNU LESSER GENERAL PUBLIC LICENSE") {
-  if ($copyright[1].Trim() == "Version 2.1, February 1999") {
+if ($copyright[0].Trim() -Eq "GNU LESSER GENERAL PUBLIC LICENSE") {
+  if ($copyright[1].Trim() -Eq "Version 2.1, February 1999") {
     $license = "lgpl21"
   }
-  elseif ($copyright[1].Trim() == "Version 3, 29 June 2007") {
+  elseif ($copyright[1].Trim() -Eq "Version 3, 29 June 2007") {
     $license = "lgpl3"
   }
   else {
     throw "unknown LGPL version"
   }
 }
-elseif ($copyright[0].Trim() == "GNU GENERAL PUBLIC LICENSE") {
-  if ($copyright[1].Trim() == "Version 2, June 1991") {
+elseif ($copyright[0].Trim() -Eq "GNU GENERAL PUBLIC LICENSE") {
+  if ($copyright[1].Trim() -Eq "Version 2, June 1991") {
     $license = "gpl2"
   }
-  elseif ($copyright[1].Trim() == "Version 3, 29 June 2007") {
+  elseif ($copyright[1].Trim() -Eq "Version 3, 29 June 2007") {
     $license = "gpl3"
   }
   else {
     throw "unknown GPL version"
   }
 }
-elseif ($copyright[0].Trim() == "License: nonfree and unredistributable") {
+elseif ($copyright[0].Trim() -Eq "License: nonfree and unredistributable") {
   $license = "nonfree"
 }
 else {
