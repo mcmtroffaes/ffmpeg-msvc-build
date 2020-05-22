@@ -16,7 +16,7 @@ Write-Output "old major: $version_nuget_major_old" "old minor: $version_nuget_mi
 
 $wc = New-Object System.Net.WebClient
 $zeranoe = $wc.DownloadString("https://ffmpeg.zeranoe.com/builds/win64/static").Split("`n")
-$match = $zeranoe | Select-String -Pattern "href=""ffmpeg-([0-9]+-[a-z0-9]+)"""
+$match = $zeranoe | Select-String -Pattern "href=""ffmpeg-([0-9]+-[a-z0-9]+)-win64"
 $zeranoe_version = $match.Matches[-1].Groups[1].Value
 $version_nuget_major, $version_hash = $zeranoe_version.Split("-")
 
