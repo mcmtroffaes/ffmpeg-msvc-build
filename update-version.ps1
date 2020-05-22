@@ -15,9 +15,9 @@ $version_nuget_major_old, $version_nuget_minor_old, $version_nuget_patch_old = $
 Write-Output "old major: $version_nuget_major_old" "old minor: $version_nuget_minor_old" "old hash:  $version_hash_old"
 
 $wc = New-Object System.Net.WebClient
-$zeranoe = $wc.DownloadString("https://ffmpeg.zeranoe.com/builds/").Split("`n")
-$match = $zeranoe | Select-String -Pattern "value=""([0-9]+-[a-z0-9]+)"""
-$zeranoe_version = $match.Matches[0].Groups[1].Value
+$zeranoe = $wc.DownloadString("https://ffmpeg.zeranoe.com/builds/win64/static").Split("`n")
+$match = $zeranoe | Select-String -Pattern "href=""ffmpeg-([0-9]+-[a-z0-9]+)"""
+$zeranoe_version = $match.Matches[-1].Groups[1].Value
 $version_nuget_major, $version_hash = $zeranoe_version.Split("-")
 
 if (($version_hash -eq $version_hash_old) -and (-not $force)) {
