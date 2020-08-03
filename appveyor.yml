@@ -14,6 +14,8 @@ platform:
   - x86
   - x64
 build_script:
+  # vcpkg in appveyor is broken, checkout latest working commit
+  - pushd C:\Tools\vcpkg && git checkout 077c0746be3773fdd443af52cbe5c3cc26379a15 && popd
   - pushd C:\Tools\vcpkg && git log -1 && popd
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\ffmpeg-portfile-fix-debug-symbols.patch" && popd
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\libvpx-portfile-fix-pdb.patch" && popd
