@@ -7,6 +7,7 @@ environment:
       TOOLSET: v142
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       FEATURES: core,vpx
+      VCPKG_HASH: 8121b4ec3d6a11353daf7639ed9082a78e617a2e
 
 matrix:
   fast_finish: true
@@ -16,8 +17,8 @@ platform:
 build_script:
   # vcpkg in appveyor is broken, checkout latest working commit
   - pushd C:\Tools\vcpkg && git log -1 && popd
-  - pushd C:\Tools\vcpkg && git checkout 077c0746be3773fdd443af52cbe5c3cc26379a15 && popd
-  - pushd C:\Tools\vcpkg && git log -1 && popd
+  - pushd C:\Tools\vcpkg && git fetch && git checkout $env:VCPKG_HASH && git log -1 && popd
+  - pushd C:\Tools\vcpkg && .\bootstrap-vcpkg.bat -disableMetrics && popd
   - pushd C:\Tools\vcpkg && git apply "%APPVEYOR_BUILD_FOLDER%\ffmpeg-portfile-fix-debug-symbols.patch" && popd
   - ps: .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET -features $env:FEATURES -ErrorAction Stop
 test: off
