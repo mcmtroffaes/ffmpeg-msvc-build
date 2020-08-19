@@ -8,6 +8,8 @@ param (
 
 $ErrorActionPreference = "Stop"
 
+& git pull --rebase
+
 $version_old = Get-Content "VERSION" -First 1 -Encoding Ascii
 $version_nuget_old, $version_hash_old = $version_old.Split("-")
 $version_nuget_major_old, $version_nuget_minor_old, $version_nuget_patch_old = $version_nuget_old.Split(".")
