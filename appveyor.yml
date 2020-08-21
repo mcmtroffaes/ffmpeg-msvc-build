@@ -7,7 +7,7 @@ environment:
       TOOLSET: v142
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       FEATURES: core,vpx
-      VCPKG_HASH: 8121b4ec3d6a11353daf7639ed9082a78e617a2e
+      VCPKG_HASH: f6948aeb686c015d7b582aa4d76702a2f92602b1
 
 matrix:
   fast_finish: true
