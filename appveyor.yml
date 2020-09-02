@@ -7,7 +7,7 @@ environment:
       TOOLSET: v142
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,vpx
-      VCPKG_HASH: f6948aeb686c015d7b582aa4d76702a2f92602b1
+      VCPKG_HASH: 28509b2940d8cce35398f4a18209bb8f2fea11a3
 
 matrix:
   fast_finish: true
