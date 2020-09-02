@@ -62,8 +62,10 @@ $portfile[4] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "$vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii -NoNewline
 Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..12] ""
 
-# fix one of the patches
+# fix patches
 Copy-Item -Path "0006-fix-StaticFeatures.patch" -Destination "$vcpkg\ports\ffmpeg\"
+Copy-Item -Path "0011-Fix-x265-detection.patch" -Destination "$vcpkg\ports\ffmpeg\"
+Copy-Item -Path "0012-Fix-ssl-110-detection.patch" -Destination "$vcpkg\ports\ffmpeg\"
 
 # update vcpkg_acquire_msys to use the appveyor version of msys64
 
