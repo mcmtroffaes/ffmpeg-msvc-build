@@ -6,7 +6,7 @@ environment:
       RUNTIME_LIBRARY: MD
       TOOLSET: v142
       APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,vpx,zlib
+      FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,mp3lame,nvcodec,opencl,opus,snappy,soxr,theora,vpx,wavpack,zlib
       VCPKG_HASH: ff1d20fd9a72d72d51a549c27b669cd6040fb7d9
 
 matrix:
