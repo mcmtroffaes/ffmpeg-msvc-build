@@ -1,25 +1,22 @@
 version: 1.0.{build}
 image: Visual Studio 2019
 environment:
-  matrix:
-    - LINKAGE: static
-      RUNTIME_LIBRARY: MD
-      TOOLSET: v142
-      APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,vpx,zlib
-      VCPKG_HASH: 49c1b2889def046f875138f06878c939d1ee9793
+  FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,vpx,zlib
+  VCPKG_HASH: 49c1b2889def046f875138f06878c939d1ee9793
 
+  matrix:
+    - TRIPLET: x86-windows-static-md
+    - TRIPLET: x64-windows-static-md
 matrix:
   fast_finish: true
 platform:
-  - x86
   - x64
 build_script:
   # vcpkg in appveyor is broken, checkout latest working commit
   - pushd C:\Tools\vcpkg && git log -1 && popd
   - pushd C:\Tools\vcpkg && git fetch && git checkout %VCPKG_HASH% -d && git log -1 && popd
   - pushd C:\Tools\vcpkg && .\bootstrap-vcpkg.bat -disableMetrics && popd
-  - ps: .\build.ps1 -platform $env:PLATFORM -runtime_library $env:RUNTIME_LIBRARY -linkage $env:LINKAGE -toolset $env:TOOLSET -features $env:FEATURES -ErrorAction Stop
+  - ps: .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
 test: off
 artifacts:
   - path: '*.7z'
