@@ -37,41 +37,6 @@
 ## * [libvpx](https://github.com/Microsoft/vcpkg/blob/master/ports/libvpx/portfile.cmake)
 
 function(vcpkg_acquire_msys PATH_TO_ROOT_OUT)
-  set(TOOLPATH C:/msys64)
-
-  cmake_parse_arguments(_am "" "" "PACKAGES" ${ARGN})
-
-  if(NOT CMAKE_HOST_WIN32)
-    message(FATAL_ERROR "vcpkg_acquire_msys() can only be used on Windows hosts")
-  endif()
-
-  set(PATH_TO_ROOT ${TOOLPATH})
-
-  if(_am_PACKAGES)
-    message(STATUS "Acquiring MSYS Packages...")
-    string(REPLACE ";" " " _am_PACKAGES "${_am_PACKAGES}")
-
-    set(_ENV_ORIGINAL $ENV{PATH})
-    set(ENV{PATH} ${PATH_TO_ROOT}/usr/bin)
-    vcpkg_execute_required_process(
-      ALLOW_IN_DOWNLOAD_MODE
-      COMMAND ${PATH_TO_ROOT}/usr/bin/bash.exe --noprofile --norc -c "pacman -Sy --noconfirm --needed ${_am_PACKAGES}"
-      WORKING_DIRECTORY ${DOWNLOADS}
-      LOGNAME msys-pacman-${TARGET_TRIPLET}
-    )
-    set(ENV{PATH} "${_ENV_ORIGINAL}")
-
-    message(STATUS "Acquiring MSYS Packages... OK")
-  endif()
-
-  # Deal with a stale process created by MSYS
-  if (NOT VCPKG_CMAKE_SYSTEM_NAME OR VCPKG_CMAKE_SYSTEM_NAME STREQUAL "WindowsStore")
-      vcpkg_execute_required_process(
-          ALLOW_IN_DOWNLOAD_MODE
-          COMMAND TASKKILL /F /IM gpg-agent.exe /fi "memusage gt 2"
-          WORKING_DIRECTORY ${SOURCE_PATH}
-      )
-  endif()
-
-  set(${PATH_TO_ROOT_OUT} ${PATH_TO_ROOT} PARENT_SCOPE)
+  message(STATUS "Using AppVeyor MSYS")
+  set(${PATH_TO_ROOT_OUT} "C:/msys64" PARENT_SCOPE)
 endfunction()
