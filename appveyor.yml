@@ -17,6 +17,8 @@ build_script:
   - pushd C:\Tools\vcpkg && git fetch && git checkout %VCPKG_HASH% -d && git log -1 && popd
   - pushd C:\Tools\vcpkg && .\bootstrap-vcpkg.bat -disableMetrics && popd
   - ps: .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - pushd test && cmake -DCMAKE_BUILD_TYPE=RELEASE -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md . && popd
 test: off
 artifacts:
   - path: '*.7z'
