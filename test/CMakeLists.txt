@@ -1,8 +1,7 @@
-# CMakeLists.txt
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION  3.17)
 project(ffmpeg_test)
 
-find_package(ffmpeg REQUIRED)
+find_package(FFMPEG REQUIRED)
 
 add_executable(main main.cpp)
 target_link_libraries(main PRIVATE ${FFMPEG_LIBRARIES})
