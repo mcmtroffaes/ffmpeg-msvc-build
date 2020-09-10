@@ -2,7 +2,7 @@ version: 1.0.{build}
 image: Visual Studio 2019
 environment:
   FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,vpx,zlib
-  VCPKG_HASH: 49c1b2889def046f875138f06878c939d1ee9793
+  VCPKG_HASH: 18ab4b72a26284f0df28295ce7bf9b21c96f20f4
 
   matrix:
     - TRIPLET: x86-windows-static-md
