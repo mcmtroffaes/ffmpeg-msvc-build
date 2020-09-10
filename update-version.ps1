@@ -1,4 +1,4 @@
-# script to update VERSION and SHA512 files to the zeranoe ffmpeg version
+# script to update VERSION and SHA512 files to the latest ffmpeg git version
 # to run this script, first set
 # $env:PSExecutionPolicyPreference = "Bypass" in your local session
 
@@ -10,25 +10,33 @@ $ErrorActionPreference = "Stop"
 
 & git pull --rebase
 
+pushd ffmpeg
+& git pull
+popd
+
 $version_old = Get-Content "VERSION" -First 1 -Encoding Ascii
 $version_nuget_old, $version_hash_old = $version_old.Split("-")
 $version_nuget_major_old, $version_nuget_minor_old, $version_nuget_patch_old = $version_nuget_old.Split(".")
 
 Write-Output "old major: $version_nuget_major_old" "old minor: $version_nuget_minor_old" "old hash:  $version_hash_old"
 
-$wc = New-Object System.Net.WebClient
-$zeranoe = $wc.DownloadString("https://ffmpeg.zeranoe.com/builds/win64/static").Split("`n")
-$match = $zeranoe | Select-String -Pattern "href=""ffmpeg-([0-9]+-[a-z0-9]+)-win64"
-$zeranoe_version = $match.Matches[-1].Groups[1].Value
-$version_nuget_major, $version_hash = $zeranoe_version.Split("-")
+pushd ffmpeg
+$version_hash = git show --no-patch --no-notes --pretty="%h" | Out-String -NoNewLine
+$version_nuget_major = git show --no-patch --no-notes --pretty="%cs" | Out-String -NoNewLine
+$version_nuget_major = $version_nuget_major -Replace "-",""
+popd
 
 if (($version_hash -eq $version_hash_old) -and (-not $force)) {
   Write-Output "Already up to date."
 }
 else {
   if ($version_hash -ne $version_hash_old) {
-    $wc.DownloadFile("https://github.com/ffmpeg/ffmpeg/archive/$version_hash.tar.gz", "$version_hash.tar.gz")
-    $sha512 = (Get-FileHash -Algorithm SHA512 "$version_hash.tar.gz").Hash.ToLower()
+    $wc = New-Object System.Net.WebClient
+    $server = "https://github.com/ffmpeg/ffmpeg/archive"
+    $file = "$version_hash.tar.gz"
+    Write-Output "Downloading $server/$file..."
+    $wc.DownloadFile("$server/$file", "$file")
+    $sha512 = (Get-FileHash -Algorithm SHA512 "$file").Hash.ToLower()
     Write-Output $sha512 | Set-Content "SHA512" -Encoding Ascii -NoNewline
   }
   if ($version_nuget_major -eq $version_nuget_major_old) {
