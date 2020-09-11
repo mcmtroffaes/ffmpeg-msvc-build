@@ -15,9 +15,9 @@ build_script:
       pushd C:\Tools\vcpkg
       git log -1
       git fetch
-      git checkout %VCPKG_HASH% -d
+      git checkout $env:VCPKG_HASH -d
       git log -1
-      git apply 9000-fix-cmake-platform-libs.patch
+      git apply C:\projects\ffmpeg-msvc-build\9000-fix-cmake-platform-libs.patch
       .\bootstrap-vcpkg.bat -disableMetrics
       .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
       popd
