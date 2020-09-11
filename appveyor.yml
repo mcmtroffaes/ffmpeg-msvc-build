@@ -12,14 +12,14 @@ platform:
   - x64
 build_script:
   - cmd: |
-      pushd C:\Tools\vcpkg
+      cd C:\Tools\vcpkg
       git log -1
       git fetch
       git checkout %VCPKG_HASH% -d
       git log -1
       git apply C:\projects\ffmpeg-msvc-build\9000-fix-cmake-platform-libs.patch
       .\bootstrap-vcpkg.bat -disableMetrics
-      popd
+      cd C:\projects\ffmpeg-msvc-build\
   - ps: .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - vcpkg integrate install
