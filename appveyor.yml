@@ -1,7 +1,7 @@
 version: 1.0.{build}
 image: Visual Studio 2019
 environment:
-  FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,mp3lame,nvcodec,opus,snappy,soxr,theora,vpx,wavpack,zlib
+  FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
   VCPKG_HASH: 18ab4b72a26284f0df28295ce7bf9b21c96f20f4
 
   matrix:
@@ -11,10 +11,16 @@ matrix:
 platform:
   - x64
 build_script:
-  - pushd C:\Tools\vcpkg && git log -1 && popd
-  - pushd C:\Tools\vcpkg && git fetch && git checkout %VCPKG_HASH% -d && git log -1 && popd
-  - pushd C:\Tools\vcpkg && .\bootstrap-vcpkg.bat -disableMetrics && popd
-  - ps: .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+  - ps: |
+      pushd C:\Tools\vcpkg
+      git log -1
+      git fetch
+      git checkout %VCPKG_HASH% -d
+      git log -1
+      patch -p1 < 9000-fix-cmake-platform-libs.patch
+      .\bootstrap-vcpkg.bat -disableMetrics
+      .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+      popd
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - vcpkg integrate install
   - mkdir build
