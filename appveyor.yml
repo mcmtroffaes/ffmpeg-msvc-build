@@ -5,21 +5,23 @@ environment:
   VCPKG_HASH: 18ab4b72a26284f0df28295ce7bf9b21c96f20f4
 
   matrix:
-    - TRIPLET: x86-windows-static-md
     - TRIPLET: x64-windows-static-md
 matrix:
   fast_finish: true
 platform:
   - x64
 build_script:
-  # vcpkg in appveyor is broken, checkout latest working commit
   - pushd C:\Tools\vcpkg && git log -1 && popd
   - pushd C:\Tools\vcpkg && git fetch && git checkout %VCPKG_HASH% -d && git log -1 && popd
   - pushd C:\Tools\vcpkg && .\bootstrap-vcpkg.bat -disableMetrics && popd
   - ps: .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - vcpkg integrate install
-  - pushd test && cmake -DCMAKE_BUILD_TYPE=Release -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md . && ninja && popd
+  - mkdir build
+  - cd build
+  - cmake -DCMAKE_BUILD_TYPE=RELEASE -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md ../test
+  - ninja
+  - cd ..
 test: off
 artifacts:
   - path: '*.7z'
