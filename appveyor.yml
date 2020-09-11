@@ -1,7 +1,7 @@
 version: 1.0.{build}
 image: Visual Studio 2019
 environment:
-  FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+  FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
   VCPKG_HASH: 18ab4b72a26284f0df28295ce7bf9b21c96f20f4
 
   matrix:
