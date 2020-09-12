@@ -28,12 +28,13 @@ build_script:
       git fetch
       git checkout %VCPKG_HASH% -d
       git log -1
-      git apply C:\projects\ffmpeg-msvc-build\9000-fix-cmake-platform-libs.patch
+      copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "C:\Tools\vcpkg\scripts\cmake\"
       .\bootstrap-vcpkg.bat -disableMetrics
+      .\vcpkg.exe upgrade --no-dry-run
+      .\vcpkg.exe integrate install
       cd C:\projects\ffmpeg-msvc-build\
   - ps: .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - vcpkg integrate install
   - mkdir build
   - cd build
   - cmake -DCMAKE_BUILD_TYPE=RELEASE -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md ../test
@@ -53,3 +54,5 @@ deploy:
   on:
     APPVEYOR_REPO_TAG: true
     FULL_BUILD: true
+cache:
+  - c:\tools\vcpkg\installed\ -> appveyor.yml
