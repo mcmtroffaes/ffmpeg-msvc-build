@@ -1,7 +1,6 @@
 version: 1.0.{build}
 image: Visual Studio 2019
 environment:
-  VCPKG_HASH: 18ab4b72a26284f0df28295ce7bf9b21c96f20f4
   TRIPLET: x64-windows-static-md
   FULL_BUILD: false
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
@@ -27,12 +26,13 @@ install:
       cd C:\Tools\vcpkg
       git log -1
       git fetch
+      set /p VCPKG_HASH=<VCPKG_HASH.txt
       git checkout %VCPKG_HASH% -d
       git log -1
       copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "C:\Tools\vcpkg\scripts\cmake\"
       .\bootstrap-vcpkg.bat -disableMetrics
-      .\vcpkg.exe upgrade --no-dry-run
       .\vcpkg.exe integrate install
+      .\vcpkg.exe upgrade --no-dry-run
       .\vcpkg.exe install "ffmpeg[%FEATURES%]:%TRIPLET%" --recurse
       dir /s /b "installed\%TRIPLET%"
       cd C:\projects\ffmpeg-msvc-build\
@@ -56,4 +56,4 @@ deploy:
     APPVEYOR_REPO_TAG: true
     FULL_BUILD: true
 cache:
-  - c:\tools\vcpkg\installed\ -> appveyor.yml
+  - c:\tools\vcpkg\installed\ -> VCPKG_HASH.txt
