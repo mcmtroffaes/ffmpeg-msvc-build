@@ -12,7 +12,7 @@ environment:
     - FEATURES: core,opus
     - FEATURES: core,snappy
     - FEATURES: core,soxr
-    - FEATURES: core,vpx
+    - FEATURES: core,avcodec,vpx
     - FEATURES: core,wavpack
     - FEATURES: core,zlib
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
