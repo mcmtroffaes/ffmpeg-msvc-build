@@ -4,6 +4,7 @@ environment:
   VCPKG_HASH: 18ab4b72a26284f0df28295ce7bf9b21c96f20f4
   TRIPLET: x64-windows-static-md
   FULL_BUILD: false
+  APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
 
   matrix:
     - FEATURES: core,bzip2
@@ -21,7 +22,7 @@ matrix:
   fast_finish: true
 platform:
   - x64
-build_script:
+install:
   - cmd: |
       cd C:\Tools\vcpkg
       git log -1
@@ -32,14 +33,14 @@ build_script:
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe upgrade --no-dry-run
       .\vcpkg.exe integrate install
+      .\vcpkg.exe install "ffmpeg[%FEATURES%]:%TRIPLET%" --recurse
+      dir /s /b "installed\%TRIPLET%"
       cd C:\projects\ffmpeg-msvc-build\
-  - ps: .\build.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+  - ps: .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+build_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - mkdir build
-  - cd build
-  - cmake -DCMAKE_BUILD_TYPE=RELEASE -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md ../test
-  - ninja
-  - cd ..
+  - cmake -S test -B build -DCMAKE_BUILD_TYPE=RELEASE -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md
+  - cmake --build build
 test: off
 artifacts:
   - path: '*.7z'

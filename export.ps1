@@ -11,12 +11,6 @@ if (-Not $control[1].StartsWith("Version:")) { throw "could not find Version fie
 $control = Get-Content "$vcpkg\ports\ffmpeg\CONTROL"
 if (-Not $control[2].StartsWith("Port-Version:")) { throw "could not find Port-Version field in CONTROL file" }
 $version = $control[1].Remove(0, 9), $control[2].Remove(0,14) -Join "-"
-Write-Output "version: $version"
-
-# install
-
-& "$vcpkg\vcpkg" install "ffmpeg[$features]:$triplet" --recurse
-Get-ChildItem -Recurse -Name -File -Path "$vcpkg\installed\$triplet"
 
 # get license from copyright file
 
@@ -53,9 +47,10 @@ else {
   throw "unknown license"
 }
 
-$ffmpeg = "ffmpeg-$version-$license-$triplet"
-
 # export
+
+$ffmpeg = "ffmpeg-$version-$license-$triplet"
+Write-Output "Exporting $ffmpeg..."
 
 Try {
   & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
