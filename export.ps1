@@ -7,10 +7,20 @@ param (
 # get version from CONTROL
 
 $control = Get-Content "$vcpkg\ports\ffmpeg\CONTROL"
-if (-Not $control[1].StartsWith("Version:")) { throw "could not find Version field in CONTROL file" }
-$control = Get-Content "$vcpkg\ports\ffmpeg\CONTROL"
-if (-Not $control[2].StartsWith("Port-Version:")) { throw "could not find Port-Version field in CONTROL file" }
-$version = $control[1].Remove(0, 9), $control[2].Remove(0,14) -Join "-"
+if (-Not $control[1].StartsWith("Version:")) {
+  throw "could not find Version field in CONTROL file"
+}
+if (-Not $control[2].StartsWith("Port-Version:")) {
+  if (-Not $control[2].StartsWith("Homepage:")) {
+    throw "could not find Port-Version field in CONTROL file"
+  }
+  else {
+    $version = $control[1].Remove(0, 9), "0" -Join "-"
+  }
+}
+else {
+  $version = $control[1].Remove(0, 9), $control[2].Remove(0,14) -Join "-"
+}
 
 # get license from copyright file
 
