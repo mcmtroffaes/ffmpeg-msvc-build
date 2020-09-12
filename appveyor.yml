@@ -1,11 +1,22 @@
 version: 1.0.{build}
 image: Visual Studio 2019
 environment:
-  FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
   VCPKG_HASH: 18ab4b72a26284f0df28295ce7bf9b21c96f20f4
+  TRIPLET: x64-windows-static-md
+  FULL_BUILD: false
 
   matrix:
-    - TRIPLET: x64-windows-static-md
+    - FEATURES: core,bzip2
+    - FEATURES: core,lzma
+    - FEATURES: core,nvcodec
+    - FEATURES: core,opus
+    - FEATURES: core,snappy
+    - FEATURES: core,soxr
+    - FEATURES: core,vpx
+    - FEATURES: core,wavpack
+    - FEATURES: core,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+      FULL_BUILD: true
 matrix:
   fast_finish: true
 platform:
@@ -40,4 +51,5 @@ deploy:
   draft: false
   prerelease: false
   on:
-    appveyor_repo_tag: true
+    APPVEYOR_REPO_TAG: true
+    FULL_BUILD: true
