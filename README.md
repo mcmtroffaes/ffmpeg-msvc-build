@@ -6,10 +6,7 @@ Scripts for building FFmpeg with MSVC on AppVeyor.
 
 The script uses [vcpkg](https://github.com/microsoft/vcpkg)
 which closely follows the [official
-instructions](https://trac.ffmpeg.org/wiki/CompilationGuide/MSVC). By
-default, only static LGPL builds are generated (in 32 and 64 bit, and
-in debug and release configurations). However, the build matrix can be
-easily modified to allow different configurations to be built as well.
+instructions](https://trac.ffmpeg.org/wiki/CompilationGuide/MSVC).
 
 ## Requirements
 
@@ -18,23 +15,16 @@ easily modified to allow different configurations to be built as well.
 
 ## Usage
 
-Prebuilt static LGPL builds with Visual Studio 2019 (toolset v142) can be found [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases). If you want to build your own version on your local machine, then execute the build script as follows:
-
-```
-.\build.ps1 `
-  -vcpkg <path-to-vcpkg-root>
-  -platform {x86,x64} `
-  -runtime_library {MT,MD} `
-  -linkage {dynamic,static} `
-  -toolset {v120,v140,v141,v142,...} `
-  -features {core,vpx,...}
-```
+Prebuilt static LGPL builds with Visual Studio 2019 can be found
+[here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases).
+See the
+[vcpkg export documentation](https://vcpkg.readthedocs.io/en/latest/users/integration/#export)
+for more information on how to use these pre-built packages.
 
 ## License
 
 All scripts for creating the builds are licensed under the conditions
-of the [MIT license](LICENSE.txt). For the examples in the
-[examples](examples) folder, see individual files for license details.
+of the [MIT license](LICENSE.txt).
 
 The builds themselves are covered by the relevant license for your build
 (see [here](https://www.gnu.org/licenses/) for full details).
