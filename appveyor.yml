@@ -18,7 +18,7 @@ environment:
     - FEATURES: core,opus,avcodec
     #- FEATURES: core,postproc
     - FEATURES: core,snappy,avcodec
-    - FEATURES: core,soxr
+    - FEATURES: core,soxr,swresample
     - FEATURES: core,vpx,avcodec
     - FEATURES: core,wavpack,avcodec
     #- FEATURES: core,x264,avcodec
