@@ -36,10 +36,10 @@ platform:
   - x64
 install:
   - cmd: |
+      set /p VCPKG_HASH=<VCPKG_HASH.txt
       cd C:\Tools\vcpkg
       git log -1
       git fetch
-      set /p VCPKG_HASH=<VCPKG_HASH.txt
       git checkout %VCPKG_HASH% -d
       git log -1
       copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "C:\Tools\vcpkg\scripts\cmake\"
