@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.17)
+project(test_swresample)
+find_package(FFMPEG REQUIRED)
+add_executable(test_swresample main.cpp)
+target_link_libraries(test_swresample PRIVATE ${FFMPEG_LIBRARIES})
+target_include_directories(test_swresample PRIVATE ${FFMPEG_INCLUDE_DIRS})
