@@ -50,7 +50,10 @@ install:
       dir /s /b "installed\%TRIPLET%"
       cd C:\projects\ffmpeg-msvc-build\
 build_script:
-  - ps: .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+  - ps: |
+      if ($env:FULL_BUILD) {
+        .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+      }
 test_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - mkdir build-rel
