@@ -7,7 +7,7 @@ environment:
 
   matrix:
     # individual feature testing
-    - FEATURES: core,bzip2,avformat
+    - FEATURES: core,bzip2,avformat,avcodec
     #- FEATURES: core,ffmpeg
     #- FEATURES: core,ffplay
     #- FEATURES: core,ffprobe
@@ -23,7 +23,7 @@ environment:
     - FEATURES: core,wavpack
     #- FEATURES: core,x264
     #- FEATURES: core,x265
-    - FEATURES: core,zlib,avformat
+    - FEATURES: core,zlib,avformat,avcodec
     # LGPL build
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       FULL_BUILD: true
