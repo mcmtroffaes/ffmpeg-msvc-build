@@ -53,9 +53,7 @@ build_script:
   - ps: .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
 test_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - ctest --build-and-test test build-rel --build-generator Ninja --build-options -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md -DFEATURES=%FEATURES:,=;%
-artifacts:
-  - path: '*.7z'
+  - ctest --build-and-test test build-rel --build-generator Ninja --build-noclean -V --build-options -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md -DFEATURES=%FEATURES:,=;%
 deploy:
   description: 'Headers and libraries for FFmpeg.'
   provider: GitHub
