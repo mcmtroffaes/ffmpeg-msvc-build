@@ -13,16 +13,16 @@ environment:
     #- FEATURES: core,ffprobe
     #- FEATURES: core,iconv
     - FEATURES: core,lzma
-    - FEATURES: core,nvcodec
+    - FEATURES: core,nvcodec,avcodec
     #- FEATURES: core,mp3lame
-    - FEATURES: core,opus
+    - FEATURES: core,opus,avcodec
     #- FEATURES: core,postproc
-    - FEATURES: core,snappy
+    - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr
     - FEATURES: core,vpx,avcodec
-    - FEATURES: core,wavpack
-    #- FEATURES: core,x264
-    #- FEATURES: core,x265
+    - FEATURES: core,wavpack,avcodec
+    #- FEATURES: core,x264,avcodec
+    - FEATURES: core,x265,avcodec
     - FEATURES: core,zlib,avformat,avcodec
     # LGPL build
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
