@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.17)
+project(avutil)
+find_package(FFMPEG REQUIRED)
+add_executable(avutil main.cpp)
+target_link_libraries(avutil PRIVATE ${FFMPEG_LIBRARIES})
+target_include_directories(avutil PRIVATE ${FFMPEG_INCLUDE_DIRS})
+add_test(avutil avutil)

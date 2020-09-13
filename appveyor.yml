@@ -6,17 +6,30 @@ environment:
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
 
   matrix:
+    # individual feature testing
     - FEATURES: core,bzip2
+    #- FEATURES: core,ffmpeg
+    #- FEATURES: core,ffplay
+    #- FEATURES: core,ffprobe
+    #- FEATURES: core,iconv
     - FEATURES: core,lzma
     - FEATURES: core,nvcodec
+    #- FEATURES: core,mp3lame
     - FEATURES: core,opus
+    #- FEATURES: core,postproc
     - FEATURES: core,snappy
     - FEATURES: core,soxr
-    - FEATURES: core,avcodec,vpx
+    - FEATURES: core,vpx,avcodec
     - FEATURES: core,wavpack
+    #- FEATURES: core,x264
+    #- FEATURES: core,x265
     - FEATURES: core,zlib
+    # LGPL build
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       FULL_BUILD: true
+    # GPL build
+    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,gpl,bzip2,lzma,nvcodec,opus,postproc,snappy,soxr,vpx,wavpack,x264,x265,zlib
+    #  FULL_BUILD: true
 matrix:
   fast_finish: true
 platform:
@@ -36,12 +49,11 @@ install:
       .\vcpkg.exe install "ffmpeg[%FEATURES%]:%TRIPLET%" --recurse
       dir /s /b "installed\%TRIPLET%"
       cd C:\projects\ffmpeg-msvc-build\
-  - ps: .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
 build_script:
+  - ps: .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+test_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cmake -S test -B build -DCMAKE_BUILD_TYPE=RELEASE -G Ninja -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md
-  - cmake --build build
-test: off
+  - ctest --build-and-test test build-rel --build-generator Ninja --build-options -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static-md -DFEATURES=%FEATURES:,=;%
 artifacts:
   - path: '*.7z'
 deploy:

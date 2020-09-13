@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.17)
+project(postproc)
+find_package(FFMPEG REQUIRED)
+add_executable(postproc main.cpp)
+target_link_libraries(postproc PRIVATE ${FFMPEG_LIBRARIES})
+target_include_directories(postproc PRIVATE ${FFMPEG_INCLUDE_DIRS})
+add_test(postproc postproc)
