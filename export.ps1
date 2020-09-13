@@ -62,19 +62,7 @@ else {
 $ffmpeg = "ffmpeg-$version-$license-$triplet"
 Write-Output "Exporting $ffmpeg..."
 
-Try {
-  & "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
-}
-Finally {
-  pushd $vcpkg
-  & 7z a logs.7z -ir!".\*.log"
-  popd
-  Move-Item -Path "$vcpkg\logs.7z" -Destination "."
-  if ($env:APPVEYOR) {
-    Write-Output "Pushing logs.7z"
-    Push-AppveyorArtifact logs.7z  # this forces push even if build fails
-  }
-}
+& "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
 
 # move vcpkg export to the right location
 
