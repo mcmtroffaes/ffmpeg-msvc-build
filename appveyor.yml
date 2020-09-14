@@ -12,7 +12,7 @@ environment:
     #- FEATURES: core,ffplay
     #- FEATURES: core,ffprobe
     #- FEATURES: core,iconv
-    - FEATURES: core,lzma
+    - FEATURES: core,lzma,avformat,avcodec
     - FEATURES: core,nvcodec,avcodec
     #- FEATURES: core,mp3lame
     - FEATURES: core,opus,avcodec
