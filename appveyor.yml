@@ -22,7 +22,7 @@ environment:
     - FEATURES: core,vpx,avcodec
     - FEATURES: core,wavpack,avcodec
     #- FEATURES: core,x264,avcodec
-    - FEATURES: core,x265,avcodec
+    #- FEATURES: core,x265,avcodec
     - FEATURES: core,zlib,avformat,avcodec
     # LGPL build
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
@@ -31,8 +31,6 @@ environment:
     #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,gpl,bzip2,lzma,nvcodec,opus,postproc,snappy,soxr,vpx,wavpack,x264,x265,zlib
     #  FULL_BUILD: true
 matrix:
-  allow_failures:
-    - FEATURES: core,x265,avcodec  # tends to time out
   fast_finish: true
 platform:
   - x64
