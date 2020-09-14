@@ -55,7 +55,7 @@ install:
       cd C:\projects\ffmpeg-msvc-build\
 build_script:
   - ps: |
-      if ($env:FULL_BUILD) {
+      if ($env:FULL_BUILD -Eq "true") {
         .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
       }
 test_script:
