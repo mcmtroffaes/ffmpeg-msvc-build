@@ -48,7 +48,7 @@ endif()
 if ("avformat" IN_LIST FEATURES)
   add_subdirectory(avformat)
   if ("bzip2" IN_LIST FEATURES)
-    # TODO
+    add_test(NAME test_bzip2 COMMAND test_decode_subtitle "${CMAKE_CURRENT_SOURCE_DIR}/subtitle_bzip2.mkv")
   endif()
   if ("zlib" IN_LIST FEATURES)
     add_test(NAME test_zlib COMMAND test_decode_image "${CMAKE_CURRENT_SOURCE_DIR}/tiff_zlib.tif")
