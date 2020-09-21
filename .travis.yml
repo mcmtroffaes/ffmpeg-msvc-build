@@ -1,0 +1,33 @@
+language: cpp
+os:
+  - linux
+  - osx
+dist: bionic
+osx_image: xcode12u
+env:
+  - FEATURES=core
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+addons:
+  apt:
+    packages:
+    - yasm
+  homebrew:
+    packages:
+    - yasm
+    - ninja
+before_install:
+  - cmake --version
+install:
+  - git clone https://github.com/Microsoft/vcpkg.git
+  - cd ${TRAVIS_BUILD_DIR}/vcpkg
+  - git checkout `cat ${TRAVIS_BUILD_DIR}/VCPKG_HASH.txt` -d
+  - ./bootstrap-vcpkg.sh -disableMetrics
+  - ./vcpkg install ffmpeg[${FEATURES}]
+script:
+  - cd ${TRAVIS_BUILD_DIR}
+  - mkdir build-rel
+  - cd build-rel
+  - cmake --help
+  - cmake ../test -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake -DFEATURES=${FEATURES//,/;}
+  - cmake --build .
+  - ctest -V

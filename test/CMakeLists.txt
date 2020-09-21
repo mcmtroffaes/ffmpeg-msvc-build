@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.12)
 project(ffmpeg_test)
 set(FEATURES "avcodec;avformat;bzip2;ffmpeg;ffplay;ffprobe;lzma;nvcodec;opus;postproc;snappy;soxr;swresample;vpx;wavpack;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()

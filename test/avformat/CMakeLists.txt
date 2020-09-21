@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.12)
 project(test_avformat)
 find_package(FFMPEG REQUIRED)
 add_executable(test_decode "decode.cpp")

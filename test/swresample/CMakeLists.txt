@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.12)
 project(test_swresample)
 find_package(FFMPEG REQUIRED)
 add_executable(test_swresample main.cpp)
