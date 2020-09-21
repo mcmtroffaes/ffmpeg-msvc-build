@@ -6,7 +6,8 @@ dist: bionic
 osx_image: xcode12u
 env:
   - FEATURES=core
-  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+  # vpx broken - see https://github.com/microsoft/vcpkg/pull/13636
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,opus,snappy,soxr,wavpack,zlib
 addons:
   apt:
     packages:
