@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <memory>
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
