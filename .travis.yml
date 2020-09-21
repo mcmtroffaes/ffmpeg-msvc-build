@@ -27,7 +27,6 @@ script:
   - cd ${TRAVIS_BUILD_DIR}
   - mkdir build-rel
   - cd build-rel
-  - cmake --help
   - cmake ../test -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake -DFEATURES=${FEATURES//,/;}
   - cmake --build .
   - ctest -V
