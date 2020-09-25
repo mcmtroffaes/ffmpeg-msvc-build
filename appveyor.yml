@@ -13,7 +13,7 @@ environment:
     # BROKEN
     #- FEATURES: core,ffplay
     - FEATURES: core,ffprobe
-    - FEATURES: core,iconv
+    - FEATURES: core,iconv,avcodec
     - FEATURES: core,lzma,avformat
     - FEATURES: core,nvcodec,avcodec
     # BROKEN

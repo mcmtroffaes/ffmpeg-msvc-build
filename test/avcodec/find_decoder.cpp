@@ -1,22 +1,16 @@
-// main.cpp
 #include <iostream>
+#include "codec.h"
 
-extern "C" {
-#define __STDC_CONSTANT_MACROS
-#include <libavcodec/avcodec.h>
-#include <libavutil/log.h>
-}
-
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
 	if (argc != 2) {
-		std::cout << "expected one argument" << std::endl;
+		std::cerr << "expected one argument" << std::endl;
 		return -1;
 	}
 	av_log_set_callback(av_log_default_callback);
 	av_log_set_level(AV_LOG_DEBUG);
 	if (avcodec_find_decoder_by_name(argv[1]) == nullptr) {
-		std::cout << "decoder " << argv[1] << " not found" << std::endl;
+		std::cerr << "decoder " << argv[1] << " not found" << std::endl;
 		return -1;
 	}
 	return 0;

@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include "avcreate.h"
+#include "format.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -9,7 +9,7 @@ extern "C" {
 
 struct Stream {
 	AVCodecContextPtr context;
-	Stream(const AVCodecParameters& par)
+	Stream(const AVCodecParameters& par, AVDictionaryPtr& options)
 		: context{ nullptr }
 	{
 		auto codec = find_decoder(par.codec_id);
@@ -22,7 +22,10 @@ struct Stream {
 		int ret = avcodec_parameters_to_context(context.get(), &par);
 		if (ret < 0)
 			throw std::runtime_error("failed to copy codec parameters to decoder context");
-		if ((ret = avcodec_open2(context.get(), codec, nullptr)) < 0)
+		auto dict = options.release();
+		ret = avcodec_open2(context.get(), codec, &dict);
+		options.reset(dict);
+		if (ret < 0)
 			throw std::runtime_error("failed to open codec");
 	}
 
@@ -94,7 +97,7 @@ struct Stream {
 			std::cout << "start display time: " << sub.start_display_time << std::endl;
 			std::cout << "end display time: " << sub.end_display_time << std::endl;
 			std::cout << "num rects: " << sub.num_rects << std::endl;
-			for (int i = 0; i < sub.num_rects; i++) {
+			for (unsigned int i = 0; i < sub.num_rects; i++) {
 				std::cout << "rect " << i << std::endl;
 				std::cout << "  type: " << sub.rects[i]->type << std::endl;
 				if (sub.rects[i]->text)
@@ -111,8 +114,8 @@ struct Stream {
 
 int main(int argc, char** argv)
 {
-	if (argc != 2) {
-		std::cerr << "expected one argument" << std::endl;
+	if (argc < 2) {
+		std::cerr << "expected at least one argument" << std::endl;
 		return -1;
 	}
 	av_log_set_callback(av_log_default_callback);
@@ -120,15 +123,19 @@ int main(int argc, char** argv)
 	auto fmt_ctx = open_input(argv[1]);
 	if (!fmt_ctx)
 		return -1;
+	AVDictionaryPtr options = nullptr;
+	if (argc >= 3) {
+		options = dict_parse_string(argv[2], "=", ",");
+	}
 	std::cout << "input format: " << fmt_ctx->iformat->name << std::endl;
 	std::vector<Stream> streams;
 	std::cout << "number of streams: " << fmt_ctx->nb_streams << std::endl;
-	for (int i = 0; i < fmt_ctx->nb_streams; i++) {
+	for (unsigned int i = 0; i < fmt_ctx->nb_streams; i++) {
 		if (!fmt_ctx->streams[i])
 			throw std::runtime_error("stream is null");
 		if (!fmt_ctx->streams[i]->codecpar)
 			throw std::runtime_error("codecpar is null");
-		streams.emplace_back(*fmt_ctx->streams[i]->codecpar);
+		streams.emplace_back(*fmt_ctx->streams[i]->codecpar, options);
 	}
 	AVPacket pkt = { 0 };
 	av_init_packet(&pkt);

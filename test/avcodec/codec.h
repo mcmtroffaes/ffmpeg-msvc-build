@@ -5,7 +5,7 @@
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
-#include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 #include <libavutil/error.h>
 #include <libavutil/log.h>
 }
@@ -15,12 +15,6 @@ std::string av_error_string(int errnum) {
 	av_make_error_string(buffer, sizeof(buffer), errnum);
 	return std::string(buffer);
 }
-
-struct AVFormatContextDeleter {
-	void operator()(AVFormatContext* context) const {
-		avformat_close_input(&context);
-	};
-};
 
 struct AVCodecContextDeleter {
 	void operator()(AVCodecContext* context) const {
@@ -34,30 +28,16 @@ struct AVFrameDeleter {
 	};
 };
 
-using AVFormatContextPtr = std::unique_ptr<AVFormatContext, AVFormatContextDeleter>;
+struct AVDictionaryDeleter {
+	void operator()(AVDictionary* dict) const {
+		av_dict_free(&dict);
+	};
+};
+
 using AVCodecPtr = const AVCodec*;
 using AVCodecContextPtr = std::unique_ptr<AVCodecContext, AVCodecContextDeleter>;
 using AVFramePtr = std::unique_ptr<AVFrame, AVFrameDeleter>;
-
-AVFormatContextPtr open_input(const std::string& url) {
-	AVFormatContext* context{ nullptr };
-	auto ret{ avformat_open_input(&context, url.c_str(), nullptr, nullptr) };
-	if (ret < 0) {
-		std::cerr << "failed to allocate output context for " << url << ": " << av_error_string(ret) << std::endl;
-	}
-	else if (!context) {
-		std::cerr << "failed to allocate output context for " << url << std::endl;
-	}
-	else {
-		auto ret2{ avformat_find_stream_info(context, 0) };
-		if (ret2 < 0) {
-			std::cerr << "failed to retrieve input stream information for " << url << ": " << av_error_string(ret) << std::endl;
-			avformat_close_input(&context);
-			context = nullptr;
-		}
-	}
-	return AVFormatContextPtr{ context };
-}
+using AVDictionaryPtr = std::unique_ptr<AVDictionary, AVDictionaryDeleter>;
 
 AVCodecPtr find_decoder(const AVCodecID& codec_id) {
 	auto codec = avcodec_find_decoder(codec_id);
@@ -82,4 +62,13 @@ AVFramePtr frame_alloc() {
 		frame->pts = 0;
 	}
 	return AVFramePtr{ frame };
+}
+
+AVDictionaryPtr dict_parse_string(const std::string& options, const std::string& key_val_sep, const std::string& pairs_sep)
+{
+	AVDictionary* dict{};
+	auto ret = av_dict_parse_string(&dict, options.c_str(), key_val_sep.c_str(), pairs_sep.c_str(), 0);
+	if (ret < 0)
+		std::cerr << "failed to parse dictionary" << std::endl;
+	return AVDictionaryPtr{ dict };
 }
