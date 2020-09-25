@@ -7,13 +7,13 @@ environment:
 
   matrix:
     # individual feature testing
-    - FEATURES: core,bzip2,avformat,avcodec
-    - FEATURES: core,ffmpeg,avcodec,avfilter,avformat
+    - FEATURES: core,bzip2,avformat
+    - FEATURES: core,ffmpeg
     # BROKEN
-    #- FEATURES: core,ffplay,avcodec,avfilter,avformat,swscale,swresample,sdl2
-    - FEATURES: core,ffprobe,avcodec,avformat
+    #- FEATURES: core,ffplay
+    - FEATURES: core,ffprobe
     - FEATURES: core,iconv
-    - FEATURES: core,lzma,avformat,avcodec
+    - FEATURES: core,lzma,avformat
     - FEATURES: core,nvcodec,avcodec
     # BROKEN
     #- FEATURES: core,mp3lame
@@ -25,9 +25,9 @@ environment:
     - FEATURES: core,wavpack,avcodec
     - FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
-    - FEATURES: core,zlib,avformat,avcodec
+    - FEATURES: core,zlib,avformat
     # LGPL build
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       FULL_BUILD: true
     # GPL build
     #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,gpl,bzip2,lzma,nvcodec,opus,postproc,snappy,soxr,vpx,wavpack,x264,x265,zlib
