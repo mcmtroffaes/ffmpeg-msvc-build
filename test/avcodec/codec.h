@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <memory>
+#include <spdlog/spdlog.h>
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -42,21 +42,21 @@ using AVDictionaryPtr = std::unique_ptr<AVDictionary, AVDictionaryDeleter>;
 AVCodecPtr find_decoder(const AVCodecID& codec_id) {
 	auto codec = avcodec_find_decoder(codec_id);
 	if (!codec)
-		std::cerr << "failed find decoder with id " << codec_id << std::endl;
+		spdlog::error("failed find decoder with id {}", codec_id);
 	return codec;
 }
 
 AVCodecContextPtr codec_alloc_context(const AVCodec& codec) {
 	auto context = avcodec_alloc_context3(&codec);
 	if (!context)
-		std::cerr << "failed to allocate context for " << codec.name << " codec" << std::endl;
+		spdlog::error("failed to allocate context for {} codec", codec.name);
 	return AVCodecContextPtr{ context };
 }
 
 AVFramePtr frame_alloc() {
 	auto frame = av_frame_alloc();
 	if (!frame) {
-		std::cerr << "failed to allocate frame" << std::endl;
+		spdlog::error("failed to allocate frame");
 	}
 	else {
 		frame->pts = 0;
@@ -69,6 +69,6 @@ AVDictionaryPtr dict_parse_string(const std::string& options, const std::string&
 	AVDictionary* dict{};
 	auto ret = av_dict_parse_string(&dict, options.c_str(), key_val_sep.c_str(), pairs_sep.c_str(), 0);
 	if (ret < 0)
-		std::cerr << "failed to parse dictionary" << std::endl;
+		spdlog::error("failed to parse dictionary");
 	return AVDictionaryPtr{ dict };
 }

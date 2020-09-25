@@ -1,5 +1,3 @@
-#include <iostream>
-#include <spdlog/spdlog.h>
 #include "codec.h"
 
 int main(int argc, char** argv)
