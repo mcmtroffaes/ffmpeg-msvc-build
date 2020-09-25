@@ -7,8 +7,7 @@ osx_image: xcode12u
 env:
   - FEATURES=core
   # zlib broken (debug library is zlib.a but cmake looks for zlibd.a)
-  # vpx broken - see https://github.com/microsoft/vcpkg/pull/13636
-  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,opus,snappy,soxr,wavpack
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,opus,snappy,soxr,vpx,wavpack
 addons:
   apt:
     packages:
