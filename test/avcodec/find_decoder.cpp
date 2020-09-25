@@ -1,17 +1,20 @@
 #include <iostream>
+#include <spdlog/spdlog.h>
 #include "codec.h"
 
 int main(int argc, char** argv)
 {
-	if (argc != 2) {
-		std::cerr << "expected one argument" << std::endl;
-		return -1;
-	}
 	av_log_set_callback(av_log_default_callback);
 	av_log_set_level(AV_LOG_DEBUG);
-	if (avcodec_find_decoder_by_name(argv[1]) == nullptr) {
-		std::cerr << "decoder " << argv[1] << " not found" << std::endl;
+	spdlog::set_level(spdlog::level::debug);
+	if (argc != 2) {
+		spdlog::error("expected one argument");
 		return -1;
 	}
+	if (avcodec_find_decoder_by_name(argv[1]) == nullptr) {
+		spdlog::error("decoder {} not found", argv[1]);
+		return -1;
+	}
+	spdlog::info("encoder {} found", argv[1]);
 	return 0;
 }

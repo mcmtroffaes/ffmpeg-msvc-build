@@ -20,8 +20,8 @@ if ("avcodec" IN_LIST FEATURES)
   add_test(NAME test_decoder_flac COMMAND test_find_decoder flac)
   add_test(NAME test_encoder_ffv1 COMMAND test_find_encoder ffv1)
   add_test(NAME test_decoder_ffv1 COMMAND test_find_decoder ffv1)
-  add_test(NAME test_decoder_srt COMMAND test_open_decoder srt)
 
+  add_test(NAME test_decoder_srt COMMAND test_open_decoder srt)
   add_test(NAME test_decoder_srt_iconv COMMAND test_open_decoder srt sub_charenc=ISO-8859-1)
   test_for("iconv" test_decoder_srt_iconv)
 
@@ -32,15 +32,14 @@ if ("avcodec" IN_LIST FEATURES)
 
   add_test(NAME test_encoder_hap COMMAND test_find_encoder hap)
   test_for("snappy" test_encoder_hap)
-
   add_test(NAME test_decoder_hap COMMAND test_find_decoder hap)
+
   add_test(NAME test_encoder_mpeg4 COMMAND test_find_encoder mpeg4)
   add_test(NAME test_decoder_mpeg4 COMMAND test_find_decoder mpeg4)
-  add_test(NAME test_encoder_opus COMMAND test_find_encoder opus)
 
+  add_test(NAME test_encoder_opus COMMAND test_find_encoder opus)
   add_test(NAME test_decoder_opus COMMAND test_find_decoder opus)
-  # built-in opus decoder depends on swresample
-  test_for("swresample" test_decoder_opus)
+  test_for("swresample" test_decoder_opus)  # built-in opus decoder needs swresample
 
   add_test(NAME test_encoder_libopus COMMAND test_find_encoder libopus)
   add_test(NAME test_decoder_libopus COMMAND test_find_decoder libopus)
@@ -49,6 +48,7 @@ if ("avcodec" IN_LIST FEATURES)
 
   add_test(NAME test_decoder_vp8 COMMAND test_find_decoder vp8)
   add_test(NAME test_decoder_vp9 COMMAND test_find_decoder vp9)
+
   add_test(NAME test_encoder_libvpx_vp8 COMMAND test_find_encoder libvpx)
   add_test(NAME test_decoder_libvpx_vp8 COMMAND test_find_decoder libvpx)
   add_test(NAME test_encoder_libvpx_vp9 COMMAND test_find_encoder libvpx-vp9)
