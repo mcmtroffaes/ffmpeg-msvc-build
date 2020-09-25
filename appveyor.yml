@@ -24,7 +24,8 @@ environment:
     - FEATURES: core,soxr,swresample
     - FEATURES: core,vpx,avcodec
     - FEATURES: core,wavpack,avcodec
-    - FEATURES: core,x264,avcodec
+    # BROKEN
+    #- FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
     - FEATURES: core,zlib,avformat
     # LGPL build
