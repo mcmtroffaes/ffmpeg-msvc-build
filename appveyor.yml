@@ -12,23 +12,19 @@ environment:
     # BROKEN
     #- FEATURES: core,ffplay,avcodec,avfilter,avformat,swscale,swresample,sdl2
     - FEATURES: core,ffprobe,avcodec,avformat
-    # NEEDS https://github.com/microsoft/vcpkg/pull/13481
-    #- FEATURES: core,iconv
+    - FEATURES: core,iconv
     - FEATURES: core,lzma,avformat,avcodec
     - FEATURES: core,nvcodec,avcodec
     # BROKEN
     #- FEATURES: core,mp3lame
     - FEATURES: core,opus,avcodec
-    # NEEDS https://github.com/microsoft/vcpkg/pull/13502
-    #- FEATURES: core,postproc
+    - FEATURES: core,postproc
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
     - FEATURES: core,vpx,avcodec
     - FEATURES: core,wavpack,avcodec
-    # BROKEN
-    #- FEATURES: core,x264,avcodec
-    # NEEDS https://github.com/microsoft/vcpkg/pull/13502
-    #- FEATURES: core,x265,avcodec
+    - FEATURES: core,x264,avcodec
+    - FEATURES: core,x265,avcodec
     - FEATURES: core,zlib,avformat,avcodec
     # LGPL build
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
