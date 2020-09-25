@@ -7,6 +7,7 @@ environment:
 
   matrix:
     # individual feature testing
+    - FEATURES: core
     - FEATURES: core,bzip2,avformat
     - FEATURES: core,ffmpeg
     # BROKEN
