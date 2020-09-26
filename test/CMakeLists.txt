@@ -60,8 +60,8 @@ if ("avcodec" IN_LIST FEATURES)
 
   add_test(NAME test_encoder_wavpack COMMAND test_find_encoder wavpack)
   add_test(NAME test_decoder_wavpack COMMAND test_find_decoder wavpack)
-  test_for("wavpack" test_encoder_wavpack)
-  test_for("wavpack" test_decoder_wavpack)
+  add_test(NAME test_encoder_libwavpack COMMAND test_find_encoder libwavpack)
+  test_for("wavpack" test_encoder_libwavpack)
 
   add_test(NAME test_encoder_libx264 COMMAND test_find_encoder libx264)
   test_for("x264" test_encoder_libx264)
