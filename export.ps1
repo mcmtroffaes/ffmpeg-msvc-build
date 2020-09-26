@@ -21,13 +21,14 @@ if (-Not $control[2].StartsWith("Port-Version:")) {
 else {
   $version = $control[1].Remove(0, 9), $control[2].Remove(0,14) -Join "-"
 }
+Write-Output "FFmpeg version $version"
 
 # get license from copyright file
 
 $copyright = `
   Get-Content "$vcpkg\installed\$triplet\share\ffmpeg\copyright" -First 2 -Encoding Ascii `
   | ForEach-Object { $_.Trim() }
-Write-Output "" "COPYRIGHT" "~~~~~~~~~" "" $copyright ""
+Write-Output $copyright
 if ($copyright[0] -Eq "GNU LESSER GENERAL PUBLIC LICENSE") {
   if ($copyright[1] -Eq "Version 2.1, February 1999") {
     $license = "lgpl21"
