@@ -31,6 +31,13 @@ environment:
     # LGPL build
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       FULL_BUILD: true
+      TRIPLET: x64-windows
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+      FULL_BUILD: true
+      TRIPLET: x64-windows-static
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+      FULL_BUILD: true
+      TRIPLET: x64-windows-static-md
     # GPL build
     #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,gpl,bzip2,lzma,nvcodec,opus,postproc,snappy,soxr,vpx,wavpack,x264,x265,zlib
     #  FULL_BUILD: true
