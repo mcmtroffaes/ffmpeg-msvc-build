@@ -44,7 +44,7 @@ struct Stream {
 			return decode_subtitle_packet(pkt);
 			break;
 		default:
-			spdlog::error("unhandled packet type {}", context->codec->type);
+			spdlog::error("cannot handle packet media type {}", av_get_media_type_string(context->codec->type));
 			return -1;
 		}
 	}
