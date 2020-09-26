@@ -1,4 +1,3 @@
-#include <iostream>
 #include <vector>
 #include "format.h"
 
@@ -123,7 +122,7 @@ struct Stream {
 int main(int argc, char** argv)
 {
 	if (argc < 2) {
-		std::cerr << "expected at least one argument" << std::endl;
+		spdlog::error("expected at least one argument");
 		return -1;
 	}
 	av_log_set_callback(av_log_default_callback);
@@ -135,9 +134,9 @@ int main(int argc, char** argv)
 	if (argc >= 3) {
 		options = dict_parse_string(argv[2], "=", ",");
 	}
-	std::cout << "input format: " << fmt_ctx->iformat->name << std::endl;
+	spdlog::info("input format: {}", fmt_ctx->iformat->name);
 	std::vector<Stream> streams;
-	std::cout << "number of streams: " << fmt_ctx->nb_streams << std::endl;
+	spdlog::info("number of streams: {}", fmt_ctx->nb_streams);
 	for (unsigned int i = 0; i < fmt_ctx->nb_streams; i++) {
 		if (!fmt_ctx->streams[i])
 			throw std::runtime_error("stream is null");
@@ -149,7 +148,7 @@ int main(int argc, char** argv)
 	av_init_packet(&pkt);
 	int nb_packets = 0;
 	while (av_read_frame(fmt_ctx.get(), &pkt) >= 0) {
-		std::cout << "packet stream index: " << pkt.stream_index << std::endl;
+		spdlog::info("packet stream index: {}", pkt.stream_index);
 		int ret = streams[pkt.stream_index].decode_packet(pkt);
 		av_packet_unref(&pkt);
 		if (ret < 0)
@@ -157,7 +156,7 @@ int main(int argc, char** argv)
 		nb_packets++;
 	}
 	if (nb_packets == 0) {
-		std::cerr << "no packets decoded, something must be wrong" << std::endl;
+		spdlog::error("no packets decoded, something must be wrong");
 		return -1;
 	}
 	return 0;
