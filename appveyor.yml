@@ -50,7 +50,7 @@ install:
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
-      .\vcpkg.exe install spdlog --recurse
+      .\vcpkg.exe install spdlog:%TRIPLET% --recurse
       .\vcpkg.exe install ffmpeg[%FEATURES%]:%TRIPLET% --recurse
       dir /s /b "installed\%TRIPLET%"
       7z a logs.7z -ir!".\*.log"
