@@ -4,6 +4,7 @@ environment:
   TRIPLET: x64-windows-static-md
   RUN_EXPORT: false
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
+  MSVC_CRT_SUFFIX: Dll
 
   matrix:
     # individual feature testing
@@ -34,6 +35,7 @@ environment:
       RUN_EXPORT: true
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       TRIPLET: x64-windows-static
+      MSVC_CRT_SUFFIX:
       RUN_EXPORT: true
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       TRIPLET: x64-windows-static-md
@@ -72,13 +74,13 @@ test_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - mkdir build-rel
   - cd build-rel
-  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;%
+  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DMSVC_RUNTIME_LIBRARY=MultiThreaded%MSVC_CRT_SUFFIX%
   - cmake --build .
   - ctest -V
   - cd ..
   - mkdir build-dbg
   - cd build-dbg
-  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;%
+  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DMSVC_RUNTIME_LIBRARY=MultiThreadedDebug%MSVC_CRT_SUFFIX%
   - cmake --build .
   - ctest -V
 deploy:
