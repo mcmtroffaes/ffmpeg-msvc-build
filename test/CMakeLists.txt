@@ -1,4 +1,11 @@
 cmake_minimum_required(VERSION 3.12)
+
+# enable MSVC_RUNTIME_LIBRARY target property
+# see https://cmake.org/cmake/help/latest/policy/CMP0091.html
+if(POLICY CMP0091)
+  cmake_policy(SET CMP0091 NEW)
+endif()
+
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
