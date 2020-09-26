@@ -4,7 +4,7 @@ environment:
   TRIPLET: x64-windows-static-md
   RUN_EXPORT: false
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
-  MSVC_CRT_SUFFIX: Dll
+  MSVC_CRT_SUFFIX: DLL
 
   matrix:
     # individual feature testing
