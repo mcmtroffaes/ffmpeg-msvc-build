@@ -13,6 +13,6 @@ int main(int argc, char** argv)
 		spdlog::error("decoder {} not found", argv[1]);
 		return -1;
 	}
-	spdlog::info("encoder {} found", argv[1]);
+	spdlog::info("decoder {} found", argv[1]);
 	return 0;
 }
