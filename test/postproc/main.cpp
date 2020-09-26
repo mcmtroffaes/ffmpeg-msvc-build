@@ -1,5 +1,4 @@
-// main.cpp
-#include <stdio.h>
+#include <spdlog/spdlog.h>
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -8,6 +7,8 @@ extern "C" {
 
 int main()
 {
-    printf("%i\n", postproc_version());
+    spdlog::info("postproc version {}", postproc_version());
+    spdlog::info(postproc_configuration());
+    spdlog::info(postproc_license());
     return 0;
 }
