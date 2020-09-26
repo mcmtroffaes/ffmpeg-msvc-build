@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 		spdlog::error("decoder {} not found", argv[1]);
 		return -1;
 	}
-	spdlog::debug("encoder {} found", argv[1]);
+	spdlog::debug("decoder {} found", argv[1]);
 	auto context = codec_alloc_context(*codec);
 	if (!context) {
 		spdlog::error("failed to allocated codec context");
