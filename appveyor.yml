@@ -2,7 +2,7 @@ version: 1.0.{build}
 image: Visual Studio 2019
 environment:
   TRIPLET: x64-windows-static-md
-  FULL_BUILD: false
+  RUN_EXPORT: false
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
 
   matrix:
@@ -30,17 +30,17 @@ environment:
     - FEATURES: core,zlib,avformat
     # LGPL build
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
-      FULL_BUILD: true
       TRIPLET: x64-windows
+      RUN_EXPORT: true
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
-      FULL_BUILD: true
       TRIPLET: x64-windows-static
+      RUN_EXPORT: true
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
-      FULL_BUILD: true
       TRIPLET: x64-windows-static-md
+      RUN_EXPORT: true
     # GPL build
     #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,gpl,bzip2,lzma,nvcodec,opus,postproc,snappy,soxr,vpx,wavpack,x264,x265,zlib
-    #  FULL_BUILD: true
+    #  RUN_EXPORT: true
 matrix:
   fast_finish: true
 platform:
@@ -65,7 +65,7 @@ install:
       cd C:\projects\ffmpeg-msvc-build\
 build_script:
   - ps: |
-      if ($env:FULL_BUILD -Eq "true") {
+      if ($env:RUN_EXPORT -Eq "true") {
         .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
       }
 test_script:
@@ -91,6 +91,6 @@ deploy:
   prerelease: false
   on:
     APPVEYOR_REPO_TAG: true
-    FULL_BUILD: true
+    RUN_EXPORT: true
 cache:
   - c:\tools\vcpkg\installed\ -> VCPKG_HASH.txt
