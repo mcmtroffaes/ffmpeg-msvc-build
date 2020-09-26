@@ -39,7 +39,7 @@ environment:
       TRIPLET: x64-windows-static-md
       RUN_EXPORT: true
     # GPL build
-    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,gpl,bzip2,lzma,nvcodec,opus,postproc,snappy,soxr,vpx,wavpack,x264,x265,zlib
+    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib,postproc,x264,x265
     #  RUN_EXPORT: true
 matrix:
   fast_finish: true
