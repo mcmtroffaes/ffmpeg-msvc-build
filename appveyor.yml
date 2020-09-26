@@ -82,7 +82,7 @@ test_script:
   - cmake --build .
   - ctest -V
 deploy:
-  description: "Headers and libraries for FFmpeg.\n\nFeatures: $(FEATURES)"
+  description: "Headers and libraries for FFmpeg.\n\nFeatures: $(FEATURES)."
   provider: GitHub
   auth_token:
     secure: QSdxjkooPHApqh95gD9duaZBxmv/5zWzDcukjNQGmbedwEu0BvzgA6HUEXpvni25
