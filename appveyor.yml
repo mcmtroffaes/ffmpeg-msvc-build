@@ -7,7 +7,8 @@ environment:
   MSVC_CRT_SUFFIX: DLL
 
   matrix:
-    # individual feature testing
+    # LGPL features
+    ################
     - FEATURES: core
     - FEATURES: core,bzip2,avformat
     - FEATURES: core,ffmpeg
@@ -20,29 +21,35 @@ environment:
     # BROKEN
     #- FEATURES: core,mp3lame
     - FEATURES: core,opus,avcodec
-    - FEATURES: core,postproc
-    - FEATURES: core,theora,avcodec
+    # BROKEN
+    #- FEATURES: core,theora,avcodec
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
     - FEATURES: core,vpx,avcodec
     - FEATURES: core,wavpack,avcodec
+    - FEATURES: core,zlib,avformat
+    - FEATURES: core,postproc
+    # GPL features
+    ###############
     # BROKEN
     #- FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
-    - FEATURES: core,zlib,avformat
-    # LGPL build
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,theora,vpx,wavpack,zlib
+    # LGPL full builds
+    ###################
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       TRIPLET: x64-windows
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,theora,vpx,wavpack,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       TRIPLET: x64-windows-static
       MSVC_CRT_SUFFIX:
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,theora,vpx,wavpack,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
       TRIPLET: x64-windows-static-md
       RUN_EXPORT: true
-    # GPL build
-    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,theora,vpx,wavpack,zlib,postproc,x264,x265
+    # GPL full builds
+    ##################
+    # TIMEOUT
+    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib,postproc,x264,x265
     #  RUN_EXPORT: true
 matrix:
   fast_finish: true
