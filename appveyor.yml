@@ -19,7 +19,7 @@ environment:
     - FEATURES: core,lzma,avformat
     - FEATURES: core,nvcodec,avcodec
     # BROKEN
-    #- FEATURES: core,mp3lame
+    #- FEATURES: core,mp3lame,avcodec
     - FEATURES: core,opus,avcodec
     # BROKEN
     #- FEATURES: core,theora,avcodec
