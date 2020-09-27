@@ -28,9 +28,9 @@ environment:
     - FEATURES: core,vpx,avcodec
     - FEATURES: core,wavpack,avcodec
     - FEATURES: core,zlib,avformat
-    - FEATURES: core,postproc
     # GPL features
     ###############
+    - FEATURES: core,postproc
     # BROKEN
     #- FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
