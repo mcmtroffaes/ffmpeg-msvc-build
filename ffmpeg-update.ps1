@@ -64,6 +64,6 @@ Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
 cd vcpkg
 & git diff -b
 & git add -i
-& git commit -a -m "Update ffmpeg."
-& git log -1 --format=%H > ../VCPKG_HASH.txt
+& git commit -m "Update ffmpeg."
+& git log -1 --format=%H  | Set-Content ../VCPKG_HASH.txt -Encoding Ascii
 cd ..
