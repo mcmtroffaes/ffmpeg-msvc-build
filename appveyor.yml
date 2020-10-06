@@ -57,6 +57,7 @@ platform:
   - x64
 install:
   - cmd: |
+      git submodule update --init --recursive
       cd C:\projects\ffmpeg-msvc-build\vcpkg
       copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "scripts\cmake\"
       .\bootstrap-vcpkg.bat -disableMetrics
