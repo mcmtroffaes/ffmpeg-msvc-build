@@ -63,9 +63,10 @@ Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
 
 cd vcpkg
 & git add -i
-& git commit -m "Update ffmpeg to version $version-$port_version ($version_hash)."
+& git commit -m "Update ffmpeg to version $version#$port_version ($version_hash)."
 & git log -1 --format=%H  | Set-Content ../VCPKG_HASH.txt -Encoding Ascii
 cd ..
 & git add -i
-& git commit -m "Update ffmpeg to version $version-$port_version ($version_hash)."
-& git tag -a -m "Tagging version $version-$port_version ($version_hash)." "$version-$port_version"
+$tag = $version.Replace("-", "") + ".$port_version.0"
+& git commit -m "Update ffmpeg to version $tag ($version_hash)."
+& git tag -a -m "Tagging version $tag ($version_hash)." $tag
