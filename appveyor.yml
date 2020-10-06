@@ -57,13 +57,8 @@ platform:
   - x64
 install:
   - cmd: |
-      set /p VCPKG_HASH=<VCPKG_HASH.txt
-      cd C:\Tools\vcpkg
-      git log -1
-      git fetch
-      git checkout %VCPKG_HASH% -d
-      git log -1
-      copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "C:\Tools\vcpkg\scripts\cmake\"
+      cd C:\projects\ffmpeg-msvc-build\vcpkg
+      copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "scripts\cmake\"
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
@@ -76,19 +71,19 @@ install:
 build_script:
   - ps: |
       if ($env:RUN_EXPORT -Eq "true") {
-        .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
+        .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -vcpkg C:\projects\ffmpeg-msvc-build\vcpkg -ErrorAction Stop
       }
 test_script:
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
   - mkdir build-rel
   - cd build-rel
-  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded%MSVC_CRT_SUFFIX%
+  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/projects/ffmpeg-msvc-build/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded%MSVC_CRT_SUFFIX%
   - cmake --build .
   - ctest -V
   - cd ..
   - mkdir build-dbg
   - cd build-dbg
-  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDebug%MSVC_CRT_SUFFIX%
+  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=C:/projects/ffmpeg-msvc-build/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDebug%MSVC_CRT_SUFFIX%
   - cmake --build .
   - ctest -V
 deploy:
@@ -103,4 +98,4 @@ deploy:
     APPVEYOR_REPO_TAG: true
     RUN_EXPORT: true
 cache:
-  - c:\tools\vcpkg\installed\ -> VCPKG_HASH.txt
+  - C:\projects\ffmpeg-msvc-build\vcpkg\installed -> VCPKG_HASH.txt
