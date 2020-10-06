@@ -8,7 +8,7 @@ env:
   - FEATURES=core
   # theora broken (missing libogg library in FindFFMPEG)
   # zlib: needs https://github.com/microsoft/vcpkg/pull/13780
-  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,wavpack
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx
 addons:
   apt:
     packages:
