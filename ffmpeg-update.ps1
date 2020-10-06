@@ -62,7 +62,6 @@ $control -join "`n" | Set-Content "vcpkg\ports\ffmpeg\CONTROL" -Encoding Ascii
 Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
 
 cd vcpkg
-& git diff -b
 & git add -i
 & git commit -m "Update ffmpeg."
 & git log -1 --format=%H  | Set-Content ../VCPKG_HASH.txt -Encoding Ascii
