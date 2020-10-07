@@ -2,6 +2,11 @@ param (
     [switch]$force = $false
 )
 
+& git pull --rebase
+cd vcpkg
+& git pull --rebase
+cd ..
+
 $wc = New-Object System.Net.WebClient
 $wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
 
@@ -62,11 +67,6 @@ $control -join "`n" | Set-Content "vcpkg\ports\ffmpeg\CONTROL" -Encoding Ascii
 Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
 
 cd vcpkg
-& git add -i
-& git commit -m "Update ffmpeg to version $version#$port_version ($version_hash)."
+& git commit -a -m "Update ffmpeg to version $version#$port_version ($version_hash)."
 & git log -1 --format=%H  | Set-Content ../VCPKG_HASH.txt -Encoding Ascii
 cd ..
-& git add -i
-$tag = $version.Replace("-", "") + ".$port_version.0"
-& git commit -m "Update ffmpeg to version $tag ($version_hash)."
-& git tag -a -m "Tagging version $tag ($version_hash)." $tag
