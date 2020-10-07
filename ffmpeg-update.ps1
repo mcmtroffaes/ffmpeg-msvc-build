@@ -2,10 +2,10 @@ param (
     [switch]$force = $false
 )
 
-& git pull --rebase
 cd vcpkg
 & git pull --rebase
 cd ..
+& git pull --rebase
 
 $wc = New-Object System.Net.WebClient
 $wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
