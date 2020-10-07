@@ -26,7 +26,6 @@ environment:
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
     - FEATURES: core,vpx,avcodec
-    - FEATURES: core,wavpack,avcodec
     - FEATURES: core,zlib,avformat
     # GPL features
     ###############
@@ -36,20 +35,20 @@ environment:
     - FEATURES: core,x265,avcodec
     # LGPL full builds
     ###################
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
       TRIPLET: x64-windows
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
       TRIPLET: x64-windows-static
       MSVC_CRT_SUFFIX:
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
       TRIPLET: x64-windows-static-md
       RUN_EXPORT: true
     # GPL full builds
     ##################
     # TIMEOUT
-    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,wavpack,zlib,postproc,x264,x265
+    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib,postproc,x264,x265
     #  RUN_EXPORT: true
 matrix:
   fast_finish: true
@@ -60,7 +59,8 @@ install:
       set /p VCPKG_HASH=<VCPKG_HASH.txt
       cd C:\Tools\vcpkg
       git log -1
-      git fetch
+      git remote add mcmtroffaes https://github.com/mcmtroffaes/vcpkg.git
+      git fetch mcmtroffaes
       git checkout %VCPKG_HASH% -d
       git log -1
       copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "C:\Tools\vcpkg\scripts\cmake\"

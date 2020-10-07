@@ -7,8 +7,7 @@ osx_image: xcode12u
 env:
   - FEATURES=core
   # theora broken (missing libogg library in FindFFMPEG)
-  # zlib: needs https://github.com/microsoft/vcpkg/pull/13780
-  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,wavpack
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib
 addons:
   apt:
     packages:
@@ -20,9 +19,7 @@ addons:
 before_install:
   - cmake --version
 install:
-  - git clone https://github.com/Microsoft/vcpkg.git
   - cd ${TRAVIS_BUILD_DIR}/vcpkg
-  - git checkout `cat ${TRAVIS_BUILD_DIR}/VCPKG_HASH.txt` -d
   - ./bootstrap-vcpkg.sh -disableMetrics
   - ./vcpkg install spdlog
   - travis_wait 45 ./vcpkg install ffmpeg[${FEATURES}] || { cat ${TRAVIS_BUILD_DIR}/vcpkg/buildtrees/ffmpeg/build-x64-${TRAVIS_OS_NAME}-rel-out.log; false; }
