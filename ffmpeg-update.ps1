@@ -3,8 +3,10 @@ param (
 )
 
 cd vcpkg
+& git commit -a
 & git pull --rebase
 cd ..
+& git commit -a
 & git pull --rebase
 
 $wc = New-Object System.Net.WebClient
