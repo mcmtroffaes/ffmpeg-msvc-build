@@ -1,7 +1,3 @@
-cd vcpkg
-& git pull --rebase
-& git push
-cd ..
 & git pull --rebase
 & git push
 & git submodule update
