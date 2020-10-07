@@ -70,3 +70,4 @@ cd vcpkg
 & git commit -a -m "Update ffmpeg to version $version#$port_version ($version_hash)."
 & git log -1 --format=%H  | Set-Content ../VCPKG_HASH.txt -Encoding Ascii
 cd ..
+& git commit -a -m "Update ffmpeg to version $version#$port_version ($version_hash)."
