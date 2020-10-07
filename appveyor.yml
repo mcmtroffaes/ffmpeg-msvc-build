@@ -7,9 +7,31 @@ environment:
   MSVC_CRT_SUFFIX: DLL
 
   matrix:
+    # minimal build
+    ###################
+    - FEATURES: core
+
+    # LGPL full builds
+    ###################
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
+      TRIPLET: x64-windows
+      RUN_EXPORT: true
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
+      TRIPLET: x64-windows-static
+      MSVC_CRT_SUFFIX:
+      RUN_EXPORT: true
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
+      TRIPLET: x64-windows-static-md
+      RUN_EXPORT: true
+
+    # GPL full builds
+    ##################
+    # TIMEOUT
+    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib,postproc,x264,x265
+    #  RUN_EXPORT: true
+
     # LGPL features
     ################
-    - FEATURES: core
     - FEATURES: core,bzip2,avformat
     - FEATURES: core,ffmpeg
     # BROKEN
@@ -33,25 +55,8 @@ environment:
     # BROKEN
     #- FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
-    # LGPL full builds
-    ###################
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
-      TRIPLET: x64-windows
-      RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
-      TRIPLET: x64-windows-static
-      MSVC_CRT_SUFFIX:
-      RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib
-      TRIPLET: x64-windows-static-md
-      RUN_EXPORT: true
-    # GPL full builds
-    ##################
-    # TIMEOUT
-    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,nvcodec,opus,snappy,soxr,vpx,zlib,postproc,x264,x265
-    #  RUN_EXPORT: true
 matrix:
-  fast_finish: true
+  fast_finish: false
 platform:
   - x64
 install:
