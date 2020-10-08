@@ -18,16 +18,16 @@ public:
     Log& operator =(const Log&) = delete;
 
     template<typename T>
-    friend Log& operator<<(Log& logger, T t);
+    friend Log&& operator<<(Log&& logger, T t);
 private:
     std::ostringstream os;
 };
 
 template<typename T>
-Log& operator<<(Log& logger, T t)
+Log&& operator<<(Log&& logger, T t)
 {
     logger.os << t;
-    return logger;
+    return std::move(logger);
 }
 
 Log critical() {
