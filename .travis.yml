@@ -5,39 +5,14 @@ os:
 dist: bionic
 osx_image: xcode12u
 env:
-    # minimal build
-    ###################
-    - FEATURES=core
-
-    # LGPL full builds
-    ###################
-    - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib
-
-    # LGPL features
-    ################
-    - FEATURES=core,bzip2,avformat
-    - FEATURES=core,ffmpeg
-    - FEATURES=core,ffplay
-    - FEATURES=core,ffprobe
-    - FEATURES=core,iconv,avcodec
-    - FEATURES=core,lzma,avformat
-    - FEATURES=core,nvcodec,avcodec
-    - FEATURES=core,mp3lame,avcodec
-    - FEATURES=core,opus,avcodec
-    # BROKEN
-    #- FEATURES=core,theora,avcodec
-    - FEATURES=core,snappy,avcodec
-    - FEATURES=core,soxr,swresample
-    - FEATURES=core,vpx,avcodec
-    - FEATURES=core,zlib,avformat
-
-    # GPL features
-    ###############
-    - FEATURES=core,postproc
-    # BROKEN
-    #- FEATURES=core,x264,avcodec
-    - FEATURES=core,x265,avcodec
-
+  # minimal build
+  - FEATURES=core
+  # full build
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib
+  # tools
+  - FEATURES=core,ffmpeg,ffplay,ffprobe
+  # gpl features
+  - FEATURES=core,gpl,postproc,x265,avcodec
 addons:
   apt:
     packages:
@@ -50,7 +25,7 @@ before_install:
   - cmake --version
 install:
   - cd ${TRAVIS_BUILD_DIR}/vcpkg
-  - ./bootstrap-vcpkg.sh -disableMetrics
+  - ./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
   - travis_wait 45 ./vcpkg install ffmpeg[${FEATURES}] || { cat ${TRAVIS_BUILD_DIR}/vcpkg/buildtrees/ffmpeg/build-x64-${TRAVIS_OS_NAME}-rel-out.log; false; }
 script:
   - cd ${TRAVIS_BUILD_DIR}
