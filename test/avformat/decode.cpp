@@ -84,7 +84,7 @@ struct Stream {
 				logger::debug() << "frame sample format: " << av_get_sample_fmt_name((AVSampleFormat)frame->format);
 			}
 			else {
-				logger::error() << "cannot handle codec type " << context->codec->type;
+				logger::error() << "cannot handle codec type " << av_get_media_type_string(context->codec->type);
 				return -1;
 			}
 			av_frame_unref(frame.get());

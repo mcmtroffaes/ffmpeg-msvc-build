@@ -9,7 +9,7 @@ extern "C" {
 int main()
 {
     logger::info() << av_version_info();
-    logger::info() << "avutil version" << avutil_version();
+    logger::info() << "avutil version " << avutil_version();
     logger::info() << avutil_configuration();
     logger::info() << avutil_license();
     return 0;
