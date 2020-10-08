@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <spdlog/spdlog.h>
+#include "../log.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -8,9 +8,9 @@ extern "C" {
 
 int main()
 {
-    spdlog::info(av_version_info());
-    spdlog::info("avutil version {}", avutil_version());
-    spdlog::info(avutil_configuration());
-    spdlog::info(avutil_license());
+    logger::info() << av_version_info();
+    logger::info() << "avutil version" << avutil_version();
+    logger::info() << avutil_configuration();
+    logger::info() << avutil_license();
     return 0;
 }

@@ -1,4 +1,4 @@
-#include <spdlog/spdlog.h>
+#include "../log.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -7,8 +7,8 @@ extern "C" {
 
 int main()
 {
-    spdlog::info("postproc version {}", postproc_version());
-    spdlog::info(postproc_configuration());
-    spdlog::info(postproc_license());
+    logger::info() << "postproc version " << postproc_version();
+    logger::info() << postproc_configuration();
+    logger::info() << postproc_license();
     return 0;
 }

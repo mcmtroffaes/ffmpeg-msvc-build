@@ -21,15 +21,15 @@ AVFormatContextPtr open_input(const std::string& url) {
 	AVFormatContext* context{ nullptr };
 	auto ret{ avformat_open_input(&context, url.c_str(), nullptr, nullptr) };
 	if (ret < 0) {
-		spdlog::error("failed to allocate output context for {}: {}", url, av_error_string(ret));
+		logger::error() << "failed to allocate output context for " << url << ": " << av_error_string(ret);
 	}
 	else if (!context) {
-		spdlog::error("failed to allocate output context for {}", url);
+		logger::error() << "failed to allocate output context for " << url;
 	}
 	else {
 		auto ret2{ avformat_find_stream_info(context, 0) };
 		if (ret2 < 0) {
-			spdlog::error("failed to retrieve input stream information for {}: {}", url, av_error_string(ret));
+			logger::error() << "failed to retrieve input stream information for " << url << ": " << av_error_string(ret);
 			avformat_close_input(&context);
 			context = nullptr;
 		}

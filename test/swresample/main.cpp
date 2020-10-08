@@ -1,4 +1,4 @@
-#include <spdlog/spdlog.h>
+#include "../log.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -7,8 +7,8 @@ extern "C" {
 
 int main()
 {
-    spdlog::info("swresample version {}", swresample_version());
-    spdlog::info(swresample_configuration());
-    spdlog::info(swresample_license());
+    logger::info() << "swresample version " << swresample_version();
+    logger::info() << swresample_configuration();
+    logger::info() << swresample_license();
     return 0;
 }
