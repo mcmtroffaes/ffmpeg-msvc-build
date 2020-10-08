@@ -1,18 +1,18 @@
 language: cpp
 os:
   - linux
-  - osx
+  #- osx
 dist: bionic
 osx_image: xcode12u
 env:
   # minimal build
   - FEATURES=core
   # full build
-  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib
+  #- FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib
   # tools
-  - FEATURES=core,ffmpeg,ffplay,ffprobe
+  #- FEATURES=core,ffmpeg,ffplay,ffprobe
   # gpl features
-  - FEATURES=core,gpl,postproc,x265,avcodec
+  #- FEATURES=core,gpl,postproc,x265,avcodec
 addons:
   apt:
     sources:
@@ -27,6 +27,8 @@ addons:
     - yasm
     - ninja
 before_install:
+  - type cmake
+  - echo $PATH
   - cmake --version
 install:
   - cd ${TRAVIS_BUILD_DIR}/vcpkg
