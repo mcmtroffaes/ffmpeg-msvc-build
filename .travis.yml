@@ -30,6 +30,10 @@ before_install:
   - type cmake
   - echo $PATH
   - cmake --version
+  - PATH="/usr/bin:/usr/local/bin:${PATH}"
+  - type cmake
+  - echo $PATH
+  - cmake --version
 install:
   - cd ${TRAVIS_BUILD_DIR}/vcpkg
   - ./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
