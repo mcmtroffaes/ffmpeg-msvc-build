@@ -17,6 +17,7 @@ addons:
   apt:
     packages:
     - yasm
+    - ninja-build
   homebrew:
     packages:
     - yasm
