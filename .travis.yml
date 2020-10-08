@@ -5,9 +5,39 @@ os:
 dist: bionic
 osx_image: xcode12u
 env:
-  - FEATURES=core
-  # theora broken (missing libogg library in FindFFMPEG)
-  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib
+    # minimal build
+    ###################
+    - FEATURES=core
+
+    # LGPL full builds
+    ###################
+    - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib
+
+    # LGPL features
+    ################
+    - FEATURES=core,bzip2,avformat
+    - FEATURES=core,ffmpeg
+    - FEATURES=core,ffplay
+    - FEATURES=core,ffprobe
+    - FEATURES=core,iconv,avcodec
+    - FEATURES=core,lzma,avformat
+    - FEATURES=core,nvcodec,avcodec
+    - FEATURES=core,mp3lame,avcodec
+    - FEATURES=core,opus,avcodec
+    # BROKEN
+    #- FEATURES=core,theora,avcodec
+    - FEATURES=core,snappy,avcodec
+    - FEATURES=core,soxr,swresample
+    - FEATURES=core,vpx,avcodec
+    - FEATURES=core,zlib,avformat
+
+    # GPL features
+    ###############
+    - FEATURES=core,postproc
+    # BROKEN
+    #- FEATURES=core,x264,avcodec
+    - FEATURES=core,x265,avcodec
+
 addons:
   apt:
     packages:
