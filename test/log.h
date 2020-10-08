@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <utility>
 
 namespace logger {
 
@@ -12,10 +13,11 @@ public:
         os << "[" << level << "] ";
     };
     ~Log() {
-       std::cerr << os.str() << std::endl;
+        os << std::endl;
+        std::cerr << os.str();
     };
     Log(const Log&) = delete;
-    Log& operator =(const Log&) = delete;
+    Log& operator=(const Log&) = delete;
 
     template<typename T>
     friend Log&& operator<<(Log&& logger, T t);
