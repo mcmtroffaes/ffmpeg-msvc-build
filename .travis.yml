@@ -15,9 +15,12 @@ env:
   - FEATURES=core,gpl,postproc,x265,avcodec
 addons:
   apt:
+    sources:
+    - ubuntu-toolchain-r-test
     packages:
     - yasm
     - ninja-build
+    - cmake
   homebrew:
     packages:
     - yasm
