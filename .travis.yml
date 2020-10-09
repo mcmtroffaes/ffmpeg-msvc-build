@@ -1,5 +1,4 @@
-language: cpps
-sudo: false
+language: cpp
 os:
   - linux
   - osx
