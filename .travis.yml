@@ -2,7 +2,7 @@ language: cpp
 os:
   - linux
   - osx
-dist: bionic
+dist: focal
 osx_image: xcode12u
 env:
   # minimal build
@@ -14,20 +14,14 @@ env:
   - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,iconv,lzma,opus,snappy,soxr,vpx,zlib,gpl,postproc
 addons:
   apt:
-    sources:
-    - sourceline: 'deb https://apt.kitware.com/ubuntu/ bionic main'
-      key_url: 'https://apt.kitware.com/keys/kitware-archive-latest.asc'
     packages:
     - yasm
     - ninja-build
-    - cmake
   homebrew:
     packages:
     - yasm
     - ninja
 before_install:
-  # ensure cmake is found in /usr/bin first (otherwise old cmake is used on travis)
-  - PATH="/usr/bin:${PATH}"
   - cmake --version
 install:
   - cd ${TRAVIS_BUILD_DIR}/vcpkg
