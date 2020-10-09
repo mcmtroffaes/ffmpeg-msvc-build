@@ -1,10 +1,11 @@
 version: 1.0.{build}
 image: Visual Studio 2019
 environment:
-  TRIPLET: x64-windows-static-md
-  RUN_EXPORT: false
+  APPVEYOR_SAVE_CACHE_ON_ERROR: true
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
   MSVC_CRT_SUFFIX: DLL
+  RUN_EXPORT: false
+  TRIPLET: x64-windows-static-md
 
   matrix:
     # minimal build
