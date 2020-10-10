@@ -33,6 +33,7 @@ environment:
 
     # LGPL features
     ################
+    - FEATURES: core,avresample
     - FEATURES: core,bzip2,avformat
     - FEATURES: core,ffmpeg
     - FEATURES: core,ffplay
@@ -41,16 +42,19 @@ environment:
     - FEATURES: core,lzma,avformat
     - FEATURES: core,nvcodec,avcodec
     - FEATURES: core,mp3lame,avcodec
+    - FEATURES: core,opencl,avfilter
     - FEATURES: core,opus,avcodec
-    # BROKEN
-    #- FEATURES: core,theora,avcodec
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
+    - FEATURES: core,speex,avcodec
+    - FEATURES: core,theora,avcodec
+    - FEATURES: core,vorbis,avcodec
     - FEATURES: core,vpx,avcodec
     - FEATURES: core,zlib,avformat
 
     # GPL features
     ###############
+    - FEATURES: core,avisynthplus,avcodec
     - FEATURES: core,postproc
     - FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
