@@ -1,6 +1,7 @@
 language: cpp
 os:
 - linux
+- osx
 dist: focal
 osx_image: xcode12u
 jobs:
@@ -44,6 +45,15 @@ jobs:
   - env: FEATURES=core,postproc
   - env: FEATURES=core,x264,avcodec
   - env: FEATURES=core,x265,avcodec
+
+  # known broken features
+  allow_failures:
+  - env: FEATURES=core,opencl,avfilter
+  - env: FEATURES=core,speex,avcodec
+  - env: FEATURES=core,theora,avcodec
+  - env: FEATURES=core,vorbis,avcodec
+  - env: FEATURES=core,avisynthplus,avcodec
+  - env: FEATURES=core,x264,avcodec
 addons:
   apt:
     packages:
