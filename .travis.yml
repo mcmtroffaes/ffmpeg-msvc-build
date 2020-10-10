@@ -25,7 +25,7 @@ before_install:
   - cmake --version
 install:
   # cannot clone in existing folder so setup vcpkg2 where cache is stored
-  - mkdir ${TRAVIS_BUILD_DIR}/vcpkg2
+  - mkdir -p ${TRAVIS_BUILD_DIR}/vcpkg2
   - mv ${TRAVIS_BUILD_DIR}/vcpkg/.git ${TRAVIS_BUILD_DIR}/vcpkg2
   - cd ${TRAVIS_BUILD_DIR}/vcpkg2
   - git reset --hard
