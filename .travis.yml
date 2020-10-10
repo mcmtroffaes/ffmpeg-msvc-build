@@ -32,7 +32,7 @@ install:
   - git fetch origin
   - git checkout --detach `cat ${TRAVIS_BUILD_DIR}/VCPKG_HASH.txt`
   - ./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
-  - travis_wait 45 ./vcpkg upgrade
+  - travis_wait 45 ./vcpkg upgrade --no-dry-run
   - travis_wait 45 ./vcpkg install ffmpeg[${FEATURES}] || { cat ${TRAVIS_BUILD_DIR}/vcpkg2/buildtrees/ffmpeg/build-x64-${TRAVIS_OS_NAME}-rel-out.log; false; }
 script:
   - cd ${TRAVIS_BUILD_DIR}
