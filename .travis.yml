@@ -27,6 +27,7 @@ install:
   # cannot clone in existing folder so setup vcpkg2 where cache is stored
   - mkdir -p ${TRAVIS_BUILD_DIR}/vcpkg2
   - cd ${TRAVIS_BUILD_DIR}/vcpkg2
+  - git init
   - git remote add origin ${TRAVIS_BUILD_DIR}/vcpkg
   - git fetch origin
   - git checkout `cat ${TRAVIS_BUILD_DIR}/VCPKG_HASH.txt` -d
