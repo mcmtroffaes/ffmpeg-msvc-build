@@ -52,8 +52,7 @@ environment:
     # GPL features
     ###############
     - FEATURES: core,postproc
-    # BROKEN
-    #- FEATURES: core,x264,avcodec
+    - FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
 matrix:
   fast_finish: false
