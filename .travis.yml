@@ -24,19 +24,27 @@ addons:
 before_install:
   - cmake --version
 install:
-  - cd ${TRAVIS_BUILD_DIR}/vcpkg
+  # cannot clone in existing folder so setup vcpkg2 where cache is stored
+  - mkdir ${TRAVIS_BUILD_DIR}/vcpkg2
+  - mv ${TRAVIS_BUILD_DIR}/vcpkg/.git ${TRAVIS_BUILD_DIR}/vcpkg2
+  - cd ${TRAVIS_BUILD_DIR}/vcpkg2
+  - git reset --hard
   - ./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
-  - travis_wait 45 ./vcpkg install ffmpeg[${FEATURES}] || { cat ${TRAVIS_BUILD_DIR}/vcpkg/buildtrees/ffmpeg/build-x64-${TRAVIS_OS_NAME}-rel-out.log; false; }
+  - travis_wait 45 ./vcpkg upgrade
+  - travis_wait 45 ./vcpkg install ffmpeg[${FEATURES}] || { cat ${TRAVIS_BUILD_DIR}/vcpkg2/buildtrees/ffmpeg/build-x64-${TRAVIS_OS_NAME}-rel-out.log; false; }
 script:
   - cd ${TRAVIS_BUILD_DIR}
   - mkdir build-rel
   - cd build-rel
-  - cmake ../test -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake -DFEATURES=${FEATURES//,/;}
+  - cmake ../test -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/vcpkg2/scripts/buildsystems/vcpkg.cmake -DFEATURES=${FEATURES//,/;}
   - cmake --build .
   - ctest -V
   - cd ..
   - mkdir build-dbg
   - cd build-dbg
-  - cmake ../test -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake -DFEATURES=${FEATURES//,/;}
+  - cmake ../test -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=${TRAVIS_BUILD_DIR}/vcpkg2/scripts/buildsystems/vcpkg.cmake -DFEATURES=${FEATURES//,/;}
   - cmake --build .
   - ctest -V
+cache:
+  directories:
+  - vcpkg2/installed
