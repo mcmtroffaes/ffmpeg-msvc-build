@@ -61,7 +61,7 @@ environment:
     - FEATURES: core,x265,avcodec
 
     # nonfree features
-    ###############
+    ###################
     - FEATURES: core,openssl,avformat
     - FEATURES: core,fdk-aac,avcodec
 matrix:

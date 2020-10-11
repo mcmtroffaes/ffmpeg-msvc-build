@@ -43,6 +43,11 @@ jobs:
   - env: FEATURES=core,x264,avcodec
   - env: FEATURES=core,x265,avcodec
 
+  # nonfree features
+  ###################
+  - env: FEATURES=core,openssl,avformat
+  - env: FEATURES=core,fdk-aac,avcodec
+
   # known broken features
   allow_failures:
   - env: FEATURES=core,ffmpeg
