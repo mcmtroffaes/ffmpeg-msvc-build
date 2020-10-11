@@ -20,6 +20,10 @@ using AVFormatContextPtr = std::unique_ptr<AVFormatContext, AVFormatContextDelet
 AVFormatContextPtr open_input(const std::string& url, const std::string& format_name) {
 	AVFormatContext* context{ nullptr };
 	auto input_format{ av_find_input_format(format_name.c_str()) };
+	if (!input_format) {
+		logger::error() << "failed to find input format " << format_name;
+		return nullptr;
+	}
 	auto ret{ avformat_open_input(&context, url.c_str(), input_format, nullptr) };
 	if (ret < 0) {
 		logger::error() << "failed to allocate output context for " << url << ": " << av_error_string(ret);
