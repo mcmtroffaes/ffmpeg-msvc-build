@@ -121,18 +121,18 @@ struct Stream {
 
 int main(int argc, char** argv)
 {
-	if (argc < 2) {
-		logger::error() << "expected at least one argument";
+	if (argc < 3) {
+		logger::error() << "expected at least two arguments";
 		return -1;
 	}
 	av_log_set_callback(av_log_default_callback);
 	av_log_set_level(AV_LOG_DEBUG);
-	auto fmt_ctx = open_input(argv[1]);
+	auto fmt_ctx = open_input(argv[1], argv[2]);
 	if (!fmt_ctx)
 		return -1;
 	AVDictionaryPtr options = nullptr;
-	if (argc >= 3) {
-		options = dict_parse_string(argv[2], "=", ",");
+	if (argc >= 4) {
+		options = dict_parse_string(argv[3], "=", ",");
 	}
 	logger::info() << "input format: " << fmt_ctx->iformat->name;
 	std::vector<Stream> streams;

@@ -17,9 +17,10 @@ struct AVFormatContextDeleter {
 
 using AVFormatContextPtr = std::unique_ptr<AVFormatContext, AVFormatContextDeleter>;
 
-AVFormatContextPtr open_input(const std::string& url) {
+AVFormatContextPtr open_input(const std::string& url, const std::string& format_name) {
 	AVFormatContext* context{ nullptr };
-	auto ret{ avformat_open_input(&context, url.c_str(), nullptr, nullptr) };
+	auto input_format{ av_find_input_format(format_name.c_str()) };
+	auto ret{ avformat_open_input(&context, url.c_str(), input_format, nullptr) };
 	if (ret < 0) {
 		logger::error() << "failed to allocate output context for " << url << ": " << av_error_string(ret);
 	}
