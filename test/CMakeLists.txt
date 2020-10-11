@@ -9,7 +9,7 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FEATURES "avcodec;avformat;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;iconv;lzma;mp3lame;nvcodec;opus;postproc;snappy;soxr;speex;swresample;theora;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
+set(FEATURES "avcodec;avformat;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;iconv;lzma;mp3lame;nvcodec;opus;postproc;snappy;soxr;speex;swresample;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()
 
 function(test_for _feature _name)
@@ -68,6 +68,11 @@ if ("avcodec" IN_LIST FEATURES)
 
   add_test(NAME test_decoder_vp8 COMMAND test_find_decoder vp8)
   add_test(NAME test_decoder_vp9 COMMAND test_find_decoder vp9)
+
+  add_test(NAME test_encoder_libvorbis COMMAND test_find_encoder libvorbis)
+  add_test(NAME test_decoder_libvorbis COMMAND test_find_decoder libvorbis)
+  test_for("vorbis" test_encoder_libvorbis)
+  test_for("vorbis" test_decoder_libvorbis)
 
   add_test(NAME test_encoder_libvpx_vp8 COMMAND test_find_encoder libvpx)
   add_test(NAME test_decoder_libvpx_vp8 COMMAND test_find_decoder libvpx)
