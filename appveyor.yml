@@ -62,7 +62,7 @@ environment:
 
     # nonfree features
     ###############
-    - FEATURES: core,openssl
+    - FEATURES: core,openssl,avformat
     - FEATURES: core,fdk-aac,avcodec
 matrix:
   fast_finish: false
