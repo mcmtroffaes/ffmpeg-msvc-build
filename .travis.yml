@@ -38,7 +38,7 @@ jobs:
 
   # GPL features
   ###############
-  - env: FEATURES=core,avisynthplus,avcodec
+  - env: FEATURES=core,avisynthplus,avformat
   - env: FEATURES=core,postproc
   - env: FEATURES=core,x264,avcodec
   - env: FEATURES=core,x265,avcodec
@@ -52,7 +52,7 @@ jobs:
   - env: FEATURES=core,mp3lame,avcodec
   - env: FEATURES=core,theora,avcodec
   - env: FEATURES=core,vorbis,avcodec
-  - env: FEATURES=core,avisynthplus,avcodec
+  - env: FEATURES=core,avisynthplus,avformat
   - env: FEATURES=core,x264,avcodec
   - env: FEATURES=core,x265,avcodec
 addons:

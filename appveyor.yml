@@ -54,7 +54,8 @@ environment:
 
     # GPL features
     ###############
-    - FEATURES: core,avisynthplus,avcodec
+    - FEATURES: core,avisynthplus,avformat
+      TRIPLET: x64-windows  # ffmpeg only supports dynamic build of avisynthplus
     - FEATURES: core,postproc
     - FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
@@ -66,7 +67,8 @@ matrix:
     - FEATURES: core,speex,avcodec
     - FEATURES: core,theora,avcodec
     - FEATURES: core,vorbis,avcodec
-    - FEATURES: core,avisynthplus,avcodec
+    - FEATURES: core,avisynthplus,avformat
+      TRIPLET: x64-windows  # ffmpeg only supports dynamic build of avisynthplus
     - FEATURES: core,x264,avcodec
 platform:
   - x64
