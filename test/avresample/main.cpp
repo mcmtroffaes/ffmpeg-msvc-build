@@ -2,7 +2,7 @@
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
-#include <avresample/avresample.h>
+#include <libavresample/avresample.h>
 }
 
 int main()
