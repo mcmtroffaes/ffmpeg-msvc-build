@@ -52,7 +52,6 @@ jobs:
   allow_failures:
   - env: FEATURES=core,x264,avcodec
   - env: FEATURES=core,x265,avcodec
-  - env: FEATURES=core,openssl,avformat
 addons:
   apt:
     packages:
