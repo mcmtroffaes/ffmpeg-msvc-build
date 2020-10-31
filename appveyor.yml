@@ -120,4 +120,4 @@ deploy:
     APPVEYOR_REPO_TAG: true
     RUN_EXPORT: true
 cache:
-  - c:\tools\vcpkg\installed\ -> VCPKG_HASH.txt
+  - c:\tools\vcpkg\installed\
