@@ -50,7 +50,6 @@ jobs:
 
   # known broken features
   allow_failures:
-  - env: FEATURES=core,x264,avcodec
   - env: FEATURES=core,x265,avcodec
 addons:
   apt:
