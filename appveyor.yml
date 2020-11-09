@@ -86,8 +86,6 @@ install:
       .\vcpkg.exe install yasm-tool:x86-windows --recurse
       .\vcpkg.exe install ffmpeg[%FEATURES%]:%TRIPLET% --recurse
       dir /s /b "installed\%TRIPLET%"
-      7z a logs.7z -ir!".\*.log"
-      appveyor PushArtifact logs.7z
       cd C:\projects\ffmpeg-msvc-build\
 build_script:
   - ps: |
@@ -107,6 +105,11 @@ test_script:
   - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDebug%MSVC_CRT_SUFFIX%
   - cmake --build .
   - ctest -V
+on_finish:
+  - cmd: |
+      cd C:\Tools\vcpkg
+      7z a logs.7z -ir!".\*.log"
+      appveyor PushArtifact logs.7z
 deploy:
   description: "Headers and libraries for FFmpeg.\n\nFeatures: $(FEATURES)."
   provider: GitHub
