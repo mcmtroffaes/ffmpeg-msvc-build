@@ -80,7 +80,6 @@ install:
       git fetch mcmtroffaes
       git checkout %VCPKG_HASH% -d
       git log -1
-      copy /y "C:\projects\ffmpeg-msvc-build\vcpkg_acquire_msys.cmake" "C:\Tools\vcpkg\scripts\cmake\"
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
