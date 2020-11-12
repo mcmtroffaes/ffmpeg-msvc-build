@@ -54,12 +54,11 @@ jobs:
 addons:
   apt:
     packages:
-    - yasm
     - nasm
     - ninja-build
   homebrew:
     packages:
-    - yasm
+    - nasm
     - ninja
 before_install:
   - cmake --version
