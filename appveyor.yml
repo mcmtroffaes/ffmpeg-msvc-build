@@ -14,14 +14,14 @@ environment:
 
     # LGPL full builds
     ###################
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,iconv,lzma,nvcodec,opus,vpx,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,lzma,nvcodec,opus,vpx,zlib
       TRIPLET: x64-windows
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,iconv,lzma,nvcodec,opus,vpx,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,lzma,nvcodec,opus,vpx,zlib
       TRIPLET: x64-windows-static
       MSVC_CRT_SUFFIX:
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,iconv,lzma,nvcodec,opus,vpx,zlib
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,lzma,nvcodec,opus,vpx,zlib
       TRIPLET: x64-windows-static-md
       RUN_EXPORT: true
 
