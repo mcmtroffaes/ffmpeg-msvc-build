@@ -12,8 +12,8 @@ jobs:
   include:
   # LGPL full builds
   ###################
-  - env: FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,lzma,opus,vpx,zlib
-  - env: FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,lzma,opus,vpx,zlib
+  - env: FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx
+  - env: FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx
     os:  osx
 
   # LGPL features
