@@ -15,8 +15,6 @@ environment:
     # LGPL full builds
     ###################
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
-      TRIPLET: x86-windows
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
       TRIPLET: x64-windows
       RUN_EXPORT: true
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
@@ -66,6 +64,11 @@ environment:
     ###################
     - FEATURES: core,openssl,avformat
     - FEATURES: core,fdk-aac,avcodec
+
+    # 32-bit build
+    ###############
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale
+      TRIPLET: x86-windows
 matrix:
   fast_finish: false
   # known broken features
