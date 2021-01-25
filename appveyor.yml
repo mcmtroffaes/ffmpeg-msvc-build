@@ -67,7 +67,7 @@ environment:
 
     # 32-bit build
     ###############
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale
+    - FEATURES: core,avcodec
       TRIPLET: x86-windows
 matrix:
   fast_finish: false
