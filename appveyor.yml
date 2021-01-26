@@ -6,6 +6,7 @@ environment:
   MSVC_CRT_SUFFIX: DLL
   RUN_EXPORT: false
   TRIPLET: x64-windows-static-md
+  VCVARS: vcvars64
 
   matrix:
     # minimal build
@@ -69,6 +70,7 @@ environment:
     ###############
     - FEATURES: core,avcodec
       TRIPLET: x86-windows
+      VCVARS: vcvars32
 matrix:
   fast_finish: false
   # known broken features
@@ -98,7 +100,7 @@ build_script:
         .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
       }
 test_script:
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\%VCVARS%.bat"
   - mkdir build-rel
   - cd build-rel
   - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%FEATURES:,=;% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded%MSVC_CRT_SUFFIX%
