@@ -43,7 +43,7 @@ environment:
     - FEATURES: core,lzma,avformat
     - FEATURES: core,nvcodec,avcodec
     - FEATURES: core,mp3lame,avcodec
-    - FEATURES: core,opencl,avfilter
+    - FEATURES: core,opencl,avcodec,avformat,avfilter
     - FEATURES: core,opus,avcodec
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
