@@ -19,8 +19,6 @@ function(test_for _feature _name)
 endfunction()
 
 add_subdirectory(avutil)
-add_test(NAME test_create_hwdevice_opencl COMMAND test_create_hwdevice opencl)
-test_for("opencl" test_create_hwdevice_opencl)
 if ("avcodec" IN_LIST FEATURES)
   add_subdirectory(avcodec)
   add_test(NAME test_encoder_aac COMMAND test_find_encoder aac)
