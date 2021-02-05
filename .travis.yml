@@ -20,10 +20,10 @@ env:
   - FEATURES=core,swresample
   - FEATURES=core,swscale
   - FEATURES=core,avresample
-  - FEATURES=core,bzip2,avformat
   - FEATURES=core,ffmpeg
   - FEATURES=core,ffplay
   - FEATURES=core,ffprobe
+  - FEATURES=core,bzip2,avformat
   - FEATURES=core,iconv,avcodec
   - FEATURES=core,lzma,avformat
   - FEATURES=core,nvcodec,avcodec
