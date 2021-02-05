@@ -6,66 +6,52 @@ env:
   # minimal build
   ###################
   - FEATURES=core
-dist: focal
-osx_image: xcode12u
-jobs:
-  include:
+
   # LGPL full builds
   ###################
-  - env: FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx
-  - env: FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx
-    os:  osx
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx
 
   # LGPL features
   ################
-  - env: FEATURES=core,avcodec
-  - env: FEATURES=core,avcodec
-    os:  osx
-  - env: FEATURES=core,avformat
-  - env: FEATURES=core,avformat
-    os:  osx
-  - env: FEATURES=core,avdevice
-  - env: FEATURES=core,avdevice
-    os:  osx
-  - env: FEATURES=core,avfilter
-  - env: FEATURES=core,avfilter
-    os:  osx
-  - env: FEATURES=core,swresample
-  - env: FEATURES=core,swresample
-    os:  osx
-  - env: FEATURES=core,swscale
-  - env: FEATURES=core,swscale
-    os:  osx
-  - env: FEATURES=core,avresample
-  - env: FEATURES=core,bzip2,avformat
-  - env: FEATURES=core,ffmpeg
-  - env: FEATURES=core,ffplay
-  - env: FEATURES=core,ffprobe
-  - env: FEATURES=core,iconv,avcodec
-  - env: FEATURES=core,lzma,avformat
-  - env: FEATURES=core,nvcodec,avcodec
-  - env: FEATURES=core,mp3lame,avcodec
-  - env: FEATURES=core,opencl,avfilter
-  - env: FEATURES=core,opus,avcodec
-  - env: FEATURES=core,snappy,avcodec
-  - env: FEATURES=core,soxr,swresample
-  - env: FEATURES=core,theora,avcodec
-  - env: FEATURES=core,vorbis,avcodec
-  - env: FEATURES=core,vpx,avcodec
-  - env: FEATURES=core,zlib,avformat
+  - FEATURES=core,avcodec
+  - FEATURES=core,avformat
+  - FEATURES=core,avdevice
+  - FEATURES=core,avfilter
+  - FEATURES=core,swresample
+  - FEATURES=core,swscale
+  - FEATURES=core,avresample
+  - FEATURES=core,bzip2,avformat
+  - FEATURES=core,ffmpeg
+  - FEATURES=core,ffplay
+  - FEATURES=core,ffprobe
+  - FEATURES=core,iconv,avcodec
+  - FEATURES=core,lzma,avformat
+  - FEATURES=core,nvcodec,avcodec
+  - FEATURES=core,mp3lame,avcodec
+  - FEATURES=core,opencl,avfilter
+  - FEATURES=core,opus,avcodec
+  - FEATURES=core,snappy,avcodec
+  - FEATURES=core,soxr,swresample
+  - FEATURES=core,theora,avcodec
+  - FEATURES=core,vorbis,avcodec
+  - FEATURES=core,vpx,avcodec
+  - FEATURES=core,zlib,avformat
 
   # GPL features
   ###############
-  #- env: FEATURES=core,avisynthplus,avformat  # windows only
-  - env: FEATURES=core,postproc
-  - env: FEATURES=core,x264,avcodec
-  - env: FEATURES=core,x265,avcodec
+  #- FEATURES=core,avisynthplus,avformat  # windows only
+  - FEATURES=core,postproc
+  - FEATURES=core,x264,avcodec
+  - FEATURES=core,x265,avcodec
 
   # nonfree features
   ###################
-  - env: FEATURES=core,openssl,avformat
-  - env: FEATURES=core,fdk-aac,avcodec
+  - FEATURES=core,openssl,avformat
+  - FEATURES=core,fdk-aac,avcodec
 
+dist: focal
+osx_image: xcode12u
+jobs:
   # known broken features
   allow_failures:
   - env: FEATURES=core,x265,avcodec
