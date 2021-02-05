@@ -18,6 +18,24 @@ jobs:
 
   # LGPL features
   ################
+  - env: FEATURES=core,avcodec
+  - env: FEATURES=core,avcodec
+    os:  osx
+  - env: FEATURES=core,avformat
+  - env: FEATURES=core,avformat
+    os:  osx
+  - env: FEATURES=core,avdevice
+  - env: FEATURES=core,avdevice
+    os:  osx
+  - env: FEATURES=core,avfilter
+  - env: FEATURES=core,avfilter
+    os:  osx
+  - env: FEATURES=core,swresample
+  - env: FEATURES=core,swresample
+    os:  osx
+  - env: FEATURES=core,swscale
+  - env: FEATURES=core,swscale
+    os:  osx
   - env: FEATURES=core,avresample
   - env: FEATURES=core,bzip2,avformat
   - env: FEATURES=core,ffmpeg
