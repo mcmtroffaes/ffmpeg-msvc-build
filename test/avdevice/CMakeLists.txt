@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 3.12)
+project(test_avdevice)
+find_package(FFMPEG REQUIRED)
+add_executable(test_avdevice main.cpp)
+target_link_libraries(test_avdevice PRIVATE ${FFMPEG_LIBRARIES})
+target_include_directories(test_avdevice PRIVATE ${FFMPEG_INCLUDE_DIRS})
+add_test(test_avdevice test_avdevice)
