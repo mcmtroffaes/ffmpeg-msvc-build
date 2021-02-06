@@ -1,6 +1,6 @@
 language: cpp
 os:
-- linux
+#- linux
 - osx
 env:
   # minimal build
