@@ -52,10 +52,11 @@ env:
 dist: focal
 osx_image: xcode12u
 jobs:
-  fast_finish: true
   # known broken features
   allow_failures:
   - env: FEATURES=core,x265,avcodec
+  - env: FEATURES=core,ffplay
+    os: osx
 addons:
   apt:
     packages:
