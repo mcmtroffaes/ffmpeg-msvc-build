@@ -57,6 +57,10 @@ jobs:
   - env: FEATURES=core,x265,avcodec
   - env: FEATURES=core,ffplay
     os: osx
+  exclude:
+  # nvcodec is not supported on osx
+  - env: FEATURES=core,nvcodec,avcodec
+    os: osx
 addons:
   apt:
     packages:
