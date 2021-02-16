@@ -23,18 +23,31 @@ env:
   - FEATURES=core,ffmpeg
   - FEATURES=core,ffplay
   - FEATURES=core,ffprobe
+  - FEATURES=core,ass,avfilter
   - FEATURES=core,bzip2,avformat
+  - FEATURES=core,dav1d,avcodec
+  - FEATURES=core,freetype,avfilter
+  - FEATURES=core,freetype,fontconfig,fribidi,avfilter
   - FEATURES=core,iconv,avcodec
+  - FEATURES=core,ilbc,avcodec
   - FEATURES=core,lzma,avformat
   - FEATURES=core,nvcodec,avcodec
+  - FEATURES=core,modplug,avformat
   - FEATURES=core,mp3lame,avcodec
   - FEATURES=core,opencl,avfilter
+  - FEATURES=core,opengl,avdevice
+  - FEATURES=core,openjpeg,avcodec
   - FEATURES=core,opus,avcodec
   - FEATURES=core,snappy,avcodec
   - FEATURES=core,soxr,swresample
+  - FEATURES=core,ssh,avformat
+  - FEATURES=core,tensorflow,avfilter,swscale
+  - FEATURES=core,tesseract,avfilter
   - FEATURES=core,theora,avcodec
   - FEATURES=core,vorbis,avcodec
   - FEATURES=core,vpx,avcodec
+  - FEATURES=core,webp,avcodec
+  - FEATURES=core,xml2,avformat
   - FEATURES=core,zlib,avformat
 
   # GPL features

@@ -45,24 +45,41 @@ environment:
     - FEATURES: core,ffmpeg
     - FEATURES: core,ffplay
     - FEATURES: core,ffprobe
+    - FEATURES: core,ass,avfilter
+    - FEATURES: core,dav1d,avcodec
+    - FEATURES: core,freetype,avfilter
+    - FEATURES: core,freetype,fontconfig,fribidi,avfilter
     - FEATURES: core,iconv,avcodec
+    - FEATURES: core,ilbc,avcodec
     - FEATURES: core,lzma,avformat
     - FEATURES: core,nvcodec,avcodec
+    - FEATURES: core,modplug,avformat
+      TRIPLET: x64-windows  # vcpkg only supports dynamic build
     - FEATURES: core,mp3lame,avcodec
     - FEATURES: core,opencl,avfilter
+    - FEATURES: core,opengl,avdevice
+    - FEATURES: core,openjpeg,avcodec
     - FEATURES: core,opus,avcodec
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
+    - FEATURES: core,ssh,avformat
+    - FEATURES: core,tensorflow,avfilter,swscale
+      TRIPLET: x64-windows  # vcpkg only supports dynamic build
+    - FEATURES: core,tesseract,avfilter
+      TRIPLET: x64-windows  # vcpkg only supports dynamic build
     - FEATURES: core,speex,avcodec
     - FEATURES: core,theora,avcodec
     - FEATURES: core,vorbis,avcodec
     - FEATURES: core,vpx,avcodec
+    - FEATURES: core,webp,avcodec
+    - FEATURES: core,xml2,avformat
+      TRIPLET: x64-windows  # vcpkg only supports dynamic build
     - FEATURES: core,zlib,avformat
 
     # GPL features
     ###############
     - FEATURES: core,avisynthplus,avformat
-      TRIPLET: x64-windows  # ffmpeg only supports dynamic build of avisynthplus
+      TRIPLET: x64-windows  # vcpkg only supports dynamic build
     - FEATURES: core,postproc
     - FEATURES: core,x264,avcodec
     - FEATURES: core,x265,avcodec
