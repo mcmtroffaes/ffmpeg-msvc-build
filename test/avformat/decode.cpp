@@ -144,13 +144,12 @@ int main(int argc, char** argv)
 			throw std::runtime_error("codecpar is null");
 		streams.emplace_back(*fmt_ctx->streams[i]->codecpar, options);
 	}
-	AVPacket pkt = { 0 };
-	av_init_packet(&pkt);
+	auto pkt = packet_alloc();
 	int nb_packets = 0;
-	while (av_read_frame(fmt_ctx.get(), &pkt) >= 0) {
-		logger::info() << "packet stream index: " << pkt.stream_index;
-		int ret = streams[pkt.stream_index].decode_packet(pkt);
-		av_packet_unref(&pkt);
+	while (av_read_frame(fmt_ctx.get(), pkt.get()) >= 0) {
+		logger::info() << "packet stream index: " << pkt->stream_index;
+		int ret = streams[pkt->stream_index].decode_packet(*pkt);
+		av_packet_unref(pkt.get());
 		if (ret < 0)
 			return -1;
 		nb_packets++;
