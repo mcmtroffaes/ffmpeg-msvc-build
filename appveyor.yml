@@ -99,6 +99,7 @@ matrix:
   # known broken features
   allow_failures:
     - FEATURES: core,x264,avcodec
+    - FEATURES: core,freetype,fontconfig,fribidi,avfilter  # needs meson build, see https://github.com/microsoft/vcpkg/issues/15303
 platform:
   - x64
 install:
