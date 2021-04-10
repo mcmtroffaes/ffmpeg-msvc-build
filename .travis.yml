@@ -79,6 +79,8 @@ addons:
     packages:
     - nasm
     - ninja-build
+    - gperf  # required for fontconfig[core]
+    - mesa-common-dev  # required for opengl feature
   homebrew:
     packages:
     - nasm
