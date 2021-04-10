@@ -9,7 +9,7 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;iconv;lzma;mp3lame;nvcodec;opencl;opengl;opus;postproc;snappy;soxr;speex;swresample;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
+set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;iconv;lzma;mp3lame;nvcodec;opencl;opengl;opus;postproc;snappy;soxr;speex;swresample;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()
 
 function(test_for _feature _name)
@@ -27,6 +27,9 @@ if ("avcodec" IN_LIST FEATURES)
   add_test(NAME test_decoder_flac COMMAND test_find_decoder flac)
   add_test(NAME test_encoder_ffv1 COMMAND test_find_encoder ffv1)
   add_test(NAME test_decoder_ffv1 COMMAND test_find_decoder ffv1)
+
+  add_test(NAME test_decoder_libdav1d COMMAND test_find_decoder libdav1d)
+  test_for("dav1d" test_decoder_libdav1d)
 
   add_test(NAME test_decoder_srt COMMAND test_open_decoder srt)
   add_test(NAME test_decoder_srt_iconv COMMAND test_open_decoder srt sub_charenc=ISO-8859-1)
