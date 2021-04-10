@@ -41,7 +41,7 @@ env:
   - FEATURES=core,snappy,avcodec
   - FEATURES=core,soxr,swresample
   - FEATURES=core,ssh,avformat
-  - FEATURES=core,tensorflow,avfilter,swscale
+  #- FEATURES=core,tensorflow,avfilter,swscale  # timeout
   - FEATURES=core,tesseract,avfilter
   - FEATURES=core,theora,avcodec
   - FEATURES=core,vorbis,avcodec

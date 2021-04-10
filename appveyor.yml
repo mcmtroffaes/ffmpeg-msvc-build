@@ -63,8 +63,8 @@ environment:
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
     - FEATURES: core,ssh,avformat
-    - FEATURES: core,tensorflow,avfilter,swscale
-      TRIPLET: x64-windows  # vcpkg only supports dynamic build
+    #- FEATURES: core,tensorflow,avfilter,swscale  # timeout
+    #  TRIPLET: x64-windows  # vcpkg only supports dynamic build
     - FEATURES: core,tesseract,avfilter
       TRIPLET: x64-windows  # vcpkg only supports dynamic build
     - FEATURES: core,speex,avcodec
