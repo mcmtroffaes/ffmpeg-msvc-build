@@ -8,6 +8,12 @@ The script uses [vcpkg](https://github.com/microsoft/vcpkg)
 which closely follows the [official
 instructions](https://trac.ffmpeg.org/wiki/CompilationGuide/MSVC).
 
+The purpose of this repository is:
+
+1. To enable the latest git version of ffmpeg to be built with vcpkg, with a few minimal patches on top of upstream vcpkg.
+2. Do full feature testing for windows, linux, and osx (far more in-depth compared to what upstream vcpkg continuous integration is testing).
+3. Provide a few lightweight builds for convenience. Given that there are so many different combinations of features that might make sense for specific purposes, and given the one hour time limit on appveyor, what is currently provided is an LGPL build including all standard libraries (avcodec, avformat, avfilter, swresample, and swscale), vpx (one of the best LGPL video codecs), opus (one of the best LGPL audio codecs), and nvcodec (to provide x264 and x265 hardware encoding support if you have an nvidia GPU).
+
 ## Requirements
 
 * [Visual Studio](https://docs.microsoft.com/en-us/cpp/)
@@ -15,7 +21,17 @@ instructions](https://trac.ffmpeg.org/wiki/CompilationGuide/MSVC).
 
 ## Usage
 
-Prebuilt static LGPL builds with Visual Studio 2019 can be found
+Clone the repository and run the following in powershell or cmd:
+
+```ps
+cd vcpkg
+.\bootstrap-vcpkg.bat
+.\vcpkg.exe install --triplet=x64-windows-static-md ffmpeg[core,avcodec,avformat,avfilter,avdevice,swresample,swscale]
+```
+
+You can pick another triplet, or another set of features. See the [vcpkg ffmpeg CONTROL file](https://github.com/microsoft/vcpkg/blob/master/ports/ffmpeg/CONTROL) for a list of all features. The above will result in a minimal ffmpeg library build with standard codecs, formats, filters, and devices, along with audio resampling and video scaling support.
+
+Prebuilt static LGPL builds for Visual Studio 2019 can be found
 [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases).
 See the
 [vcpkg export documentation](https://vcpkg.readthedocs.io/en/latest/users/integration/#export)
@@ -27,4 +43,4 @@ All scripts for creating the builds are licensed under the conditions
 of the [MIT license](LICENSE.txt).
 
 The builds themselves are covered by the relevant license for your build
-(see [here](https://www.gnu.org/licenses/) for full details).
+(see [here](https://ffmpeg.org/legal.html) for full details).
