@@ -127,20 +127,18 @@ endif()
 if ("avformat" IN_LIST FEATURES)
   add_subdirectory(avformat)
 
-  add_test(NAME test_avisynthplus COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/avisynth.avs" avisynth)
-  test_for("avisynthplus" test_avisynthplus)
-
-  add_test(NAME test_bzip2 COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/subtitle_bzip2.mkv" matroska)
-  test_for("bzip2" test_bzip2)
-  add_test(NAME test_lzma COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/tiff_lzma.tif" tiff_pipe)
-  test_for("lzma" test_lzma)
-  add_test(NAME test_zlib COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/tiff_zlib.tif" tiff_pipe)
-  test_for("zlib" test_zlib)
+  add_test(NAME test_decode_avisynthplus COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/avisynth.avs" avisynth)
+  test_for("avisynthplus" test_decode_avisynthplus)
+  add_test(NAME test_decode_bzip2 COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/subtitle_bzip2.mkv" matroska)
+  test_for("bzip2" test_decode_bzip2)
+  add_test(NAME test_decode_lzma COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/tiff_lzma.tif" tiff_pipe)
+  test_for("lzma" test_decode_lzma)
+  add_test(NAME test_decode_zlib COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/tiff_zlib.tif" tiff_pipe)
+  test_for("zlib" test_decode_zlib)
 
   add_test(NAME test_format_input_dash  COMMAND test_find_format "input"  "dash")
   add_test(NAME test_format_output_dash COMMAND test_find_format "output" "dash")
   test_for("xml2" test_format_input_dash)
-
   add_test(NAME test_format_input_libmodplug COMMAND test_find_format "input" "libmodplug")
   test_for("modplug" test_format_input_libmodplug)
 
