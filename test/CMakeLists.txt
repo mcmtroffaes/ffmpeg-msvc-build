@@ -9,7 +9,7 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;iconv;ilbc;lzma;mp3lame;nvcodec;opencl;opengl;opus;postproc;snappy;soxr;speex;swresample;tesseract;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
+set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;mp3lame;nvcodec;opencl;opengl;opus;postproc;snappy;soxr;speex;swresample;tesseract;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()
 
 function(test_for _feature _name)
@@ -106,6 +106,9 @@ if ("avfilter" IN_LIST FEATURES)
 
   add_test(NAME test_filter_ass COMMAND test_find_filter ass)
   test_for("ass" test_filter_ass)
+
+  add_test(NAME test_filter_drawtext COMMAND test_find_filter drawtext)
+  test_for("freetype" test_filter_drawtext)
 
   add_test(NAME test_filter_ocr COMMAND test_find_filter ocr)
   test_for("tesseract" test_filter_ocr)
