@@ -9,7 +9,7 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;mp3lame;nvcodec;opencl;opengl;openjpeg;opus;postproc;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
+set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;mp3lame;nvcodec;opencl;opengl;openjpeg;opus;postproc;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;webp;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()
 
 function(test_for _feature _name)
@@ -98,6 +98,9 @@ if ("avcodec" IN_LIST FEATURES)
 
   add_test(NAME test_encoder_wavpack COMMAND test_find_encoder wavpack)
   add_test(NAME test_decoder_wavpack COMMAND test_find_decoder wavpack)
+
+  add_test(NAME test_encoder_libwebp COMMAND test_find_encoder libwebp)
+  test_for("webp" test_encoder_libwebp)
 
   add_test(NAME test_encoder_libx264 COMMAND test_find_encoder libx264)
   test_for("x264" test_encoder_libx264)
