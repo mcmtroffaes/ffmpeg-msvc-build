@@ -9,7 +9,7 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;mp3lame;nvcodec;opencl;opengl;opus;postproc;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
+set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;mp3lame;nvcodec;opencl;opengl;openjpeg;opus;postproc;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;x264;x265;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()
 
 function(test_for _feature _name)
@@ -59,6 +59,11 @@ if ("avcodec" IN_LIST FEATURES)
   add_test(NAME test_encoder_opus COMMAND test_find_encoder opus)
   add_test(NAME test_decoder_opus COMMAND test_find_decoder opus)
   test_for("swresample" test_decoder_opus)  # built-in opus decoder needs swresample
+
+  add_test(NAME test_encoder_libopenjpeg COMMAND test_find_encoder libopenjpeg)
+  add_test(NAME test_decoder_libopenjpeg COMMAND test_find_decoder libopenjpeg)
+  test_for("openjpeg" test_encoder_libopenjpeg)
+  test_for("openjpeg" test_decoder_libopenjpeg)
 
   add_test(NAME test_encoder_libopus COMMAND test_find_encoder libopus)
   add_test(NAME test_decoder_libopus COMMAND test_find_decoder libopus)
