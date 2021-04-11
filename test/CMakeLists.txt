@@ -9,7 +9,7 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;mp3lame;nvcodec;opencl;opengl;openjpeg;opus;postproc;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;webp;x264;x265;xml2;zlib" CACHE STRING "List of all features enabled through vcpkg.")
+set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;modplug;mp3lame;nvcodec;opencl;opengl;openjpeg;opus;postproc;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;webp;x264;x265;xml2;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()
 
 function(test_for _feature _name)
@@ -140,6 +140,9 @@ if ("avformat" IN_LIST FEATURES)
   add_test(NAME test_format_input_dash  COMMAND test_find_protocol "input"  "dash")
   add_test(NAME test_format_output_dash COMMAND test_find_protocol "output" "dash")
   test_for("xml2" test_format_input_dash)
+
+  add_test(NAME test_format_input_libmodplug COMMAND test_find_protocol "input" "libmodplug")
+  test_for("modplug" test_format_input_libmodplug)
 
   add_test(NAME test_protocol_input_file  COMMAND test_find_protocol "input"  "file")
   add_test(NAME test_protocol_output_file COMMAND test_find_protocol "output" "file")
