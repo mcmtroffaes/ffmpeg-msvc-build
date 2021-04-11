@@ -141,7 +141,7 @@ if ("avformat" IN_LIST FEATURES)
   add_test(NAME test_format_output_dash COMMAND test_find_format "output" "dash")
   test_for("xml2" test_format_input_dash)
 
-  add_test(NAME test_format_input_libmodplug COMMAND test_find_protocol "input" "libmodplug")
+  add_test(NAME test_format_input_libmodplug COMMAND test_find_format "input" "libmodplug")
   test_for("modplug" test_format_input_libmodplug)
 
   add_test(NAME test_protocol_input_file  COMMAND test_find_protocol "input"  "file")
