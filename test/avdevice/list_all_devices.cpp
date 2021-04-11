@@ -1,5 +1,4 @@
 #include <iostream>
-#include <functional>
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS

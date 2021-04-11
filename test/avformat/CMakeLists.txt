@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.12)
 project(test_avformat)
 find_package(FFMPEG REQUIRED)
-add_executable(test_decode "decode.cpp")
+add_executable(test_decode decode.cpp)
 target_link_libraries(test_decode PRIVATE ${FFMPEG_LIBRARIES})
 target_include_directories(test_decode PRIVATE ${FFMPEG_INCLUDE_DIRS})
 if("avisynthplus" IN_LIST FEATURES)

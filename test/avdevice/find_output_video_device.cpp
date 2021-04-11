@@ -1,5 +1,3 @@
-#include <iostream>
-#include <functional>
 #include "../log.h"
 
 extern "C" {
@@ -10,10 +8,9 @@ extern "C" {
 template <typename T>
 bool find_device(T*(*func_next)(T*), std::string name)
 {
-	T* format = func_next(nullptr);
-	while (format) {
+	T* format = nullptr;
+	while (format = func_next(format)) {
 		if (name == format->name) return true;
-		format = func_next(format);
 	};
 	return false;
 }
