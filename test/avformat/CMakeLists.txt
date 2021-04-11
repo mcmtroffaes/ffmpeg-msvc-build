@@ -4,6 +4,12 @@ find_package(FFMPEG REQUIRED)
 add_executable(test_decode decode.cpp)
 target_link_libraries(test_decode PRIVATE ${FFMPEG_LIBRARIES})
 target_include_directories(test_decode PRIVATE ${FFMPEG_INCLUDE_DIRS})
+add_executable(list_all_protocols list_all_protocols.cpp)
+target_link_libraries(list_all_protocols PRIVATE ${FFMPEG_LIBRARIES})
+target_include_directories(list_all_protocols PRIVATE ${FFMPEG_INCLUDE_DIRS})
+add_executable(test_find_protocol find_protocol.cpp)
+target_link_libraries(test_find_protocol PRIVATE ${FFMPEG_LIBRARIES})
+target_include_directories(test_find_protocol PRIVATE ${FFMPEG_INCLUDE_DIRS})
 if("avisynthplus" IN_LIST FEATURES)
   add_custom_command(
     TARGET test_decode POST_BUILD
