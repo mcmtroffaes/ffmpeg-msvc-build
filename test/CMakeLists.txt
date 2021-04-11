@@ -137,8 +137,8 @@ if ("avformat" IN_LIST FEATURES)
   add_test(NAME test_zlib COMMAND test_decode "${CMAKE_CURRENT_SOURCE_DIR}/tiff_zlib.tif" tiff_pipe)
   test_for("zlib" test_zlib)
 
-  add_test(NAME test_format_input_dash  COMMAND test_find_protocol "input"  "dash")
-  add_test(NAME test_format_output_dash COMMAND test_find_protocol "output" "dash")
+  add_test(NAME test_format_input_dash  COMMAND test_find_format "input"  "dash")
+  add_test(NAME test_format_output_dash COMMAND test_find_format "output" "dash")
   test_for("xml2" test_format_input_dash)
 
   add_test(NAME test_format_input_libmodplug COMMAND test_find_protocol "input" "libmodplug")
