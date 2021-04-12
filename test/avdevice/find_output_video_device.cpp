@@ -2,15 +2,16 @@
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
+#include <libavutil/avstring.h>
 #include <libavdevice/avdevice.h>
 }
 
 template <typename T>
-bool find_device(T*(*func_next)(T*), std::string name)
+bool find_device(T*(*func_next)(T*), const char* name)
 {
 	T* format = nullptr;
 	while (format = func_next(format)) {
-		if (name == format->name) return true;
+		if (av_match_name(name, format->name)) return true;
 	};
 	return false;
 }
