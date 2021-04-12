@@ -60,6 +60,7 @@ environment:
     - FEATURES: core,opengl,avdevice
     - FEATURES: core,openjpeg,avcodec
     - FEATURES: core,opus,avcodec
+    - FEATURES: core,sdl2,avdevice
     - FEATURES: core,snappy,avcodec
     - FEATURES: core,soxr,swresample
     - FEATURES: core,ssh,avformat
