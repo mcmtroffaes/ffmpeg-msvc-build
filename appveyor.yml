@@ -49,7 +49,7 @@ environment:
     - FEATURES: core,dav1d,avcodec
     - FEATURES: core,freetype,avfilter
     - FEATURES: core,freetype,fontconfig,fribidi,avfilter
-      TRIPLET: x64-windows-static  # for now, vcpkg does not yet support dynamic crt, see https://github.com/microsoft/vcpkg/issues/15303
+      TRIPLET: x64-windows  # for now, see https://github.com/microsoft/vcpkg/issues/15303
     - FEATURES: core,iconv,avcodec
     - FEATURES: core,ilbc,avcodec
     - FEATURES: core,lzma,avformat
