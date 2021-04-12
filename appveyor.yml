@@ -49,13 +49,14 @@ environment:
     - FEATURES: core,dav1d,avcodec
     - FEATURES: core,freetype,avfilter
     - FEATURES: core,freetype,fontconfig,fribidi,avfilter
+      TRIPLET: x64-windows-static  # for now, vcpkg does not yet support dynamic crt, see https://github.com/microsoft/vcpkg/issues/15303
     - FEATURES: core,iconv,avcodec
     - FEATURES: core,ilbc,avcodec
     - FEATURES: core,lzma,avformat
-    - FEATURES: core,nvcodec,avcodec
     - FEATURES: core,modplug,avformat
       TRIPLET: x64-windows  # vcpkg only supports dynamic build
     - FEATURES: core,mp3lame,avcodec
+    - FEATURES: core,nvcodec,avcodec
     - FEATURES: core,opencl,avfilter
     - FEATURES: core,opengl,avdevice
     - FEATURES: core,openjpeg,avcodec
@@ -97,9 +98,6 @@ environment:
       VCVARS: vcvars32
 matrix:
   fast_finish: false
-  # known broken features
-  allow_failures:
-    - FEATURES: core,freetype,fontconfig,fribidi,avfilter  # needs meson build, see https://github.com/microsoft/vcpkg/issues/15303
 platform:
   - x64
 install:

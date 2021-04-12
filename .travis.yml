@@ -31,9 +31,9 @@ env:
   - FEATURES=core,iconv,avcodec
   - FEATURES=core,ilbc,avcodec
   - FEATURES=core,lzma,avformat
-  - FEATURES=core,nvcodec,avcodec
   - FEATURES=core,modplug,avformat
   - FEATURES=core,mp3lame,avcodec
+  - FEATURES=core,nvcodec,avcodec
   - FEATURES=core,opencl,avfilter
   - FEATURES=core,opengl,avdevice
   - FEATURES=core,openjpeg,avcodec
@@ -68,9 +68,19 @@ osx_image: xcode12u
 jobs:
   # known broken features
   allow_failures:
-  - env: FEATURES=core,x265,avcodec
   - env: FEATURES=core,ffplay
     os: osx
+  - env: FEATURES=core,ass,avfilter
+    os: linux
+  - env: FEATURES=core,dav1d,avcodec
+    os: osx
+  - env: FEATURES=core,freetype,avfilter
+    os: linux
+  - env: FEATURES=core,freetype,fontconfig,fribidi,avfilter
+    os: linux
+  - env: FEATURES=core,ssh,avformat
+  - env: FEATURES=core,tesseract,avfilter
+  - env: FEATURES=core,xml2,avformat
   exclude:
   # nvcodec is not supported on osx
   - env: FEATURES=core,nvcodec,avcodec
