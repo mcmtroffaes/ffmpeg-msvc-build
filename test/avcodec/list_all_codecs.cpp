@@ -7,9 +7,9 @@ extern "C" {
 
 int main()
 {
-	AVCodec* p = nullptr;
+	const AVCodec* p = nullptr;
 	void* i = nullptr;
-	while ((p = (AVCodec*)av_codec_iterate(&i))) {
+	while ((p = av_codec_iterate(&i))) {
 		std::cout
 			<< "name:    " << p->name << std::endl
 			<< "type:    " << av_get_media_type_string(p->type) << std::endl
