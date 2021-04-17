@@ -112,7 +112,6 @@ install:
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
-      .\vcpkg.exe remove yasm-tool:x86-windows --recurse
       .\vcpkg.exe install ffmpeg[%FEATURES%]:%TRIPLET% --recurse
       dir /s /b "installed\%TRIPLET%"
       cd C:\projects\ffmpeg-msvc-build\
