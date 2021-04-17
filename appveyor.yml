@@ -124,6 +124,7 @@ test_script:
   - ps: |
       cd C:\Tools\vcpkg
       $env:ALL_FEATURES = (.\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
+      echo "ALL_FEATURES = ${env:ALL_FEATURES}"
       cd C:\projects\ffmpeg-msvc-build\
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\%VCVARS%.bat"
   - mkdir build-rel
