@@ -79,6 +79,8 @@ jobs:
   - env: FEATURES=core,freetype,fontconfig,fribidi,avfilter
     os: linux
   - env: FEATURES=core,ssh,avformat
+  - env: FEATURES=core,sdl2,avdevice
+    os: osx
   - env: FEATURES=core,tesseract,avfilter
   - env: FEATURES=core,xml2,avformat
   exclude:
