@@ -14,11 +14,12 @@ jobs:
             $triplet = "x64-windows"
             $features = "core,avcodec"
             $vcpkg = Get-Content .\VCPKG_HASH.txt -Encoding Ascii
+            echo "vcpkg hash = $vcpkg"
             cd .\vcpkg\
-            cmd.exe /c .\bootstrap-vcpkg.bat
-            .\vcpkg.exe integrate install
-            .\vcpkg.exe upgrade --no-dry-run
-            .\vcpkg.exe install ffmpeg[${features}]:${triplet} --recurse
+            & .\bootstrap-vcpkg.bat
+            & .\vcpkg.exe integrate install
+            & .\vcpkg.exe upgrade --no-dry-run
+            & .\vcpkg.exe install ffmpeg[${features}]:${triplet} --recurse
             dir /s /b "installed\${triplet}"
             $all_features = (.\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
             echo "all features = ${all_features}"
