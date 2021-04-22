@@ -11,6 +11,14 @@ jobs:
       - run: git submodule sync
       - run: git submodule update --init
       - run:
+          name: Install vcpkg
+          command: |
+            cd .\vcpkg\
+            & .\bootstrap-vcpkg.bat
+            & .\vcpkg.exe integrate install
+            & .\vcpkg.exe upgrade --no-dry-run
+	    cd ..
+      - run:
           name: Build
           command: |
             $triplet = "x64-windows"
@@ -18,14 +26,15 @@ jobs:
             $vcpkg = Get-Content .\VCPKG_HASH.txt -Encoding Ascii
             echo "vcpkg hash = $vcpkg"
             cd .\vcpkg\
-            & .\bootstrap-vcpkg.bat
-            & .\vcpkg.exe integrate install
-            & .\vcpkg.exe upgrade --no-dry-run
             & .\vcpkg.exe install ffmpeg[${features}]:${triplet} --recurse
             dir /s /b "installed\${triplet}"
-            $all_features = (.\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
-            echo "all features = ${all_features}"
             cd ..
+      - run:
+          name: Test
+          command: |
+            $triplet = "x64-windows"
+            $all_features = (.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
+            echo "all features = ${all_features}"
             mkdir build-rel
             cd build-rel
             cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${triplet} -DFEATURES=${all_features} -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
