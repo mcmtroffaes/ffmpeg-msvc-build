@@ -12,6 +12,8 @@ jobs:
       MSVC_RUNTIME_LIBRARY: MultiThreadedDLL
     steps:
       - run: choco install cmake -y -r --no-progress --installargs 'ADD_CMAKE_TO_PATH=System'
+      - run: choco install ninja -y -r --no-progress
+      - run: $env:PATH
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
@@ -35,15 +37,14 @@ jobs:
       - run:
           name: vcpkg extract all ffmpeg features
           command: |
-            $env:ALL_FEATURES = (.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
-            echo "${env:ALL_FEATURES}"
+            $env:ALL_FEATURES = (((.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1") + "core") -Join ";"
             $env:ALL_FEATURES
       - run:
           name: test release
           command: |
             mkdir build-rel
             cd build-rel
-            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${env:TRIPLET} -DFEATURES=${env:ALL_FEATURES} -DCMAKE_MSVC_RUNTIME_LIBRARY=${env:MSVC_RUNTIME_LIBRARY}
+            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake "-DVCPKG_TARGET_TRIPLET=${env:TRIPLET}" "-DFEATURES=${env:ALL_FEATURES}" "-DCMAKE_MSVC_RUNTIME_LIBRARY=${env:MSVC_RUNTIME_LIBRARY}"
             cmake --build .
             ctest -V
 workflows:
