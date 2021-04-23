@@ -11,19 +11,17 @@ jobs:
       MSVC_RUNTIME_LIBRARY: MultiThreadedDLL
     steps:
       - run: choco install cmake -y -r --no-progress --installargs 'ADD_CMAKE_TO_PATH=System'
-      - run: echo ${env:PATH}
-      - run: cmake
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
       - run: .\vcpkg\bootstrap-vcpkg.bat
       - run:
           name: vcpkg upgrade
-          command: .\vcpkg.exe upgrade --no-dry-run
+          command: .\vcpkg\vcpkg.exe upgrade --no-dry-run
           no_output_timeout: 60m
       - run:
           name: vcpkg install ffmpeg
-          command: .\vcpkg.exe install ffmpeg[${env:FEATURES}]:${env:TRIPLET} --recurse
+          command: .\vcpkg\vcpkg.exe install ffmpeg[${env:FEATURES}]:${env:TRIPLET} --recurse
           no_output_timeout: 60m
       - run:
           name: vcpkg extract features
