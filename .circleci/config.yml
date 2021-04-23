@@ -10,7 +10,8 @@ jobs:
       FEATURES: core
       MSVC_RUNTIME_LIBRARY: MultiThreadedDLL
     steps:
-      - run: choco install cmake -y -r --no-progress
+      - run: choco install cmake -y -r --no-progress --installargs 'ADD_CMAKE_TO_PATH=System'
+      - run: echo ${env:PATH}
       - run: cmake
       - checkout
       - run: git submodule sync
