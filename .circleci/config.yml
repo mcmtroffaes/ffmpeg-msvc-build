@@ -8,34 +8,33 @@ jobs:
     environment:
       TRIPLET: x64-windows
       FEATURES: core
+      MSVC_RUNTIME_LIBRARY: MultiThreadedDLL
     steps:
+      - choco install cmake
+      - run: dir "C:\Users\circleci\thirdparty"
+      - run: cmake
       - checkout
-      - run: systeminfo
       - run: git submodule sync
       - run: git submodule update --init
+      - run: .\vcpkg\bootstrap-vcpkg.bat
       - run:
-          name: Install vcpkg
-          command: |
-            cd .\vcpkg\
-            & .\bootstrap-vcpkg.bat
-            & .\vcpkg.exe integrate install
-            cd ..
-      - run:
-          name: Build
+          name: vcpkg upgrade
+          command: .\vcpkg.exe upgrade --no-dry-run
           no_output_timeout: 60m
-          command: |
-            cd .\vcpkg\
-            & .\vcpkg.exe upgrade --no-dry-run
-            & .\vcpkg.exe install ffmpeg[${env:FEATURES}]:${env:TRIPLET} --recurse
-            dir /s /b "installed\${env:TRIPLET}"
-            cd ..
       - run:
-          name: Test
+          name: vcpkg install ffmpeg
+          command: .\vcpkg.exe install ffmpeg[${env:FEATURES}]:${env:TRIPLET} --recurse
+          no_output_timeout: 60m
+      - run:
+          name: vcpkg extract features
           command: |
-            $all_features = (.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
-            echo "all features = ${all_features}"
+            $env:ALL_FEATURES = (.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
+            echo "${env:ALL_FEATURES}"
+      - run:
+          name: test release
+          command: |
             mkdir build-rel
             cd build-rel
-            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${env:TRIPLET} -DFEATURES=${all_features} -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${env:TRIPLET} -DFEATURES=${env:ALL_FEATURES} -DCMAKE_MSVC_RUNTIME_LIBRARY=${env:CMAKE_MSVC_RUNTIME_LIBRARY}
             cmake --build .
             ctest -V
