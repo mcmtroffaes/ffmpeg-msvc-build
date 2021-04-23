@@ -6,6 +6,7 @@ jobs:
     executor:
       name: win/default
     environment:
+      VCPKG_DISABLE_METRICS: 1
       TRIPLET: x64-windows
       FEATURES: core
       MSVC_RUNTIME_LIBRARY: MultiThreadedDLL
@@ -14,7 +15,11 @@ jobs:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run: .\vcpkg\bootstrap-vcpkg.bat
+      - run:
+          name: vcpkg bootstrap
+          command: .\vcpkg\bootstrap-vcpkg.bat
+      - restore_cache:
+          key: vcpkg-cache
       - run:
           name: vcpkg upgrade
           command: .\vcpkg\vcpkg.exe upgrade --no-dry-run
@@ -23,16 +28,21 @@ jobs:
           name: vcpkg install ffmpeg
           command: .\vcpkg\vcpkg.exe install ffmpeg[${env:FEATURES}]:${env:TRIPLET} --recurse
           no_output_timeout: 60m
+      - save_cache:
+          key: vcpkg-cache
+          paths:
+            - vcpkg/installed
       - run:
-          name: vcpkg extract features
+          name: vcpkg extract all ffmpeg features
           command: |
             $env:ALL_FEATURES = (.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
             echo "${env:ALL_FEATURES}"
+            $env:ALL_FEATURES
       - run:
           name: test release
           command: |
             mkdir build-rel
             cd build-rel
-            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${env:TRIPLET} -DFEATURES=${env:ALL_FEATURES} -DCMAKE_MSVC_RUNTIME_LIBRARY=${env:CMAKE_MSVC_RUNTIME_LIBRARY}
+            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${env:TRIPLET} -DFEATURES=${env:ALL_FEATURES} -DCMAKE_MSVC_RUNTIME_LIBRARY=${env:MSVC_RUNTIME_LIBRARY}
             cmake --build .
             ctest -V
