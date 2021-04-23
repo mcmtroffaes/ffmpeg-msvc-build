@@ -46,3 +46,15 @@ jobs:
             cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${env:TRIPLET} -DFEATURES=${env:ALL_FEATURES} -DCMAKE_MSVC_RUNTIME_LIBRARY=${env:MSVC_RUNTIME_LIBRARY}
             cmake --build .
             ctest -V
+workflows:
+  version: 2
+  weekly:
+    jobs:
+      - build
+    triggers:
+      - schedule:
+          cron: "0 0 * * 0"
+          filters:
+            branches:
+              only:
+                - master
