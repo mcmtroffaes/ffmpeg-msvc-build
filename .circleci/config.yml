@@ -10,7 +10,7 @@ jobs:
       FEATURES: core
       MSVC_RUNTIME_LIBRARY: MultiThreadedDLL
     steps:
-      - run: choco install cmake -y -r
+      - run: choco install cmake -y -r --no-progress
       - run: cmake
       - checkout
       - run: git submodule sync
