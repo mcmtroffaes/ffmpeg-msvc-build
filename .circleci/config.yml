@@ -21,7 +21,7 @@ jobs:
           name: vcpkg bootstrap
           command: .\vcpkg\bootstrap-vcpkg.bat
       - restore_cache:
-          key: vcpkg-cache
+          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-{{ .Environment.TRIPLET }}-{{ .Environment.FEATURES }}
       - run:
           name: vcpkg upgrade
           command: .\vcpkg\vcpkg.exe upgrade --no-dry-run
@@ -31,7 +31,7 @@ jobs:
           command: .\vcpkg\vcpkg.exe install ffmpeg[${env:FEATURES}]:${env:TRIPLET} --recurse
           no_output_timeout: 60m
       - save_cache:
-          key: vcpkg-cache
+          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-{{ .Environment.TRIPLET }}-{{ .Environment.FEATURES }}
           paths:
             - vcpkg/installed
       - run:
