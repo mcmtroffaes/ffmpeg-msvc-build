@@ -102,8 +102,6 @@ platform:
   - x64
 install:
   - cmd: |
-      echo %PATH%
-      dir /s /b "C:/Program Files/Git/"
       set /p VCPKG_HASH=<VCPKG_HASH.txt
       cd C:\Tools\vcpkg
       git log -1
