@@ -41,27 +41,8 @@ jobs:
             $env:MSVC_RUNTIME_LIBRARY = if ("<< parameters.triplet >>".EndsWith("-static")) { "MultiThreaded" } else { "MultiThreadedDLL" }
             $env:MSVC_RUNTIME_LIBRARY
       - run:
-          name: test release
-          shell: cmd.exe  # vcvars only works in cmd
-          command: |
-            call ./.circleci/vcvars64.bat
-            mkdir build-rel
-            cd build-rel
-            cmake ../test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<< parameters.triplet >> -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
-            cmake --build .
-            ctest -V
-            cd ..
-      - run:
-          name: test debug
-          shell: cmd.exe  # vcvars only works in cmd
-          command: |
-            call ./.circleci/vcvars64.bat
-            mkdir build-dbg
-            cd build-dbg
-            cmake ../test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<< parameters.triplet >> -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
-            cmake --build .
-            ctest -V
-            cd ..
+          name: test
+          command: ./.circleci/build.bat
 workflows:
   version: 2
   weekly:
