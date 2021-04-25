@@ -30,16 +30,16 @@ jobs:
       - run: git submodule update --init
       - run:
           name: vcpkg bootstrap
-          command: .\vcpkg\bootstrap-vcpkg.bat
+          command: ./vcpkg/bootstrap-vcpkg.bat
       - restore_cache:
           key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
       - run:
           name: vcpkg upgrade
-          command: .\vcpkg\vcpkg.exe upgrade --no-dry-run
+          command: ./vcpkg/vcpkg.exe upgrade --no-dry-run
           no_output_timeout: 60m
       - run:
           name: vcpkg install ffmpeg
-          command: .\vcpkg\vcpkg.exe install ffmpeg[<< parameters.features >>]:<< parameters.triplet >> --recurse
+          command: ./vcpkg/vcpkg.exe install ffmpeg[<< parameters.features >>]:<< parameters.triplet >> --recurse
           no_output_timeout: 60m
       - save_cache:
           key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
@@ -48,7 +48,7 @@ jobs:
       - run:
           name: ffmpeg features
           command: |
-            $env:ALL_FEATURES = (((.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:<< parameters.triplet >>\s") -Replace "ffmpeg\[(.*)\]:.*","`$1") + "core") -Join ";"
+            $env:ALL_FEATURES = (((./vcpkg/vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:<< parameters.triplet >>\s") -Replace "ffmpeg\[(.*)\]:.*","`$1") + "core") -Join ";"
             $env:ALL_FEATURES
       - run:
           name: msvc runtime library
@@ -56,21 +56,14 @@ jobs:
             $env:MSVC_RUNTIME_LIBRARY = if ("<< parameters.triplet >>".EndsWith("-static")) { "MultiThreaded" } else { "MultiThreadedDLL" }
             $env:MSVC_RUNTIME_LIBRARY
       - run:
-          name: check msvc batch files
-          command: |
-            Get-ChildItem -Path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\" -Recurse -Include "*.bat"
-      - run:
           name: build release
+          shell: cmd.exe
           command: |
+            call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary/Build/vcvars64.bat"
             mkdir build-rel
             cd build-rel
-            cmake ../test -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<< parameters.triplet >> "-DFEATURES=${env:ALL_FEATURES}" "-DCMAKE_MSVC_RUNTIME_LIBRARY=${env:MSVC_RUNTIME_LIBRARY}"
+            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<< parameters.triplet >> -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
             cmake --build .
-            cd ..
-      - run:
-          name: test release
-          command: |
-            cd build-rel
             ctest -V
             cd ..
 workflows:
