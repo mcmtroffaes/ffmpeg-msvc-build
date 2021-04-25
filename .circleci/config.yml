@@ -44,10 +44,10 @@ jobs:
             $env:ALL_FEATURES = (((.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:<< parameters.triplet >>\s") -Replace "ffmpeg\[(.*)\]:.*","`$1") + "core") -Join ";"
             $env:ALL_FEATURES
       - run:
-        - name: msvc runtime library
-        - command: |
-           $env:MSVC_RUNTIME_LIBRARY = if ("<< parameters.triplet >>".EndsWith("-static")) { "MultiThreaded" } else { "MultiThreadedDLL" }
-           $env:MSVC_RUNTIME_LIBRARY
+          name: msvc runtime library
+          command: |
+            $env:MSVC_RUNTIME_LIBRARY = if ("<< parameters.triplet >>".EndsWith("-static")) { "MultiThreaded" } else { "MultiThreadedDLL" }
+            $env:MSVC_RUNTIME_LIBRARY
       - run:
           name: test release
           shell: cmd.exe  # vcvars does not work in powershell
