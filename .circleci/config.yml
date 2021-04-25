@@ -61,3 +61,10 @@ workflows:
             branches:
               only:
                 - master
+  manual:
+    jobs:
+      - hold:
+          type: approval
+      - build:
+          requires:
+            - hold
