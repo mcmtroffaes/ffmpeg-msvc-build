@@ -15,7 +15,7 @@ jobs:
     environment:
       VCPKG_DISABLE_METRICS: 1
     steps:
-      - run: choco config set cacheLocation "C:\Users\circleci\choco"
+      - run: choco config set cacheLocation C:/Users/circleci/choco
       - restore_cache:
           key: choco-cache
       - run: choco install cmake -y -r --no-progress --installargs 'ADD_CMAKE_TO_PATH=System'
@@ -23,7 +23,7 @@ jobs:
       - save_cache:
           key: choco-cache
           paths:
-            - "C:\Users\circleci\choco"
+            - "C:/Users/circleci/choco"
       - run: $env:PATH
       - checkout
       - run: git submodule sync
