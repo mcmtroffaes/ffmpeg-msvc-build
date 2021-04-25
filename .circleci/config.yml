@@ -47,16 +47,10 @@ jobs:
             $env:MSVC_RUNTIME_LIBRARY = if ("<< parameters.triplet >>".EndsWith("-static")) { "MultiThreaded" } else { "MultiThreadedDLL" }
             $env:MSVC_RUNTIME_LIBRARY
       - run:
-          name: build release
-          shell: cmd.exe
+          name: build test
           command: |
-            call ""C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary/Build/vcvars64.bat""
-            mkdir build-rel
-            cd build-rel
-            cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<< parameters.triplet >> -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
-            cmake --build .
-            ctest -V
-            cd ..
+            $env:TRIPLET = "<< parameters.triplet >>"
+            ./build-test.bat
 workflows:
   version: 2
   weekly:
