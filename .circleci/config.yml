@@ -46,7 +46,7 @@ jobs:
           paths:
             - vcpkg/installed
       - run:
-          name: vcpkg extract all ffmpeg features
+          name: ffmpeg features
           command: |
             $env:ALL_FEATURES = (((.\vcpkg\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:<< parameters.triplet >>\s") -Replace "ffmpeg\[(.*)\]:.*","`$1") + "core") -Join ";"
             $env:ALL_FEATURES
@@ -56,15 +56,23 @@ jobs:
             $env:MSVC_RUNTIME_LIBRARY = if ("<< parameters.triplet >>".EndsWith("-static")) { "MultiThreaded" } else { "MultiThreadedDLL" }
             $env:MSVC_RUNTIME_LIBRARY
       - run:
-          name: test release
-          shell: cmd.exe  # vcvars does not work in powershell
+          name: check msvc batch files
           command: |
-            dir /s /b "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\*.bat"
+            Get-ChildItem -Path "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\" -Recurse -Include "*.bat"
+      - run:
+          name: build release
+          command: |
             mkdir build-rel
             cd build-rel
-            cmake ../test -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<< parameters.triplet >> -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
+            cmake ../test -G "Visual Studio 16 2019" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=../vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=<< parameters.triplet >> "-DFEATURES=${env:ALL_FEATURES}" "-DCMAKE_MSVC_RUNTIME_LIBRARY=${env:MSVC_RUNTIME_LIBRARY}"
             cmake --build .
+            cd ..
+      - run:
+          name: test release
+          command: |
+            cd build-rel
             ctest -V
+            cd ..
 workflows:
   version: 2
   weekly:
