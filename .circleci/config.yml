@@ -15,12 +15,6 @@ jobs:
     environment:
       VCPKG_DISABLE_METRICS: 1
     steps:
-      - run:
-          name: choco install
-          command: |
-            choco install cmake -y -r --no-progress --installargs 'ADD_CMAKE_TO_PATH=System'
-            choco install ninja -y -r --no-progress
-            $env:PATH
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
