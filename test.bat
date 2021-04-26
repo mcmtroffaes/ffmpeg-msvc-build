@@ -32,6 +32,7 @@ set ALL_FEATURES=core
 for /f "delims=[] tokens=2" %%G in ('%VCPKG_ROOT%\vcpkg.exe list ^| findstr "ffmpeg\[.*\]:%TRIPLET%"') do (
     set ALL_FEATURES=!ALL_FEATURES!;%%G
 )
+if %ERRORLEVEL% neq 0 ( exit )
 echo ffmpeg features: %ALL_FEATURES%
 
 rem Set up developer prompt
