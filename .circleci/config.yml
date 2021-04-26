@@ -36,13 +36,7 @@ jobs:
       - run:
           name: test
           command: |
-            $env:ALL_FEATURES = (((./vcpkg/vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:<< parameters.triplet >>\s") -Replace "ffmpeg\[(.*)\]:.*","`$1") + "core") -Join ";"
-            $env:ALL_FEATURES
-            $env:MSVC_RUNTIME_LIBRARY = if ("<< parameters.triplet >>".EndsWith("-static")) { "MultiThreaded" } else { "MultiThreadedDLL" }
-            $env:MSVC_RUNTIME_LIBRARY
-            $env:TRIPLET = "<< parameters.triplet >>"
-            $env:TRIPLET
-            ./test.bat
+            ./test.bat << parameters.triplet >>
 workflows:
   version: 2
   weekly:
