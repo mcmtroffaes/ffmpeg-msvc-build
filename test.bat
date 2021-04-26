@@ -18,9 +18,11 @@ echo Testing triplet %TRIPLET%
 
 rem Get msvc runtime library from triplet
 if "%TRIPLET:~-7%" == "-static" (
-    set MSVC_RUNTIME_LIBRARY=MultiThreaded
+    set MSVC_RUNTIME_LIBRARY_RELEASE=MultiThreaded
+    set MSVC_RUNTIME_LIBRARY_DEBUG=MultiThreadedDebug
 ) else (
-    set MSVC_RUNTIME_LIBRARY=MultiThreadedDLL
+    set MSVC_RUNTIME_LIBRARY_RELEASE=MultiThreadedDLL
+    set MSVC_RUNTIME_LIBRARY_DEBUG=MultiThreadedDebugDLL
 )
 echo MSVC runtime library: %MSVC_RUNTIME_LIBRARY%
 
@@ -41,7 +43,7 @@ if "%TRIPLET:~0,4%" == "x64-" (
 rem Test release
 mkdir %~dp0\test-%TRIPLET%-rel
 cd %~dp0\test-%TRIPLET%-rel
-cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
+cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY_RELEASE%
 if %ERRORLEVEL% neq 0 ( exit )
 cmake --build .
 if %ERRORLEVEL% neq 0 ( exit )
@@ -51,7 +53,7 @@ if %ERRORLEVEL% neq 0 ( exit )
 rem Test debug
 mkdir %~dp0\test-%TRIPLET%-dbg
 cd %~dp0\test-%TRIPLET%-dbg
-cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
+cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY_DEBUG%
 if %ERRORLEVEL% neq 0 ( exit )
 cmake --build .
 if %ERRORLEVEL% neq 0 ( exit )
