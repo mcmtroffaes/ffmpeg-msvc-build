@@ -42,7 +42,7 @@ jobs:
             $env:MSVC_RUNTIME_LIBRARY
             $env:TRIPLET = "<< parameters.triplet >>"
             $env:TRIPLET
-            ./.circleci/test.bat
+            ./test.bat
 workflows:
   version: 2
   weekly:
