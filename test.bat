@@ -24,7 +24,8 @@ if "%TRIPLET:~-7%" == "-static" (
     set MSVC_RUNTIME_LIBRARY_RELEASE=MultiThreadedDLL
     set MSVC_RUNTIME_LIBRARY_DEBUG=MultiThreadedDebugDLL
 )
-echo MSVC runtime library: %MSVC_RUNTIME_LIBRARY%
+echo MSVC runtime library (release): %MSVC_RUNTIME_LIBRARY_RELEASE%
+echo MSVC runtime library (debug): %MSVC_RUNTIME_LIBRARY_DEBUG%
 
 rem Get list of all ffmpeg features from vcpkg list
 set ALL_FEATURES=core
