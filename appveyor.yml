@@ -101,6 +101,7 @@ matrix:
 platform:
   - x64
 install:
+  # note: remove git from PATH to fix libssh build failure
   - cmd: |
       set /p VCPKG_HASH=<VCPKG_HASH.txt
       cd C:\Tools\vcpkg
@@ -109,6 +110,7 @@ install:
       git fetch mcmtroffaes
       git checkout %VCPKG_HASH% -d
       git log -1
+      set PATH=%PATH:C:\Program Files\Git\cmd;=%
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
