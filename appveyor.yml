@@ -3,10 +3,8 @@ image: Visual Studio 2019
 environment:
   APPVEYOR_SAVE_CACHE_ON_ERROR: true
   APPVEYOR_CACHE_ENTRY_ZIP_ARGS: -t7z -m0=lzma -mx=9
-  MSVC_CRT_SUFFIX: DLL
   RUN_EXPORT: false
   TRIPLET: x64-windows-static-md
-  VCVARS: vcvars64
 
   matrix:
     # minimal build
@@ -20,7 +18,6 @@ environment:
       RUN_EXPORT: true
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
       TRIPLET: x64-windows-static
-      MSVC_CRT_SUFFIX:
       RUN_EXPORT: true
     - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
       TRIPLET: x64-windows-static-md
@@ -95,7 +92,6 @@ environment:
     ###############
     - FEATURES: core,avcodec
       TRIPLET: x86-windows
-      VCVARS: vcvars32
 matrix:
   fast_finish: false
 platform:
@@ -123,23 +119,8 @@ build_script:
         .\export.ps1 -triplet $env:TRIPLET -features $env:FEATURES -ErrorAction Stop
       }
 test_script:
-  - ps: |
-      cd C:\Tools\vcpkg
-      $env:ALL_FEATURES = (.\vcpkg.exe list | Select-String -Pattern "ffmpeg\[(.*)\]:${env:TRIPLET}\s") -Replace "ffmpeg\[(.*)\]:.*","`$1" -Join ";"
-      echo "ALL_FEATURES = ${env:ALL_FEATURES}"
-      cd C:\projects\ffmpeg-msvc-build\
-  - call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\%VCVARS%.bat"
-  - mkdir build-rel
-  - cd build-rel
-  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreaded%MSVC_CRT_SUFFIX%
-  - cmake --build .
-  - ctest -V
-  - cd ..
-  - mkdir build-dbg
-  - cd build-dbg
-  - cmake ../test -G Ninja -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=C:/Tools/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=MultiThreadedDebug%MSVC_CRT_SUFFIX%
-  - cmake --build .
-  - ctest -V
+  - cmd: |
+      C:\projects\ffmpeg-msvc-build\test.bat %TRIPLET%
 on_finish:
   - cmd: |
       cd C:\Tools\vcpkg
