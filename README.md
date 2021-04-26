@@ -2,7 +2,7 @@
 
 [![appveyor build status](https://ci.appveyor.com/api/projects/status/rok7i2fbv5ptrwvm?svg=true)](https://ci.appveyor.com/project/mcmtroffaes/ffmpeg-msvc-build) [![travis build status](https://travis-ci.com/mcmtroffaes/ffmpeg-msvc-build.svg?branch=master)](https://travis-ci.com/mcmtroffaes/ffmpeg-msvc-build)
 
-Scripts for building FFmpeg with MSVC on AppVeyor.
+Scripts for building FFmpeg with MSVC.
 
 The script uses [vcpkg](https://github.com/microsoft/vcpkg)
 which closely follows the [official
