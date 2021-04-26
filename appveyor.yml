@@ -120,7 +120,7 @@ build_script:
       }
 test_script:
   - cmd: |
-      C:\projects\ffmpeg-msvc-build\test.bat %TRIPLET%
+      C:\projects\ffmpeg-msvc-build\test.bat C:\Tools\vcpkg %TRIPLET%
 on_finish:
   - cmd: |
       cd C:\Tools\vcpkg

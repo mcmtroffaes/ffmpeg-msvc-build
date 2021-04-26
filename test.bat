@@ -1,11 +1,18 @@
 @echo off
 setlocal ENABLEDELAYEDEXPANSION
+
 if "%1"=="" (
-    echo Expected triplet as argument.
+    echo Expected vcpkg root as first argument.
     exit 1
 )
 
-set TRIPLET=%1
+if "%2"=="" (
+    echo Expected triplet as second argument.
+    exit 1
+)
+
+set VCPKG_ROOT=%1
+set TRIPLET=%2
 
 echo Testing triplet %TRIPLET%
 
@@ -19,7 +26,7 @@ echo MSVC runtime library: %MSVC_RUNTIME_LIBRARY%
 
 rem Get list of all ffmpeg features from vcpkg list
 set ALL_FEATURES=core
-for /f "delims=[] tokens=2" %%G in ('.\vcpkg\vcpkg.exe list ^| findstr "ffmpeg\[.*\]:%TRIPLET%"') do (
+for /f "delims=[] tokens=2" %%G in ('%VCPKG_ROOT%\vcpkg.exe list ^| findstr "ffmpeg\[.*\]:%TRIPLET%"') do (
     set ALL_FEATURES=!ALL_FEATURES!;%%G
 )
 echo ffmpeg features: %ALL_FEATURES%
@@ -34,7 +41,7 @@ if "%TRIPLET:~0,4%" == "x64-" (
 rem Test release
 mkdir %~dp0\test-%TRIPLET%-rel
 cd %~dp0\test-%TRIPLET%-rel
-cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=%~dp0\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
+cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY%
 if %ERRORLEVEL% neq 0 ( exit )
 cmake --build .
 if %ERRORLEVEL% neq 0 ( exit )
