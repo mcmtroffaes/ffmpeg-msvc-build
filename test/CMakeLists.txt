@@ -9,7 +9,7 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;modplug;mp3lame;nvcodec;opencl;opengl;openjpeg;opus;postproc;sdl2;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;webp;x264;x265;xml2;zlib" CACHE STRING "List of all features enabled through vcpkg.")
+set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;avresample;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;modplug;mp3lame;nvcodec;opencl;opengl;openh264;openjpeg;opus;postproc;sdl2;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;webp;x264;x265;xml2;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 enable_testing()
 
 function(test_for _feature _name)
@@ -59,6 +59,11 @@ if ("avcodec" IN_LIST FEATURES)
   add_test(NAME test_encoder_opus COMMAND test_find_encoder opus)
   add_test(NAME test_decoder_opus COMMAND test_find_decoder opus)
   test_for("swresample" test_decoder_opus)  # built-in opus decoder needs swresample
+
+  add_test(NAME test_encoder_libopenh264 COMMAND test_find_encoder libopenh264)
+  add_test(NAME test_decoder_libopenh264 COMMAND test_find_decoder libopenh264)
+  test_for("openh264" test_encoder_libopenh264)
+  test_for("openh264" test_decoder_libopenh264)
 
   add_test(NAME test_encoder_libopenjpeg COMMAND test_find_encoder libopenjpeg)
   add_test(NAME test_decoder_libopenjpeg COMMAND test_find_decoder libopenjpeg)
