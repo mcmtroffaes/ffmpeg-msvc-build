@@ -9,7 +9,7 @@ env:
 
   # LGPL full builds
   ###################
-  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,openh264,opus,vpx
+  - FEATURES=core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx
 
   # LGPL features
   ################

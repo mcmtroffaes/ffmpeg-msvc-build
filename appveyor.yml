@@ -13,20 +13,20 @@ environment:
 
     # LGPL full builds
     ###################
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,openh264,opus,vpx
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
       TRIPLET: x64-windows
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,openh264,opus,vpx
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
       TRIPLET: x64-windows-static
       RUN_EXPORT: true
-    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,openh264,opus,vpx
+    - FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,vpx
       TRIPLET: x64-windows-static-md
       RUN_EXPORT: true
 
     # GPL full builds
     ##################
     # TIMEOUT
-    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,openh264,opus,snappy,soxr,vpx,postproc,x264,x265
+    #- FEATURES: core,avcodec,avformat,avdevice,avfilter,swresample,swscale,nvcodec,opus,snappy,soxr,vpx,postproc,x264,x265
     #  RUN_EXPORT: true
 
     # LGPL features
