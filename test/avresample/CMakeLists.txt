@@ -1,7 +1,0 @@
-cmake_minimum_required(VERSION 3.12)
-project(test_avresample)
-find_package(FFMPEG REQUIRED)
-add_executable(test_avresample main.cpp)
-target_link_libraries(test_avresample PRIVATE ${FFMPEG_LIBRARIES})
-target_include_directories(test_avresample PRIVATE ${FFMPEG_INCLUDE_DIRS})
-add_test(test_avresample test_avresample)
