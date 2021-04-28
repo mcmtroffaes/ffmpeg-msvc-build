@@ -19,7 +19,6 @@ env:
   - FEATURES=core,avfilter
   - FEATURES=core,swresample
   - FEATURES=core,swscale
-  - FEATURES=core,avresample
   - FEATURES=core,ffmpeg
   - FEATURES=core,ffplay
   - FEATURES=core,ffprobe

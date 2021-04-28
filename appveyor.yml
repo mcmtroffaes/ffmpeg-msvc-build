@@ -37,7 +37,6 @@ environment:
     - FEATURES: core,avfilter
     - FEATURES: core,swresample
     - FEATURES: core,swscale
-    - FEATURES: core,avresample
     - FEATURES: core,bzip2,avformat
     - FEATURES: core,ffmpeg
     - FEATURES: core,ffplay
