@@ -2,6 +2,39 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 jobs:
+  build_linux:
+    parameters:
+      triplet:
+        type: string
+        default: "x64-linux"
+      features:
+        type: string
+        default: "core"
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run: git submodule sync
+      - run: git submodule update --init
+      - run:
+          name: vcpkg bootstrap
+          command: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+      - restore_cache:
+          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
+      - run:
+          name: vcpkg upgrade
+          command: |
+            ./vcpkg/vcpkg upgrade --no-dry-run
+            ./vcpkg/vcpkg install ffmpeg[<< parameters.features >>]:<< parameters.triplet >> --recurse
+          no_output_timeout: 60m
+      - save_cache:
+          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
+          paths:
+            - vcpkg/installed
+      - run:
+          name: test
+          command: |
+            ./test.sh `pwd`/vcpkg << parameters.triplet >>
   build_windows:
     parameters:
       triplet:
@@ -49,10 +82,17 @@ workflows:
             branches:
               only:
                 - master
-  manual:
+  manual_windows:
     jobs:
-      - hold:
+      - hold_windows:
           type: approval
       - build_windows:
           requires:
-            - hold
+            - hold_windows
+  manual_linux:
+    jobs:
+      - hold_linux:
+          type: approval
+      - build_linux:
+          requires:
+            - hold_linux
