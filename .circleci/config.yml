@@ -1,3 +1,16 @@
+aliases:
+  - &restore_vcpkg_cache
+      key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
+
+  - &save_vcpkg_cache
+      key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
+      paths:
+        - vcpkg/installed
+
+  - &vcpkg_install
+      command: ./vcpkg/vcpkg install ffmpeg[<< parameters.features >>]:<< parameters.triplet >> --recurse
+      no_output_timeout: 60m
+
 version: 2.1
 orbs:
   win: circleci/windows@2.2.0
@@ -21,25 +34,11 @@ jobs:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run:
-          name: vcpkg bootstrap
-          command: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
-      - restore_cache:
-          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
-      - run:
-          name: vcpkg upgrade
-          command: |
-            ./vcpkg/vcpkg upgrade --no-dry-run
-            ./vcpkg/vcpkg install ffmpeg[<< parameters.features >>]:<< parameters.triplet >> --recurse
-          no_output_timeout: 60m
-      - save_cache:
-          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
-          paths:
-            - vcpkg/installed
-      - run:
-          name: test
-          command: |
-            ./test.sh /home/circleci/project/vcpkg << parameters.triplet >>
+      - run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+      - restore_cache: *restore_vcpkg_cache
+      - run: *vcpkg_install
+      - save_cache: *save_vcpkg_cache
+      - run: ./test.sh /home/circleci/project/vcpkg << parameters.triplet >>
   build_windows:
     parameters:
       triplet:
@@ -56,25 +55,11 @@ jobs:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run:
-          name: vcpkg bootstrap
-          command: ./vcpkg/bootstrap-vcpkg.bat
-      - restore_cache:
-          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
-      - run:
-          name: vcpkg upgrade
-          command: |
-            ./vcpkg/vcpkg.exe upgrade --no-dry-run
-            ./vcpkg/vcpkg.exe install ffmpeg[<< parameters.features >>]:<< parameters.triplet >> --recurse
-          no_output_timeout: 60m
-      - save_cache:
-          key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
-          paths:
-            - vcpkg/installed
-      - run:
-          name: test
-          command: |
-            ./test.bat C:\Users\circleci\project\vcpkg << parameters.triplet >>
+      - run: ./vcpkg/bootstrap-vcpkg.bat
+      - restore_cache: *restore_vcpkg_cache
+      - run: *vcpkg_install
+      - save_cache: *save_vcpkg_cache
+      - run: ./test.bat C:\Users\circleci\project\vcpkg << parameters.triplet >>
 workflows:
   version: 2
   weekly:
