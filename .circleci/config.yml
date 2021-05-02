@@ -12,7 +12,9 @@ jobs:
         default: "core"
     docker:
       - image: cimg/base:stable
+    resource_class: small
     steps:
+      - run: sudo apt-get install cmake ninja-build
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
