@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   win: circleci/windows@2.2.0
 jobs:
-  build:
+  build_windows:
     parameters:
       triplet:
         type: string
@@ -41,7 +41,7 @@ workflows:
   version: 2
   weekly:
     jobs:
-      - build
+      - build_windows
     triggers:
       - schedule:
           cron: "0 0 * * 0"
@@ -53,6 +53,6 @@ workflows:
     jobs:
       - hold:
           type: approval
-      - build:
+      - build_windows:
           requires:
             - hold
