@@ -12,12 +12,12 @@ jobs:
         default: "core"
     docker:
       - image: cimg/base:stable
-    resource_class: medium
+    resource_class: small
     environment:
       CMAKE_BUILD_PARALLEL_LEVEL: 1  # to avoid running out of memory
     steps:
       - run: sudo apt-get update
-      - run: sudo apt-get install cmake ninja-build
+      - run: sudo apt-get install cmake ninja-build nasm
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
