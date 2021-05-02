@@ -1,4 +1,12 @@
 aliases:
+  - &restore_vcpkg_bootstrap
+      key: vcpkg-bootstrap-<< parameters.triplet >>
+
+  - &save_vcpkg_bootstrap
+      key: vcpkg-bootstrap-<< parameters.triplet >>
+      paths:
+        - vcpkg/vcpkg
+
   - &restore_vcpkg_cache
       key: vcpkg-cache-{{ checksum "VCPKG_HASH.txt" }}-<< parameters.triplet >>-<< parameters.features >>
 
@@ -34,7 +42,9 @@ jobs:
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
-      - run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+      - restore_cache: *restore_vcpkg_bootstrap
+      - run: if test ! -f ./vcpkg/vcpkg; then ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries; fi
+      - save_cache: *save_vcpkg_bootstrap
       - restore_cache: *restore_vcpkg_cache
       - run: *vcpkg_install
       - save_cache: *save_vcpkg_cache
