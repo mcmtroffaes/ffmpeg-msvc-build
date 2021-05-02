@@ -39,7 +39,7 @@ jobs:
       - run:
           name: test
           command: |
-            ./test.sh `pwd`/vcpkg << parameters.triplet >>
+            ./test.sh /home/circleci/project/vcpkg << parameters.triplet >>
   build_windows:
     parameters:
       triplet:
@@ -79,6 +79,7 @@ workflows:
   version: 2
   weekly:
     jobs:
+      - build_linux
       - build_windows
     triggers:
       - schedule:
