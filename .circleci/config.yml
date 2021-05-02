@@ -12,7 +12,7 @@ jobs:
         default: "core"
     docker:
       - image: cimg/base:stable
-    resource_class: small
+    resource_class: medium
     steps:
       - run: sudo apt-get update
       - run: sudo apt-get install cmake ninja-build
