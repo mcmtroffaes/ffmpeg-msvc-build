@@ -30,7 +30,7 @@ jobs:
         default: "x64-linux"
       features:
         type: string
-        default: "core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx"
+        default: "core"
     docker:
       - image: cimg/base:stable
     resource_class: small
@@ -74,8 +74,10 @@ workflows:
   version: 2
   weekly:
     jobs:
-      - build_linux
-      - build_windows
+      - build_linux:
+          features: "core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx"
+      - build_windows:
+          features: "core"
     triggers:
       - schedule:
           cron: "0 0 * * 0"
@@ -83,17 +85,19 @@ workflows:
             branches:
               only:
                 - master
-  manual_windows:
-    jobs:
-      - hold_windows:
-          type: approval
-      - build_windows:
-          requires:
-            - hold_windows
   manual_linux:
     jobs:
       - hold_linux:
           type: approval
       - build_linux:
+          features: "core"
           requires:
             - hold_linux
+  manual_windows:
+    jobs:
+      - hold_windows:
+          type: approval
+      - build_windows:
+          features: "core"
+          requires:
+            - hold_windows
