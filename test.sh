@@ -1,14 +1,14 @@
 #!/bin/bash
 
-if [ -z "$1" ]
+if [ $# -ne 2 ]
 then
-    echo "Expected vcpkg root as first argument."
+    echo "Usage: $0 <vcpkg root folder> <triplet>"
     exit 1
 fi
 
-if [ -z "$2" ]
+if [ ! -d "$1" ]
 then
-    echo "Expected triplet as second argument."
+    echo "Folder $1 does not exist."
     exit 1
 fi
 
