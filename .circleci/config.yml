@@ -75,7 +75,7 @@ workflows:
   weekly:
     jobs:
       - build_linux:
-          features: "core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx"
+          features: "core,avcodec,avformat,avdevice,avfilter,swresample,swscale,bzip2,ffmpeg,ffplay,ffprobe,dav1d,iconv,ilbc,lzma,modplug,mp3lame,nvcodec,opencl,opengl,openjpeg,opus,postproc,snappy,soxr,theora,vorbis,vpx,webp,x264,x265,zlib"
       - build_windows:
           features: "core"
     triggers:
