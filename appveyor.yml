@@ -32,9 +32,13 @@ environment:
     # LGPL features
     ################
     - FEATURES: core,avcodec
+    - FEATURES: core,avcodec
+      TRIPLET: x64-windows  # extra test, tends to break
     - FEATURES: core,avformat
     - FEATURES: core,avdevice
     - FEATURES: core,avfilter
+    - FEATURES: core,avfilter
+      TRIPLET: x64-windows  # extra test, tends to break
     - FEATURES: core,swresample
     - FEATURES: core,swscale
     - FEATURES: core,bzip2,avformat
