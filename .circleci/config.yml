@@ -49,6 +49,11 @@ jobs:
       - run: *vcpkg_install
       - save_cache: *save_vcpkg_cache
       - run: ./test.sh /home/circleci/project/vcpkg << parameters.triplet >>
+      - run:
+          command: find buildtrees/ -name "*.log" | xargs zip logs.zip
+          when: on_fail
+      - store_artifacts:
+          path: logs.zip
   build_windows:
     parameters:
       triplet:
