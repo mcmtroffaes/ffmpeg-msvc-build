@@ -50,7 +50,7 @@ jobs:
       - save_cache: *save_vcpkg_cache
       - run: ./test.sh /home/circleci/project/vcpkg << parameters.triplet >>
       - run:
-          command: find buildtrees/ -name "*.log" | xargs zip logs.zip
+          command: find vcpkg/buildtrees/ -name "*.log" | xargs zip logs.zip
           when: on_fail
       - store_artifacts:
           path: logs.zip
