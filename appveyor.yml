@@ -96,6 +96,11 @@ environment:
     ###############
     - FEATURES: core,avcodec
       TRIPLET: x86-windows
+
+    # uwp build
+    ############
+    - FEATURES: core,avcodec
+      TRIPLET: x64-uwp
 matrix:
   fast_finish: false
 platform:
