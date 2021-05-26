@@ -16,6 +16,14 @@ set TRIPLET=%2
 
 echo Testing triplet %TRIPLET%
 
+rem Get pkg-config executable
+set PKG_CONFIG=%VCPKG_ROOT%\installed\%TRIPLET%\tools\pkgconf\pkgconf.exe
+if not exist %PKG_CONFIG% (
+  echo pkg-config executable not found
+  echo please run "vcpkg install pkgconf:%TRIPLET%"
+  exit 1
+)
+
 rem Get msvc runtime library from triplet
 if "%TRIPLET:~-7%" == "-static" (
     set MSVC_RUNTIME_LIBRARY_RELEASE=MultiThreaded

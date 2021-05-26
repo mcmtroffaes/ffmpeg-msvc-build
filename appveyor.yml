@@ -114,6 +114,7 @@ install:
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
+      .\vcpkg.exe install pkgconf:%TRIPLET%
       .\vcpkg.exe install ffmpeg[%FEATURES%]:%TRIPLET% --recurse
       dir /s /b "installed\%TRIPLET%"
       cd C:\projects\ffmpeg-msvc-build\
