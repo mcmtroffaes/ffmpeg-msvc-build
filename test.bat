@@ -36,8 +36,15 @@ echo MSVC runtime library (release): %MSVC_RUNTIME_LIBRARY_RELEASE%
 echo MSVC runtime library (debug): %MSVC_RUNTIME_LIBRARY_DEBUG%
 
 rem Get list of all ffmpeg features from vcpkg list
-set ALL_FEATURES=core
-for /f "delims=[] tokens=2" %%G in ('%VCPKG_ROOT%\vcpkg.exe list ^| findstr "ffmpeg\[.*\]:%TRIPLET%"') do (
+for /f "tokens=1" %%G in ('%VCPKG_ROOT%\vcpkg.exe list ^| findstr /c:"ffmpeg:%TRIPLET% "') do (
+    set ALL_FEATURES=core
+)
+if not "%ALL_FEATURES%" == "core" (
+    echo ffmpeg:%TRIPLET% not installed
+    echo please run "vcpkg install ffmpeg:%TRIPLET%"
+    exit 1
+)
+for /f "delims=[] tokens=2" %%G in ('%VCPKG_ROOT%\vcpkg.exe list ^| findstr /r /c:"ffmpeg\[.*\]:%TRIPLET%[ ]"') do (
     set ALL_FEATURES=!ALL_FEATURES!;%%G
 )
 if %ERRORLEVEL% neq 0 ( exit )
