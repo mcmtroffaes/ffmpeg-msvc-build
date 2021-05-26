@@ -29,7 +29,7 @@ cd vcpkg
 .\vcpkg.exe install --triplet=x64-windows-static-md ffmpeg[core,avcodec,avformat,avfilter,avdevice,swresample,swscale]
 ```
 
-You can pick another triplet, or another set of features. See the [vcpkg ffmpeg CONTROL file](https://github.com/microsoft/vcpkg/blob/master/ports/ffmpeg/CONTROL) for a list of all features. The above will result in a minimal ffmpeg library build with standard codecs, formats, filters, and devices, along with audio resampling and video scaling support.
+You can pick another triplet, or another set of features. See the [ffmpeg vcpkg.json file](https://github.com/microsoft/vcpkg/blob/master/ports/ffmpeg/vcpkg.json) for a list of all features. The above will result in a minimal ffmpeg library build with standard codecs, formats, filters, and devices, along with audio resampling and video scaling support.
 
 Prebuilt static LGPL builds for Visual Studio 2019 can be found
 [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases).
