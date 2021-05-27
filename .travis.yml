@@ -114,7 +114,13 @@ install:
   - git remote add origin https://github.com/mcmtroffaes/vcpkg.git
   - git fetch origin
   - git checkout --detach `cat ${TRAVIS_BUILD_DIR}/VCPKG_HASH.txt`
-  - ./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      wget https://github.com/microsoft/vcpkg-tool/releases/download/2021-05-05-9f849c4c43e50d1b16186ae76681c27b0c1be9d9/vcpkg-macos -O vcpkg
+      chmod +x vcpkg
+    else
+      ./bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+    fi
   - travis_wait 45 ./vcpkg upgrade --no-dry-run
   - travis_wait 45 ./vcpkg install ffmpeg[${FEATURES}] || { cat ${TRAVIS_BUILD_DIR}/vcpkg2/buildtrees/ffmpeg/build-x64-${TRAVIS_OS_NAME}-rel-out.log; false; }
 script:
