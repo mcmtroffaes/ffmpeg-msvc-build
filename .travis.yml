@@ -95,16 +95,16 @@ addons:
     - gperf  # required for fontconfig[core]
     - mesa-common-dev  # required for opengl feature
   homebrew:
-    update: true
     packages:
     - nasm
     - ninja
-    - cmake
 before_install:
-  #- |
-  #  if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
-  #    brew update && brew upgrade cmake
-  #  fi
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      # get a recent cmake with framework support for PkgConfig
+      wget https://github.com/Kitware/CMake/releases/download/v3.20.2/cmake-3.20.2-macos-universal.tar.gz && tar xfz cmake-3.20.2-macos-universal.tar.gz
+      export PATH=`pwd`/cmake-3.20.2-macos-universal/CMake.app/Contents/bin:$PATH
+    fi
   - cmake --version
 install:
   # cannot clone in existing folder so setup vcpkg2 where cache is stored
