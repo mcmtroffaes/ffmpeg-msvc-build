@@ -95,6 +95,7 @@ addons:
     - gperf  # required for fontconfig[core]
     - mesa-common-dev  # required for opengl feature
   homebrew:
+    update: true
     packages:
     - nasm
     - ninja
