@@ -99,6 +99,10 @@ addons:
     - nasm
     - ninja
 before_install:
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+      brew update && brew upgrade cmake
+    fi
   - cmake --version
 install:
   # cannot clone in existing folder so setup vcpkg2 where cache is stored
