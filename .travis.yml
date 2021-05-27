@@ -64,7 +64,7 @@ env:
   - FEATURES=core,fdk-aac,avcodec
 
 dist: focal
-osx_image: xcode12u
+osx_image: xcode12.5
 jobs:
   # known broken features
   allow_failures:
