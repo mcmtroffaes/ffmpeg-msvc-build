@@ -20,4 +20,4 @@ echo "triplet: $TRIPLET"
 
 # all features from vcpkg azure CI
 # limit concurrency to prevent out of memory errors
-VCPKG_MAX_CONCURRENCY=1 $VCPKG_ROOT/vcpkg install ffmpeg[all,all-gpl,all-nonfree,ass,avcodec,avdevice,avfilter,avformat,avresample,bzip2,core,dav1d,fdk-aac,fontconfig,freetype,fribidi,gpl,iconv,ilbc,lzma,modplug,mp3lame,nonfree,nvcodec,opencl,opengl,openh264,openjpeg,openssl,opus,postproc,sdl2,snappy,soxr,speex,swresample,swscale,theora,vorbis,vpx,webp,x264,x265,zlib]:$TRIPLET opencv4[ade,contrib,core,dnn,eigen,ffmpeg,gdcm,ipp,jasper,jpeg,lapack,nonfree,openexr,opengl,openmp,png,qt,quirc,sfm,tiff,vtk,webp]:$TRIPLET
+VCPKG_MAX_CONCURRENCY=1 $VCPKG_ROOT/vcpkg install vcpkg-ci-ffmpeg:$TRIPLET vcpkg-ci-opencv:$TRIPLET --overlay-ports=$VCPKG_ROOT/scripts/test_ports/
