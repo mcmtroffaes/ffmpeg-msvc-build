@@ -1,0 +1,25 @@
+cmake_minimum_required(VERSION 3.12)
+set(TYPE pkgconfig)
+set(COMPONENT avformat)
+set(TEST test_${TYPE}_${COMPONENT})
+set(SRC_DIR ../../src/${COMPONENT})
+project(${TEST})
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(AVFORMAT REQUIRED IMPORTED_TARGET libavformat)
+add_executable            (${TEST}_decode             ${SRC_DIR}/decode.cpp)
+add_executable            (${TEST}_list_all_protocols ${SRC_DIR}/list_all_protocols.cpp)
+add_executable            (${TEST}_find_protocol      ${SRC_DIR}/find_protocol.cpp)
+add_executable            (${TEST}_list_all_formats   ${SRC_DIR}/list_all_formats.cpp)
+add_executable            (${TEST}_find_format        ${SRC_DIR}/find_format.cpp)
+target_link_libraries     (${TEST}_decode             PRIVATE PkgConfig::AVFORMAT)
+target_link_libraries     (${TEST}_list_all_protocols PRIVATE PkgConfig::AVFORMAT)
+target_link_libraries     (${TEST}_find_protocol      PRIVATE PkgConfig::AVFORMAT)
+target_link_libraries     (${TEST}_list_all_formats   PRIVATE PkgConfig::AVFORMAT)
+target_link_libraries     (${TEST}_find_format        PRIVATE PkgConfig::AVFORMAT)
+if("avisynthplus" IN_LIST FEATURES)
+  add_custom_command(
+    TARGET ${TEST}_decode POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy
+      "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin/AviSynth${CMAKE_SHARED_LIBRARY_SUFFIX}"
+      $<TARGET_FILE_DIR:${TEST}_decode>)
+endif()

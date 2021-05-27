@@ -36,9 +36,10 @@ jobs:
     resource_class: small
     environment:
       CMAKE_BUILD_PARALLEL_LEVEL: 1  # to avoid running out of memory
+      VCPKG_MAX_CONCURRENCY: 1  # to avoid running out of memory
     steps:
       - run: sudo apt-get update
-      - run: sudo apt-get install cmake ninja-build nasm
+      - run: sudo apt-get install cmake ninja-build nasm libgl-dev
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
@@ -50,7 +51,7 @@ jobs:
       - save_cache: *save_vcpkg_cache
       - run: ./test.sh /home/circleci/project/vcpkg << parameters.triplet >>
       - run:
-          command: find buildtrees/ -name "*.log" | xargs zip logs.zip
+          command: find vcpkg/buildtrees/ -name "*.log" | xargs zip logs.zip
           when: on_fail
       - store_artifacts:
           path: logs.zip

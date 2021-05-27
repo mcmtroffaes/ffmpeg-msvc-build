@@ -13,16 +13,16 @@ $wc = New-Object System.Net.WebClient
 $wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
 
 $portfile = Get-Content "vcpkg\ports\ffmpeg\portfile.cmake"
-if (-Not $portfile[3].StartsWith("    REF")) {
+if (-Not $portfile[6].StartsWith("    REF")) {
   Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..20] ""
   throw "could not find REF field in portfile"
 }
-if (-Not $portfile[4].StartsWith("    SHA512")) {
+if (-Not $portfile[7].StartsWith("    SHA512")) {
   Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..20] ""
   throw "could not find SHA512 field in portfile"
 }
 
-$version_hash_old = $portfile[3].Substring(8)
+$version_hash_old = $portfile[6].Substring(8)
 Write-Output "old version hash: $version_hash_old"
 
 $commits = $wc.DownloadString("https://api.github.com/repos/FFmpeg/FFmpeg/commits") | ConvertFrom-Json
@@ -43,16 +43,16 @@ if (-Not (Test-Path -Path $file -PathType leaf)) {
   $wc.DownloadFile("$server/$file", "$file")
 }
 $sha512 = (Get-FileHash -Algorithm SHA512 "$file").Hash.ToLower()
-$portfile[3] = "    REF $version_hash"
-$portfile[4] = "    SHA512 $sha512"
+$portfile[6] = "    REF $version_hash"
+$portfile[7] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii
 Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..12] ""
 
-$control = Get-Content "vcpkg\ports\ffmpeg\CONTROL"
-if (-Not $control[1].StartsWith("Version:")) { throw "could not find Version field in CONTROL file" }
-if (-Not $control[2].StartsWith("Port-Version:")) { throw "could not find PortVersion field in CONTROL file" }
-$version_old = $control[1].Split(" ")[1]
-$port_version_old = $control[2].Split(" ")[1]
+$control = Get-Content "vcpkg\ports\ffmpeg\vcpkg.json"
+if (-Not $control[2].StartsWith("  ""version-string"":")) { throw "could not find version field in vcpkg.json file" }
+if (-Not $control[3].StartsWith("  ""port-version"":")) { throw "could not find port-version field in vcpkg.json file" }
+$version_old = $control[2].Split(":")[1].Trim(" "",")
+$port_version_old = $control[3].Split(":")[1].Trim(" "",")
 Write-Output "old version: $version_old"
 Write-Output "old port version: $port_version_old"
 if ($version_old -eq $version) {
@@ -63,10 +63,10 @@ else {
 }
 Write-Output "new version: $version"
 Write-Output "new port version: $port_version"
-$control[1] = "Version: $version"
-$control[2] = "Port-Version: $port_version"
-$control -join "`n" | Set-Content "vcpkg\ports\ffmpeg\CONTROL" -Encoding Ascii
-Write-Output "" "CONTROL" "~~~~~~~" "" $control[0..4]
+$control[2] = "  ""version-string"": ""$version"","
+$control[3] = "  ""port-version"": $port_version,"
+$control -join "`n" | Set-Content "vcpkg\ports\ffmpeg\vcpkg.json" -Encoding Ascii
+Write-Output "" "vcpkg.json" "~~~~~~~~~~" "" $control[0..4]
 
 cd vcpkg
 & git commit -a -m "Update ffmpeg to version $version#$port_version ($version_hash)."
