@@ -2,8 +2,8 @@
 & git push
 & git submodule update
 $portfile = Get-Content "vcpkg\ports\ffmpeg\portfile.cmake"
-if (-Not $portfile[3].StartsWith("    REF")) { throw "could not find REF field in portfile" }
-$version_hash = $portfile[3].Substring(8)
+if (-Not $portfile[6].StartsWith("    REF")) { throw "could not find REF field in portfile" }
+$version_hash = $portfile[6].Substring(8)
 $control = Get-Content "vcpkg\ports\ffmpeg\vcpkg.json"
 if (-Not $control[2].StartsWith("  ""version-string"":")) { throw "could not find version field in vcpkg.json file" }
 if (-Not $control[3].StartsWith("  ""port-version"":")) { throw "could not find port-version field in vcpkg.json file" }
