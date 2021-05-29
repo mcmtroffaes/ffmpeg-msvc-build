@@ -9,8 +9,8 @@ param (
 $control = Get-Content "$vcpkg\ports\ffmpeg\vcpkg.json" | ConvertFrom-Json
 $ver = $control."version-string"
 $pver = $control."port-version"
-if(!$ver) { throw "could not find version-string from vcpkg.json" }
-if(!$pver) { throw "could not find port-string from vcpkg.json" }
+if($ver -Eq $null) { throw "could not find version-string from vcpkg.json" }
+if($pver -Eq $null) { throw "could not find port-version from vcpkg.json" }
 $version = $control."version-string", $control."port-version" -Join "-"
 Write-Output "FFmpeg version $version"
 
