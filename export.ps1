@@ -6,21 +6,12 @@ param (
 
 # get version from CONTROL
 
-$control = Get-Content "$vcpkg\ports\ffmpeg\CONTROL"
-if (-Not $control[1].StartsWith("Version:")) {
-  throw "could not find Version field in CONTROL file"
-}
-if (-Not $control[2].StartsWith("Port-Version:")) {
-  if (-Not $control[2].StartsWith("Homepage:")) {
-    throw "could not find Port-Version field in CONTROL file"
-  }
-  else {
-    $version = $control[1].Remove(0, 9), "0" -Join "-"
-  }
-}
-else {
-  $version = $control[1].Remove(0, 9), $control[2].Remove(0,14) -Join "-"
-}
+$control = Get-Content "$vcpkg\ports\ffmpeg\vcpkg.json" | ConvertFrom-Json
+$ver = $control."version-string"
+$pver = $control."port-version"
+if(!$ver) { throw "could not find version-string from vcpkg.json" }
+if(!$pver) { throw "could not find port-string from vcpkg.json" }
+$version = $control."version-string", $control."port-version" -Join "-"
 Write-Output "FFmpeg version $version"
 
 # get license from copyright file
@@ -28,6 +19,7 @@ Write-Output "FFmpeg version $version"
 $copyright = `
   Get-Content "$vcpkg\installed\$triplet\share\ffmpeg\copyright" -First 2 -Encoding Ascii `
   | ForEach-Object { $_.Trim() }
+if(!$copyright) { throw "could not find copyright file" }
 Write-Output $copyright
 if ($copyright[0] -Eq "GNU LESSER GENERAL PUBLIC LICENSE") {
   if ($copyright[1] -Eq "Version 2.1, February 1999") {
@@ -51,7 +43,7 @@ elseif ($copyright[0] -Eq "GNU GENERAL PUBLIC LICENSE") {
     throw "unknown GPL version"
   }
 }
-elseif ($copyright[0] -Eq "License: nonfree and unredistributable") {
+elseif ($copyright -Eq "License: nonfree and unredistributable") {
   $license = "nonfree"
 }
 else {
