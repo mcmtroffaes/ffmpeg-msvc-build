@@ -39,7 +39,7 @@ jobs:
       VCPKG_MAX_CONCURRENCY: 1  # to avoid running out of memory
     steps:
       - run: sudo apt-get update
-      - run: sudo apt-get install cmake ninja-build nasm libgl-dev
+      - run: sudo apt-get install cmake ninja-build nasm libgl-dev libxext-dev
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
