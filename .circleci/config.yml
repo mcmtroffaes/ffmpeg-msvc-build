@@ -68,6 +68,7 @@ jobs:
     environment:
       VCPKG_DISABLE_METRICS: 1
     steps:
+      - run: choco install pkgconfiglite -y -r --no-progress
       - checkout
       - run: git submodule sync
       - run: git submodule update --init
