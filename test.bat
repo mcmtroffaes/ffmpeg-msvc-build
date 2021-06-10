@@ -20,7 +20,7 @@ rem Get pkg-config executable
 set PKG_CONFIG=%PROGRAMDATA%\chocolatey\bin\pkg-config.exe
 if not exist %PKG_CONFIG% (
   set PKG_CONFIG=%VCPKG_ROOT%\installed\%TRIPLET%\tools\pkgconf\pkgconf.exe
-  if not exist %PKG_CONFIG% (
+  if not exist !PKG_CONFIG! (
     echo pkg-config executable not found
     echo please run "vcpkg install pkgconf:%TRIPLET%" or "choco install pkgconfiglite"
     exit 1
