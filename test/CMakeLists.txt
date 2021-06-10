@@ -15,6 +15,7 @@ enable_testing()
 function(test_for _feature _name)
   if (NOT ${_feature} IN_LIST FEATURES)
     set_tests_properties(test_cmake_${_name} PROPERTIES WILL_FAIL TRUE)
+    set_tests_properties(test_pkgconfig_${_name} PROPERTIES WILL_FAIL TRUE)
   endif()
 endfunction()
 
