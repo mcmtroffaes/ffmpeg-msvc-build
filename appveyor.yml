@@ -110,6 +110,7 @@ install:
       git fetch mcmtroffaes
       git checkout %VCPKG_HASH% -d
       git log -1
+      echo %PATH%
       set PATH=%PATH:C:\Program Files\Git\cmd;=%
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
