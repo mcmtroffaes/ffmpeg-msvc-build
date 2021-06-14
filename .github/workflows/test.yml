@@ -22,10 +22,24 @@ jobs:
       - name: Install dependencies
         run: sudo apt-get install cmake ninja-build nasm
 
-      - name: Boostrap vcpkg
+      - uses: actions/cache@v2
+        id: vcpkg-executable-cache
+        with:
+          path: ./vcpkg/vcpkg
+          key: vcpkg-${{ runner.os }}
+
+      - name: Bootstrap vcpkg
+        if: steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
         run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
 
+      - uses: actions/cache@v2
+        id: vcpkg-installed-cache
+        with:
+          path: ./vcpkg/installed
+          key: vcpkg-${{ runner.os }}-${{ hashFiles('VCPKG_HASH.txt') }}-${{ matrix.triplet }}-${{ matrix.features }}
+
       - name: Install ffmpeg
+        if: steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         run: ./vcpkg/vcpkg install ffmpeg[${{ matrix.features }}]:${{ matrix.triplet }} --recurse
 
       - name: Test
