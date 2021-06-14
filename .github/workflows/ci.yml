@@ -24,9 +24,6 @@ jobs:
             features: "[core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx]"
           - features_id: ffmpeg
             features: "[core,ffmpeg]"
-    env:
-      CMAKE_BUILD_PARALLEL_LEVEL: 1  # to avoid running out of memory
-      VCPKG_MAX_CONCURRENCY: 1  # to avoid running out of memory
     steps:
       - uses: actions/checkout@v2
         with:
