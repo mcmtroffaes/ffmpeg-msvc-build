@@ -5,12 +5,23 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        triplet: [x64-linux]
-        features: [core, ffmpeg]
+        triplet: [x64-linux, x64-osx]
+        features_id: [minimal, release, ffmpeg]
+        include:
+          - triplet: x64-linux
+            os: ubuntu-latest
+          - triplet: x64-osx
+            os: macos-latest
+          - features_id: minimal
+            features: "[core]"
+          - features_id: release
+            features: "[core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx]"
+          - features_id: ffmpeg
+            features: "[core,ffmpeg]"
     env:
       CMAKE_BUILD_PARALLEL_LEVEL: 1  # to avoid running out of memory
       VCPKG_MAX_CONCURRENCY: 1  # to avoid running out of memory
@@ -36,7 +47,7 @@ jobs:
         id: vcpkg-installed-cache
         with:
           path: ./vcpkg/installed
-          key: vcpkg-${{ hashFiles('VCPKG_HASH.txt') }}-${{ matrix.triplet }}-${{ matrix.features }}
+          key: vcpkg-${{ hashFiles('VCPKG_HASH.txt') }}-${{ matrix.triplet }}-${{ matrix.features_id }}
 
       - name: Install ffmpeg
         if: steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
@@ -44,3 +55,10 @@ jobs:
 
       - name: Test
         run: ./test.sh $GITHUB_WORKSPACE/vcpkg ${{ matrix.triplet }}
+  
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v2
+        with:
+          name: logs
+          path: ./vcpkg/buildtrees/**/*.logs
