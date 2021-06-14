@@ -25,7 +25,7 @@ jobs:
           submodules: true
 
       - name: Install dependencies
-        run: sudo apt-get install cmake ninja-build
+        run: sudo apt-get install cmake ninja-build nasm
 
       - name: Boostrap vcpkg
         run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
