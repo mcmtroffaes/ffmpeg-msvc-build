@@ -112,7 +112,6 @@ install:
       git log -1
       echo %PATH%
       set PATH=%PATH:C:\Program Files\Git\cmd;=%
-      where git.exe
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
