@@ -9,13 +9,15 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        triplet: [x64-linux, x64-osx]
+        triplet: [x64-linux, x64-osx, x64-windows]
         features_id: [minimal, release, ffmpeg]
         include:
           - triplet: x64-linux
             os: ubuntu-latest
           - triplet: x64-osx
             os: macos-latest
+          - triplet: x64-windows
+            os: windows-latest
           - features_id: minimal
             features: "[core]"
           - features_id: release
@@ -38,15 +40,23 @@ jobs:
         if: ${{ matrix.os == 'macos-latest' }}
         run: brew install cmake ninja nasm
 
+      - name: Install windows dependencies
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: choco install pkgconfiglite -y -r --no-progress
+
       - uses: actions/cache@v2
         id: vcpkg-executable-cache
         with:
-          path: ./vcpkg/vcpkg
+          path: ./vcpkg/vcpkg*
           key: vcpkg-${{ runner.os }}
 
-      - name: Bootstrap vcpkg
-        if: steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
+      - name: Bootstrap vcpkg (non-windows)
+        if: ${{ matrix.os != 'windows-latest' }} && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
         run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+
+      - name: Bootstrap vcpkg (windows)
+        if: ${{ matrix.os == 'windows-latest' }} && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
+        run: ./vcpkg/bootstrap-vcpkg.bat
 
       - uses: actions/cache@v2
         id: vcpkg-installed-cache
@@ -58,12 +68,18 @@ jobs:
         if: steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         run: ./vcpkg/vcpkg install ffmpeg${{ matrix.features }}:${{ matrix.triplet }} --recurse
 
-      - name: Test
-        run: ./test.sh $GITHUB_WORKSPACE/vcpkg ${{ matrix.triplet }}
-  
       - name: Upload logs
-        if: always()
+        if: failure() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v2
         with:
           name: logs
           path: vcpkg/buildtrees/**/*.log
+
+      - name: Test (non-windows)
+        if: ${{ matrix.os != 'windows-latest' }}
+        run: ./test.sh ${{ github.workspace }}/vcpkg ${{ matrix.triplet }}
+ 
+      - name: Test (windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: ./test.bat ${{ github.workspace }}/vcpkg ${{ matrix.triplet }}
+  
