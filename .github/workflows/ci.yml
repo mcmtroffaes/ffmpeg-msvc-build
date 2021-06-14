@@ -30,15 +30,15 @@ jobs:
           submodules: true
 
       - name: Install ubuntu dependencies
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install cmake ninja-build nasm gperf libgl-dev libxext-dev
 
       - name: Install macos dependencies
-        if: ${{ matrix.os == 'macos-latest' }}
+        if: matrix.os == 'macos-latest'
         run: brew install cmake ninja nasm
 
       - name: Install windows dependencies
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: matrix.os == 'windows-latest'
         run: choco install pkgconfiglite -y -r --no-progress
 
       - uses: actions/cache@v2
@@ -48,11 +48,11 @@ jobs:
           key: vcpkg-${{ runner.os }}
 
       - name: Bootstrap vcpkg (non-windows)
-        if: ${{ matrix.os != 'windows-latest' }} && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
+        if: matrix.os != 'windows-latest' && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
         run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
 
       - name: Bootstrap vcpkg (windows)
-        if: ${{ matrix.os == 'windows-latest' }} && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
+        if: matrix.os == 'windows-latest' && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
         run: ./vcpkg/bootstrap-vcpkg.bat
 
       - uses: actions/cache@v2
@@ -73,10 +73,10 @@ jobs:
           path: vcpkg/buildtrees/**/*.log
 
       - name: Test (non-windows)
-        if: ${{ matrix.os != 'windows-latest' }}
+        if: matrix.os != 'windows-latest'
         run: ./test.sh ${{ github.workspace }}/vcpkg ${{ matrix.triplet }}
  
       - name: Test (windows)
-        if: ${{ matrix.os == 'windows-latest' }}
+        if: matrix.os == 'windows-latest'
         run: ./test.bat ${{ github.workspace }}/vcpkg ${{ matrix.triplet }}
   
