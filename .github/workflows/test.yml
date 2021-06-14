@@ -1,0 +1,32 @@
+name: Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        triplet: [x64-linux]
+        features: [core]
+    env:
+      CMAKE_BUILD_PARALLEL_LEVEL: 1  # to avoid running out of memory
+      VCPKG_MAX_CONCURRENCY: 1  # to avoid running out of memory
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Boostrap vcpkg
+        run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+
+      - name: Install ffmpeg
+        run: ./vcpkg/vcpkg install ffmpeg[${{ matrix.features }}]:${{ matrix.triplet }} --recurse
+
+      - name: Test
+        run: ./test.sh $GITHUB_WORKSPACE/vcpkg ${{ matrix.triplet }}
