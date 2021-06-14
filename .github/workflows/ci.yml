@@ -70,7 +70,7 @@ jobs:
         if: failure() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v2
         with:
-          name: logs
+          name: logs-${{ matrix.triplet }}-${{ matrix.features_id }}
           path: vcpkg/buildtrees/**/*.log
 
       - uses: ilammy/msvc-dev-cmd@v1
