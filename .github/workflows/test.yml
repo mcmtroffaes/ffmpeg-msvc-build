@@ -20,7 +20,7 @@ jobs:
           submodules: true
 
       - name: Install dependencies
-        run: sudo apt-get install cmake ninja-build nasm
+        run: sudo apt-get install cmake ninja-build nasm gperf libgl-dev libxext-dev
 
       - uses: actions/cache@v2
         id: vcpkg-executable-cache
