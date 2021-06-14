@@ -1,6 +1,6 @@
 # ffmpeg-msvc-build
 
-[![appveyor build status](https://ci.appveyor.com/api/projects/status/rok7i2fbv5ptrwvm?svg=true)](https://ci.appveyor.com/project/mcmtroffaes/ffmpeg-msvc-build) [![travis build status](https://travis-ci.com/mcmtroffaes/ffmpeg-msvc-build.svg?branch=master)](https://travis-ci.com/mcmtroffaes/ffmpeg-msvc-build)
+[![appveyor build status](https://ci.appveyor.com/api/projects/status/rok7i2fbv5ptrwvm?svg=true)](https://ci.appveyor.com/project/mcmtroffaes/ffmpeg-msvc-build) [![CI](https://github.com/mcmtroffaes/ffmpeg-msvc-build/actions/workflows/ci.yml/badge.svg)](https://github.com/mcmtroffaes/ffmpeg-msvc-build/actions/workflows/ci.yml)
 
 Scripts for building FFmpeg with MSVC.
 
