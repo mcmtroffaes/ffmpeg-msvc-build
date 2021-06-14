@@ -21,6 +21,8 @@ jobs:
       VCPKG_MAX_CONCURRENCY: 1  # to avoid running out of memory
     steps:
       - uses: actions/checkout@v2
+        with:
+          submodules: true
 
       - name: Boostrap vcpkg
         run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
