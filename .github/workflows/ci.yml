@@ -30,8 +30,13 @@ jobs:
         with:
           submodules: true
 
-      - name: Install dependencies
+      - name: Install ubuntu dependencies
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: sudo apt-get install cmake ninja-build nasm gperf libgl-dev libxext-dev
+
+      - name: Install macos dependencies
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: brew install cmake ninja nasm
 
       - uses: actions/cache@v2
         id: vcpkg-executable-cache
@@ -51,7 +56,7 @@ jobs:
 
       - name: Install ffmpeg
         if: steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
-        run: ./vcpkg/vcpkg install ffmpeg[${{ matrix.features }}]:${{ matrix.triplet }} --recurse
+        run: ./vcpkg/vcpkg install ffmpeg${{ matrix.features }}:${{ matrix.triplet }} --recurse
 
       - name: Test
         run: ./test.sh $GITHUB_WORKSPACE/vcpkg ${{ matrix.triplet }}
