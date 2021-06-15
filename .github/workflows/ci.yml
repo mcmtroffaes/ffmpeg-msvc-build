@@ -1,4 +1,4 @@
-name: CI
+name: test
 
 on:
   workflow_dispatch:
@@ -9,9 +9,26 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        triplet: [x64-linux, x64-osx, x64-windows]
-        features_id: [minimal, release, ffmpeg]
+        triplet: [x64-linux, x64-osx, x64-windows, x64-windows-static, x64-windows-static-md, x86-windows]
+        features_id: [minimal, release, avcodec, avformat, avdevice, avfilter, swresample, swscale]
+        exclude:
+          - triplet: x86-windows
+          - triplet: x64-windows
+          - triplet: x64-windows-static
         include:
+          # extra release builds
+          - triplet: x64-windows
+            features_id: release
+          - triplet: x64-windows-static
+            features_id: release
+          # extra builds that tend to break
+          - triplet: x86-windows
+            features_id: avcodec
+          - triplet: x64-windows
+            features_id: avcodec
+          - triplet: x64-windows
+            features_id: avfilter
+          # os per triplet
           - triplet: x64-linux
             os: ubuntu-latest
           - triplet: x64-osx
@@ -19,12 +36,32 @@ jobs:
           - triplet: x64-windows
             os: windows-latest
             arch: amd64
+          - triplet: x64-windows-static
+            os: windows-latest
+            arch: amd64
+          - triplet: x64-windows-static-md
+            os: windows-latest
+            arch: amd64
+          - triplet: x86-windows
+            os: windows-latest
+            arch: amd64_x86
+          # features per feature_id
           - features_id: minimal
             features: "[core]"
+          - features_id: avcodec
+            features: "[core,avcodec]"
+          - features_id: avformat
+            features: "[core,avformat]"
+          - features_id: avdevice
+            features: "[core,avdevice]"
+          - features_id: avfilter
+            features: "[core,avfilter]"
+          - features_id: swresample
+            features: "[core,swresample]"
+          - features_id: swscale
+            features: "[core,swscale]"
           - features_id: release
             features: "[core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx]"
-          - features_id: ffmpeg
-            features: "[core,ffmpeg]"
     steps:
       - uses: actions/checkout@v2
         with:
