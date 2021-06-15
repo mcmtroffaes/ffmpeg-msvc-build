@@ -10,7 +10,10 @@ jobs:
       fail-fast: false
       matrix:
         triplet: [x64-linux, x64-osx, x64-windows, x64-windows-static, x64-windows-static-md, x86-windows]
-        features_id: [minimal, release, avcodec, avformat, avdevice, avfilter, swresample, swscale]
+        features_id: [minimal, release, avcodec, avformat, avdevice, avfilter, swresample, swscale, ffmpeg, ffplay, ffprobe, ass, bzip2, dav1d, freetype1, freetype2]
+        exclude:
+          - features_id: freetype2
+            triplet: x64-windows-static-md  # https://github.com/microsoft/vcpkg/issues/15303
         include:
           # os per triplet
           - triplet: x64-linux
@@ -44,6 +47,22 @@ jobs:
             features: "[core,swresample]"
           - features_id: swscale
             features: "[core,swscale]"
+          - features_id: ffmpeg
+            features: "[core,ffmpeg]"
+          - features_id: ffplay
+            features: "[core,ffplay]"
+          - features_id: ffprobe
+            features: "[core,ffprobe]"
+          - features_id: ass
+            features: "[core,ass,avfilter]"
+          - features_id: bzip2
+            features: "[core,avformat,bzip2]"
+          - features_id: dav1d
+            features: "[core,dav1d,avcodec]"
+          - features_id: freetype1
+            features: "[core,freetype,avfilter]"
+          - features_id: freetype2
+            features: "[core,freetype,fontconfig,fribidi,avfilter]"
           - features_id: release
             features: "[core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx]"
     steps:
