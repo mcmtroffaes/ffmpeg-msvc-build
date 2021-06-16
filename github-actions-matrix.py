@@ -262,7 +262,7 @@ def experimental_job(triplet: Triplet, test: Test):
         return is_experimental
     if test.test == "freetype2" and triplet.triplet == "x64-osx":
         return is_experimental
-    return {}
+    return dict(experimental=False)
 
 
 def include_job(triplet: Triplet, test: Test):
