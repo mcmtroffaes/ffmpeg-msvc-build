@@ -38,6 +38,14 @@ triplets = [
         triplet="x86-windows",
         os="windows-latest",
         ),
+    Triplet(
+        triplet="x64-mingw-dynamic",
+        os="ubuntu-latest",
+        ),
+    Triplet(
+        triplet="x64-mingw-static",
+        os="ubuntu-latest",
+        ),
     ]
 
 tests = [

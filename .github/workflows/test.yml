@@ -42,6 +42,10 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run: sudo apt-get install cmake ninja-build nasm gperf libgl-dev libxext-dev
 
+      - name: Install ubuntu dependencies (mingw only)
+        if: matrix.os == 'ubuntu-latest' && startsWith(matrix.triplet, 'x64-mingw')
+        run: sudo apt-get install gcc-mingw-w64-x86-64 g++-mingw-w64-x86-64
+
       - name: Install macos dependencies
         if: matrix.os == 'macos-latest'
         run: brew install cmake ninja nasm
