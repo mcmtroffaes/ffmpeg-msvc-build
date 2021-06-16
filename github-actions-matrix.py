@@ -136,7 +136,7 @@ def include_job(triplet: Triplet, test: Test):
 
 
 matrix = [
-    triplet._asdict() | test._asdict()
+    {**triplet._asdict(), **test._asdict()}
     for triplet in triplets
     for test in tests
     if include_job(triplet, test)
