@@ -101,7 +101,7 @@ tests = [
         ),
     Test(
         test="bzip2",
-        features="core,avformat,bzip2",
+        features="core,bzip2,avformat",
         ),
     Test(
         test="dav1d",
@@ -305,6 +305,10 @@ matrix = {"include": [
 
 
 if args.summary:
+    for triplet in triplets:
+        for test in tests:
+            if include_job(triplet, test):
+                print(f"{triplet.triplet} {test.features}")
     print(len(matrix["include"]))
 else:
     if args.pretty:
