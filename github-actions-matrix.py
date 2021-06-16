@@ -271,12 +271,17 @@ def include_job(triplet: Triplet, test: Test):
     if args.tests:
         if test.test not in args.tests:
             return False
-    # disable mingw triplets in default build (known to be broken)
-    if triplet.triplet.startswith("x64-mingw") and not args.triplets:
-        return False
-    # disable x64-windows-static in default build (reduce matrix size)
-    if triplet.triplet == "x64-windows-static" and not args.triplets:
-        return False
+    # reduce matrix size for default build
+    if not args.triplets and not args.tests:
+        # disable mingw triplets
+        if triplet.triplet.startswith("x64-mingw"):
+            return False
+        # disable x64-windows-static
+        if triplet.triplet == "x64-windows-static":
+            return False
+        # disable x86-windows (mostly)
+        if triplet.triplet == "x86-windows":
+            return test.test in {"avcodec"}
     # dav1d only supports 64 bit
     if test.test == "dav1d" and triplet.triplet.startswith("x86-windows"):
         return False
@@ -294,4 +299,5 @@ matrix = {"include": [
     ]}
 
 
+#print(len(matrix["include"]))
 print("::set-output name=matrix::%s" % json.dumps(matrix, separators=(',', ':')))
