@@ -97,7 +97,7 @@ tests = [
     Test(
         test="ass",
         features="core,ass,avfilter",
-        dependencies_ubuntu="gperf",  # pulls in fontconfig which needs gperf
+        dependencies_ubuntu="autopoint gperf",  # fontconfig
         ),
     Test(
         test="bzip2",
@@ -114,7 +114,7 @@ tests = [
     Test(
         test="freetype2",
         features="core,freetype,fontconfig,fribidi,avfilter",
-        dependencies_ubuntu="gperf",  # pulls in fontconfig which needs gperf
+        dependencies_ubuntu="autopoint gperf",  # fontconfig
         ),
     Test(
         test="iconv",
