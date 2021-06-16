@@ -6,7 +6,6 @@ from typing import NamedTuple, Optional
 class Triplet(NamedTuple):
     triplet: str
     os: str
-    arch: Optional[str] = None
 
 
 class Test(NamedTuple):
@@ -18,32 +17,26 @@ triplets = [
     Triplet(
         triplet="x64-linux",
         os="ubuntu-latest",
-        arch="amd64",
         ),
     Triplet(
         triplet="x64-osx",
         os="macos-latest",
-        arch="amd64",
         ),
     Triplet(
         triplet="x64-windows",
         os="windows-latest",
-        arch="amd64",
         ),
     Triplet(
         triplet="x64-windows-static",
         os="windows-latest",
-        arch="amd64",
         ),
     Triplet(
         triplet="x64-windows-static-md",
         os="windows-latest",
-        arch="amd64",
         ),
     Triplet(
         triplet="x86-windows",
         os="windows-latest",
-        arch="amd64_x86",
         ),
     ]
 
