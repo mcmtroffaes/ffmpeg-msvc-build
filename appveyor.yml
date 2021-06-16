@@ -102,6 +102,7 @@ platform:
   - x64
 install:
   # note: must remove git from PATH to fix libssh build failure
+  # note: creating downloads folder; see https://github.com/microsoft/vcpkg/issues/18291
   - cmd: |
       set /p VCPKG_HASH=<VCPKG_HASH.txt
       cd C:\Tools\vcpkg
@@ -112,6 +113,7 @@ install:
       git log -1
       echo %PATH%
       set PATH=%PATH:C:\Program Files\Git\cmd;=%
+      md downloads
       .\bootstrap-vcpkg.bat -disableMetrics
       .\vcpkg.exe integrate install
       .\vcpkg.exe upgrade --no-dry-run
