@@ -76,7 +76,7 @@ jobs:
 
       - name: Install ffmpeg
         if: steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
-        run: ./vcpkg/vcpkg install ffmpeg${{ matrix.features }}:${{ matrix.triplet }} --recurse
+        run: ./vcpkg/vcpkg install ffmpeg[${{ matrix.features }}]:${{ matrix.triplet }} --recurse
 
       - name: Upload logs
         if: failure() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
