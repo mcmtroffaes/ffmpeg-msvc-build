@@ -130,6 +130,9 @@ def include_job(triplet: Triplet, test: Test):
     if args.tests:
         if test.test not in args.tests:
             return False
+    # disable mingw triplets (they are known to be broken)
+    if triplet.triplet.startswith("x64-mingw"):
+        return False
     # filter broken combinations
     if test.test == "freetype2" and triplet.triplet == "x64-windows-static-md":
         return False
