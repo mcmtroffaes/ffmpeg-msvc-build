@@ -16,22 +16,25 @@ on:
     - cron: "0 0 * * 0"
 
 jobs:
-  build-matrix:
+  generate-matrix:
+    name: Generate matrix for build
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - uses: actions/checkout@v2
-      - id: set-matrix
+      - name: Set matrix for build
+        id: set-matrix
         run: |
           # python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
           echo "::set-output name=matrix::[{\"triplet\": \"x64-windows\", \"os\": \"windows-latest\", \"arch\": \"amd64\", \"test\": \"minimal\", \"features\": \"core\"}]"
   build:
-    needs: build-matrix
+    name: Build ${{ matrix.test }} on ${{ matrix.triplet }}
+    needs: generate-matrix
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      matrix: ${{ fromJson(needs.build-matrix.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v2
         with:
