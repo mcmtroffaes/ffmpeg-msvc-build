@@ -52,10 +52,19 @@ if %ERRORLEVEL% neq 0 ( exit )
 echo ffmpeg features: %ALL_FEATURES%
 
 rem Set up developer prompt
+for %%G in (Community,Professional,Enterprise) do (
+  if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\%%G" (
+    set VSFOLDER=%%G
+  )
+)
+if "%VSFOLDER%" == "" (
+  echo "Visual Studio 2019 not found"
+  exit 1
+)
 if "%TRIPLET:~0,4%" == "x64-" (
-    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\%VSFOLDER%\VC\Auxiliary\Build\vcvars64.bat"
 ) else (
-    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
+    call "C:\Program Files (x86)\Microsoft Visual Studio\2019\%VSFOLDER%\VC\Auxiliary\Build\vcvars32.bat"
 )
 
 rem Test release
