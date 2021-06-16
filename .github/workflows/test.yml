@@ -40,7 +40,7 @@ jobs:
 
       - name: Install ubuntu dependencies
         if: matrix.os == 'ubuntu-latest'
-        run: sudo apt-get install cmake ninja-build nasm gperf libgl-dev libxext-dev
+        run: sudo apt-get install cmake ninja-build nasm ${{ matrix.dependencies_ubuntu }}
 
       - name: Install ubuntu dependencies (mingw only)
         if: matrix.os == 'ubuntu-latest' && startsWith(matrix.triplet, 'x64-mingw')

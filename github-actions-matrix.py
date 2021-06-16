@@ -96,6 +96,7 @@ tests = [
     Test(
         test="ass",
         features="core,ass,avfilter",
+        dependencies_ubuntu="gperf",  # pulls in fontconfig which needs gperf
         ),
     Test(
         test="bzip2",
@@ -112,6 +113,7 @@ tests = [
     Test(
         test="freetype2",
         features="core,freetype,fontconfig,fribidi,avfilter",
+        dependencies_ubuntu="gperf",  # pulls in fontconfig which needs gperf
         ),
     Test(
         test="iconv",
@@ -144,6 +146,7 @@ tests = [
     Test(
         test="opengl",
         features="core,opengl,avdevice",
+        dependencies_ubuntu="libgl-dev libxext-dev",
         ),
     Test(
         test="openh264",
@@ -240,6 +243,25 @@ parser.add_argument('--tests', nargs='*')
 args = parser.parse_args()
 
 
+def experimental_job(triplet: Triplet, test: Test):
+    is_experimental = dict(experimental=True)
+    if test.test == "ffplay" and triplet.triplet == "x64-osx":
+        return is_experimental
+    if test.test == "ass" and triplet.triplet == "x64-linux":
+        return is_experimental
+    if test.test == "bzip2" and triplet.triplet == "x64-osx":
+        return is_experimental
+    if test.test == "dav1d" and triplet.triplet == "x64-osx":
+        return is_experimental
+    if test.test == "freetype2" and triplet.triplet.startswith("x64-windows-static"):
+        return is_experimental
+    if test.test == "freetype2" and triplet.triplet == "x64-linux":
+        return is_experimental
+    if test.test == "freetype2" and triplet.triplet == "x64-osx":
+        return is_experimental
+    return {}
+
+
 def include_job(triplet: Triplet, test: Test):
     # filter as per arguments provided
     if args.triplets:
@@ -251,14 +273,17 @@ def include_job(triplet: Triplet, test: Test):
     # disable mingw triplets (they are known to be broken)
     if triplet.triplet.startswith("x64-mingw"):
         return False
-    # filter broken combinations
-    if test.test == "freetype2" and triplet.triplet == "x64-windows-static-md":
+    # dav1d only supports 64 bit
+    if test.test == "dav1d" and triplet.triplet.startswith("x86-windows"):
+        return False
+    # nvcodec not supported on osx
+    if test.test == "nvcodec" and triplet.triplet == "x64-osx":
         return False
     return True
 
 
 matrix = {"include": [
-    {**triplet._asdict(), **test._asdict()}
+    {**triplet._asdict(), **test._asdict(), **experimental_job(triplet, test)}
     for triplet in triplets
     for test in tests
     if include_job(triplet, test)
