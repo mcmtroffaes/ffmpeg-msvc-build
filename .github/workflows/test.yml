@@ -3,12 +3,12 @@ name: test
 on:
   workflow_dispatch:
     inputs:
-      name:
-        description: 'triplets'
+      triplets:
+        description: 'triplets to use'
         required: true
         default: ''
-      home:
-        description: 'tests'
+      tests:
+        description: 'tests to run'
         required: true
         default: ''
 
@@ -61,7 +61,7 @@ jobs:
         id: vcpkg-installed-cache
         with:
           path: ./vcpkg/installed
-          key: vcpkg-${{ hashFiles('VCPKG_HASH.txt') }}-${{ matrix.triplet }}-${{ matrix.features_id }}
+          key: vcpkg-${{ hashFiles('VCPKG_HASH.txt') }}-${{ matrix.triplet }}-${{ matrix.test }}
 
       - name: Install pkgconf (windows)
         if: matrix.os == 'windows-latest' && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
@@ -75,7 +75,7 @@ jobs:
         if: failure() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         uses: actions/upload-artifact@v2
         with:
-          name: logs-${{ matrix.triplet }}-${{ matrix.features_id }}
+          name: logs-${{ matrix.triplet }}-${{ matrix.test }}
           path: vcpkg/buildtrees/**/*.log
 
       - uses: ilammy/msvc-dev-cmd@v1
