@@ -241,6 +241,8 @@ tests = [
 parser = argparse.ArgumentParser(description='Generate build matrix.')
 parser.add_argument('--triplets', nargs='*')
 parser.add_argument('--tests', nargs='*')
+parser.add_argument("--pretty", action="store_true")
+parser.add_argument("--summary", action="store_true")
 args = parser.parse_args()
 
 
@@ -282,6 +284,9 @@ def include_job(triplet: Triplet, test: Test):
         # disable x86-windows (mostly)
         if triplet.triplet == "x86-windows":
             return test.test in {"avcodec"}
+    # avisynthplus only supported on windows with dynamic linkage
+    if test.test == "avisynthplus":
+        return triplet.triplet in {"x86-windows", "x64-windows"}
     # dav1d only supports 64 bit
     if test.test == "dav1d" and triplet.triplet.startswith("x86-windows"):
         return False
@@ -299,5 +304,11 @@ matrix = {"include": [
     ]}
 
 
-#print(len(matrix["include"]))
-print("::set-output name=matrix::%s" % json.dumps(matrix, separators=(',', ':')))
+if args.summary:
+    print(len(matrix["include"]))
+else:
+    if args.pretty:
+        json_args = dict(indent=4)
+    else:
+        json_args = dict(separators=(',', ':'))
+    print("::set-output name=matrix::%s" % json.dumps(matrix, **json_args))
