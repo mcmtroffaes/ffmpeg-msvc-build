@@ -135,12 +135,12 @@ def include_job(triplet: Triplet, test: Test):
     return True
 
 
-matrix = [
+matrix = {"include": [
     {**triplet._asdict(), **test._asdict()}
     for triplet in triplets
     for test in tests
     if include_job(triplet, test)
-    ]
+    ]}
 
 
 print("::set-output name=matrix::%s" % json.dumps(matrix))
