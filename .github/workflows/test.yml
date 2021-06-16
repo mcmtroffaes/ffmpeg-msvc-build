@@ -21,8 +21,9 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
+      - uses: actions/checkout@v2
       - id: set-matrix
-        run: python ${{ github.workspace }}/github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
+        run: python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
   build:
     needs: build-matrix
     runs-on: ${{ matrix.os }}
