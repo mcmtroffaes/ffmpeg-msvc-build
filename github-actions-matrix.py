@@ -147,7 +147,7 @@ tests = [
     Test(
         test="opengl",
         features="core,opengl,avdevice",
-        dependencies_ubuntu="libgl-dev libxext-dev",
+        dependencies_ubuntu="libgl-dev",
         ),
     Test(
         test="openh264",
