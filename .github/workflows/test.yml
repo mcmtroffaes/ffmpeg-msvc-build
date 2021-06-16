@@ -2,72 +2,33 @@ name: test
 
 on:
   workflow_dispatch:
+    inputs:
+      name:
+        description: 'triplets'
+        required: true
+        default: ''
+      home:
+        description: 'tests'
+        required: true
+        default: ''
 
   schedule:
     - cron: "0 0 * * 0"
 
 jobs:
+  build-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - id: set-matrix
+        run: python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
   build:
+    needs: build-matrix
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
-      matrix:
-        triplet: [x64-linux, x64-osx, x64-windows, x64-windows-static, x64-windows-static-md, x86-windows]
-        features_id: [minimal, release, avcodec, avformat, avdevice, avfilter, swresample, swscale, ffmpeg, ffplay, ffprobe, ass, bzip2, dav1d, freetype1, freetype2]
-        exclude:
-          - features_id: freetype2
-            triplet: x64-windows-static-md  # https://github.com/microsoft/vcpkg/issues/15303
-        include:
-          # os per triplet
-          - triplet: x64-linux
-            os: ubuntu-latest
-          - triplet: x64-osx
-            os: macos-latest
-          - triplet: x64-windows
-            os: windows-latest
-            arch: amd64
-          - triplet: x64-windows-static
-            os: windows-latest
-            arch: amd64
-          - triplet: x64-windows-static-md
-            os: windows-latest
-            arch: amd64
-          - triplet: x86-windows
-            os: windows-latest
-            arch: amd64_x86
-          # features per feature_id
-          - features_id: minimal
-            features: "[core]"
-          - features_id: avcodec
-            features: "[core,avcodec]"
-          - features_id: avformat
-            features: "[core,avformat]"
-          - features_id: avdevice
-            features: "[core,avdevice]"
-          - features_id: avfilter
-            features: "[core,avfilter]"
-          - features_id: swresample
-            features: "[core,swresample]"
-          - features_id: swscale
-            features: "[core,swscale]"
-          - features_id: ffmpeg
-            features: "[core,ffmpeg]"
-          - features_id: ffplay
-            features: "[core,ffplay]"
-          - features_id: ffprobe
-            features: "[core,ffprobe]"
-          - features_id: ass
-            features: "[core,ass,avfilter]"
-          - features_id: bzip2
-            features: "[core,avformat,bzip2]"
-          - features_id: dav1d
-            features: "[core,dav1d,avcodec]"
-          - features_id: freetype1
-            features: "[core,freetype,avfilter]"
-          - features_id: freetype2
-            features: "[core,freetype,fontconfig,fribidi,avfilter]"
-          - features_id: release
-            features: "[core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx]"
+      matrix: ${{ fromJson(needs.build-matrix.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v2
         with:
