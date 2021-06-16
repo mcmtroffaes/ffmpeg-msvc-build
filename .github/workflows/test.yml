@@ -23,7 +23,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - id: set-matrix
-        run: python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
+        run: |
+          # python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
+          echo "::set-output name=matrix::[{\"triplet\": \"x64-windows\", \"os\": \"windows-latest\", \"arch\": \"amd64\", \"test\": \"minimal\", \"features\": \"core\"}]"
   build:
     needs: build-matrix
     runs-on: ${{ matrix.os }}
