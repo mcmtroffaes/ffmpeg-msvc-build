@@ -5,11 +5,11 @@ on:
     inputs:
       triplets:
         description: 'triplets to use'
-        required: true
+        required: false
         default: ''
       tests:
         description: 'tests to run'
-        required: true
+        required: false
         default: ''
 
   schedule:
