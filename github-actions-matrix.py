@@ -147,4 +147,4 @@ matrix = {"include": [
     ]}
 
 
-print("::set-output name=matrix::%s" % json.dumps(matrix))
+print("::set-output name=matrix::%s" % json.dumps(matrix, separators=(',', ':')))
