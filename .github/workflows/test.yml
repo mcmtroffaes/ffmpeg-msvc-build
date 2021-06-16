@@ -30,6 +30,7 @@ jobs:
     name: Build ${{ matrix.test }} on ${{ matrix.triplet }}
     needs: generate-matrix
     runs-on: ${{ matrix.os }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.generate-matrix.outputs.matrix) }}
