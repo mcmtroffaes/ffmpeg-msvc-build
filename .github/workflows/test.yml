@@ -22,7 +22,7 @@ jobs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
+        run: python ${{ github.workspace }}/github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
   build:
     needs: build-matrix
     runs-on: ${{ matrix.os }}
