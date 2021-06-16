@@ -275,7 +275,7 @@ def include_job(triplet: Triplet, test: Test):
     if triplet.triplet.startswith("x64-mingw") and not args.triplets:
         return False
     # disable x64-windows-static in default build (reduce matrix size)
-    if triplet.triplet.startswith("x64-windows-static") and not args.triplets:
+    if triplet.triplet == "x64-windows-static" and not args.triplets:
         return False
     # dav1d only supports 64 bit
     if test.test == "dav1d" and triplet.triplet.startswith("x86-windows"):
