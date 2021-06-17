@@ -130,4 +130,4 @@ jobs:
 
       - name: Export
         if: matrix.os == 'windows-latest' && matrix.test == 'release'
-        run: .\export.ps1 -triplet ${{ matrix.triplet }} -features ${{ matrix.features }} -ErrorAction Stop
+        run: .\export.ps1 -vcpkg ${{ github.workspace }}\vcpkg -triplet ${{ matrix.triplet }} -features ${{ matrix.features }} -ErrorAction Stop
