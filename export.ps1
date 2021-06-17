@@ -60,7 +60,3 @@ Write-Output "Exporting $ffmpeg..."
 # move vcpkg export to the right location
 
 Move-Item -Path "$vcpkg\$ffmpeg.7z" -Destination "." -ErrorAction "Stop"
-if ($env:APPVEYOR) {
-  Write-Output "Pushing $ffmpeg.7z"
-  Push-AppveyorArtifact "$ffmpeg.7z"
-}
