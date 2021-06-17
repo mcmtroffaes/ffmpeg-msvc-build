@@ -83,8 +83,13 @@ jobs:
         run: ./vcpkg/bootstrap-vcpkg.bat
 
       # https://github.com/microsoft/vcpkg/issues/18291
-      - name: Create vcpkg/downloads to work around vcpkg bug
-        run: mkdir ./vcpkg/downloads
+      - name: Create vcpkg/downloads to work around vcpkg bug (non-windows)
+        if: matrix.os != 'windows-latest'
+        run: mkdir -p ./vcpkg/downloads
+
+      - name: Create vcpkg/downloads to work around vcpkg bug (windows)
+        if: matrix.os == 'windows-latest'
+        run: mkdir ./vcpkg/downloads -ea 0
 
       - uses: actions/cache@v2
         id: vcpkg-installed-cache
