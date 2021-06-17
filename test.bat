@@ -84,5 +84,9 @@ cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN
 if %ERRORLEVEL% neq 0 ( exit )
 cmake --build .
 if %ERRORLEVEL% neq 0 ( exit )
-ctest -V
+if "%TRIPLET%" == "x64-uwp" (
+  echo not running tests for x64-uwp triplet
+) else (
+  ctest -V
+)
 if %ERRORLEVEL% neq 0 ( exit )
