@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       triplets:
-        description: 'Triplets to use'
+        description: 'Triplets'
         required: false
         default: ''
       tests:
-        description: 'Tests to run'
+        description: 'Tests'
         required: false
         default: ''
       period:
