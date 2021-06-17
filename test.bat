@@ -48,7 +48,7 @@ if not "%ALL_FEATURES%" == "core" (
 for /f "delims=[] tokens=2" %%G in ('%VCPKG_ROOT%\vcpkg.exe list ^| findstr /r /c:"ffmpeg\[.*\]:%TRIPLET%[ ]"') do (
     set ALL_FEATURES=!ALL_FEATURES!;%%G
 )
-if %ERRORLEVEL% neq 0 ( exit )
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 echo ffmpeg features: %ALL_FEATURES%
 
 rem Set up developer prompt
@@ -71,11 +71,13 @@ rem Test release
 mkdir %~dp0\test-%TRIPLET%-rel
 cd %~dp0\test-%TRIPLET%-rel
 cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY_RELEASE%
-if %ERRORLEVEL% neq 0 ( exit )
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 cmake --build .
-if %ERRORLEVEL% neq 0 ( exit )
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 if "%TRIPLET%" == "x64-uwp" (
+  echo ***********************************************************************
   echo not running tests for x64-uwp triplet
+  echo ***********************************************************************
 ) else (
   ctest -V
 )
@@ -85,12 +87,14 @@ rem Test debug
 mkdir %~dp0\test-%TRIPLET%-dbg
 cd %~dp0\test-%TRIPLET%-dbg
 cmake %~dp0\test -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=%VCPKG_ROOT%\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=%TRIPLET% -DFEATURES=%ALL_FEATURES% -DCMAKE_MSVC_RUNTIME_LIBRARY=%MSVC_RUNTIME_LIBRARY_DEBUG%
-if %ERRORLEVEL% neq 0 ( exit )
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 cmake --build .
-if %ERRORLEVEL% neq 0 ( exit )
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
 if "%TRIPLET%" == "x64-uwp" (
+  echo ***********************************************************************
   echo not running tests for x64-uwp triplet
+  echo ***********************************************************************
 ) else (
   ctest -V
 )
-if %ERRORLEVEL% neq 0 ( exit )
+if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
