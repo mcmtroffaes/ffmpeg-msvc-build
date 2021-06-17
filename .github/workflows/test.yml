@@ -135,14 +135,8 @@ jobs:
         run: .\export.ps1 -vcpkg ${{ github.workspace }}\vcpkg -triplet ${{ matrix.triplet }} -features "${{ matrix.features }}" -ErrorAction Stop
 
       - name: Release
-        uses: softprops/action-gh-release@v1
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && matrix.os == 'windows-latest' && matrix.test == 'release'
-        with:
-          tag_name: ${{ github.ref }}
-          body: |
-            Headers and libraries for FFmpeg.
-            
-            Features: ${{ matrix.features }}.
-          files: ffmpeg*.7z
+        run: |
+          gh release create ${GITHUB_REF/refs\/tags\//} -n "Headers and libraries for FFmpeg.\n\nFeatures: ${{ matrix.features }}." ffmpeg*.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
