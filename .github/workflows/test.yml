@@ -4,19 +4,19 @@ on:
   workflow_dispatch:
     inputs:
       triplets:
-        description: 'triplets to use (leave empty to include all triplets)'
+        description: 'Triplets to use'
         required: false
         default: ''
       tests:
-        description: 'tests to run (leave empty to include all tests)'
+        description: 'Tests to run'
         required: false
         default: ''
       period:
-        description: 'matrix period'
+        description: 'Matrix period'
         required: true
         default: 1
       run:
-        description: 'matrix run (modulo period)'
+        description: 'Matrix run (modulo period)'
         required: true
         default: 0
 
