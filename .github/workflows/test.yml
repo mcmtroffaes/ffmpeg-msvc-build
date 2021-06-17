@@ -2,6 +2,8 @@ name: test
 
 on:
   push:
+    branches-ignore:
+      - '**'
     tags:
       - '[0-9]+.[0-9]+.[0-9]+'
 
