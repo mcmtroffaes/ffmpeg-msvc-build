@@ -45,7 +45,7 @@ jobs:
             python github-actions-matrix.py --period 60 --run `date +%j`
           elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]
             python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }} --period ${{ github.event.inputs.period }} --run ${{ github.event.inputs.run }}
-          elif [[ "${{ github.event_name }}" == "push" && startsWith(github.ref, 'refs/tags/') ]]
+          elif [[ "${{ github.event_name }}" == "push" ]]
             python github-actions-matrix.py --triplets x64-windows x64-windows-static x64-windows-static-md x86-windows --tests release
           fi
 
