@@ -279,14 +279,11 @@ def include_job(triplet: Triplet, test: Test):
     if args.tests:
         if test.test not in args.tests:
             return False
-    # reduce matrix size for default build
-    if not args.triplets and not args.tests:
-        # disable mingw triplets
+    # remove x64-mingw triplets if no triplets are specified
+    # (known to be broken)
+    if not args.triplets:
         if triplet.triplet.startswith("x64-mingw"):
             return False
-        # disable non-release builds x64-windows-static, x86-windows, and x64-uwp
-        if triplet.triplet in {"x64-windows-static", "x86-windows", "x64-uwp"}:
-            return test.test in {"release"}
     # avisynthplus only supported on windows with dynamic linkage
     if test.test == "avisynthplus":
         return triplet.triplet in {"x86-windows", "x64-windows"}

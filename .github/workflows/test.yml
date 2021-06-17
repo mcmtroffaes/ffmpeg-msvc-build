@@ -37,8 +37,8 @@ jobs:
         run: |
           if [[ "${{ github.event_name }}" == "schedule" ]]
           then
-            # period = 30 days, run = day of year
-            python github-actions-matrix.py --period 30 --run `date +%j`
+            # period = 60 days, run = day of year
+            python github-actions-matrix.py --period 60 --run `date +%j`
           else
             python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }} --period ${{ github.event.inputs.period }} --run ${{ github.event.inputs.run }}
           fi
