@@ -24,6 +24,10 @@ triplets = [
         os="macos-latest",
         ),
     Triplet(
+        triplet="x64-uwp",
+        os="windows-latest",
+        ),
+    Triplet(
         triplet="x64-windows",
         os="windows-latest",
         ),
@@ -278,12 +282,9 @@ def include_job(triplet: Triplet, test: Test):
         # disable mingw triplets
         if triplet.triplet.startswith("x64-mingw"):
             return False
-        # disable x64-windows-static
-        if triplet.triplet == "x64-windows-static":
-            return False
-        # disable x86-windows (mostly)
-        if triplet.triplet == "x86-windows":
-            return test.test in {"avcodec"}
+        # disable non-release builds x64-windows-static, x86-windows, and x64-uwp
+        if triplet.triplet in {"x64-windows-static", "x86-windows", "x64-uwp"}:
+            return test.test in {"release"}
     # avisynthplus only supported on windows with dynamic linkage
     if test.test == "avisynthplus":
         return triplet.triplet in {"x86-windows", "x64-windows"}
