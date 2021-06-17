@@ -245,6 +245,8 @@ tests = [
 parser = argparse.ArgumentParser(description='Generate build matrix.')
 parser.add_argument('--triplets', nargs='*')
 parser.add_argument('--tests', nargs='*')
+parser.add_argument("--period", type=int, default=1)
+parser.add_argument("--run", type=int, default=0)
 parser.add_argument("--pretty", action="store_true")
 parser.add_argument("--summary", action="store_true")
 args = parser.parse_args()
@@ -297,23 +299,30 @@ def include_job(triplet: Triplet, test: Test):
     return True
 
 
-matrix = {"include": [
+def schedule_jobs(jobs):
+    return [
+        job for i, job in enumerate(jobs)
+        if i % args.period == args.run % args.period]
+
+
+jobs = schedule_jobs([
     {**triplet._asdict(), **test._asdict(), **experimental_job(triplet, test)}
     for triplet in triplets
     for test in tests
     if include_job(triplet, test)
-    ]}
+    ])
 
 
 if args.summary:
-    for triplet in triplets:
-        for test in tests:
-            if include_job(triplet, test):
-                print(f"{triplet.triplet} {test.features}")
-    print(len(matrix["include"]))
+    for job in jobs:
+        triplet = job["triplet"]
+        test = job["test"]
+        print(f"{triplet} {test}")
+    print(len(jobs))
 else:
     if args.pretty:
         json_args = dict(indent=4)
     else:
         json_args = dict(separators=(',', ':'))
+    matrix = {"include": jobs}
     print("::set-output name=matrix::%s" % json.dumps(matrix, **json_args))

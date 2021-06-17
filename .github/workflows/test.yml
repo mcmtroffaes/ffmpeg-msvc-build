@@ -4,16 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       triplets:
-        description: 'triplets to use'
+        description: 'triplets to use (leave empty to include all triplets)'
         required: false
         default: ''
       tests:
-        description: 'tests to run'
+        description: 'tests to run (leave empty to include all tests)'
         required: false
         default: ''
+      period:
+        description: 'matrix period'
+        required: true
+        default: 1
+      run:
+        description: 'matrix run (modulo period)'
+        required: true
+        default: 0
 
   schedule:
-    - cron: "0 0 * * 0"
+    # daily at 6am
+    - cron: "0 6 * * *"
 
 jobs:
   generate-matrix:
@@ -22,12 +31,18 @@ jobs:
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Event
-        run: echo "GITHUB_EVENT_NAME=$GITHUB_EVENT_NAME"
       - uses: actions/checkout@v2
       - name: Set matrix for build
         id: set-matrix
-        run: python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }}
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" ]]
+          then
+            # period = 30 days, run = day of year
+            python github-actions-matrix.py --period 30 --run `date +%j`
+          else
+            python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }} --period ${{ github.event.inputs.period }} --run ${{ github.event.inputs.run }}
+          fi
+          
   build:
     name: Build ${{ matrix.test }} on ${{ matrix.triplet }}
     needs: generate-matrix
