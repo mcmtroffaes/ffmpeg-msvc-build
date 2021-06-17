@@ -256,6 +256,8 @@ def experimental_job(triplet: Triplet, test: Test):
     is_experimental = dict(experimental=True)
     if test.test == "ffplay" and triplet.triplet == "x64-osx":
         return is_experimental
+    if test.test == "ass" and triplet.triplet == "x64-uwp":
+        return is_experimental
     if test.test == "bzip2" and triplet.triplet == "x64-osx":
         return is_experimental
     if test.test == "dav1d" and triplet.triplet == "x64-osx":
