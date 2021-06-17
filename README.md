@@ -1,6 +1,6 @@
 # ffmpeg-msvc-build
 
-[![appveyor build status](https://ci.appveyor.com/api/projects/status/rok7i2fbv5ptrwvm?svg=true)](https://ci.appveyor.com/project/mcmtroffaes/ffmpeg-msvc-build) [![test](https://github.com/mcmtroffaes/ffmpeg-msvc-build/actions/workflows/test.yml/badge.svg)](https://github.com/mcmtroffaes/ffmpeg-msvc-build/actions/workflows/test.yml)
+[![test](https://github.com/mcmtroffaes/ffmpeg-msvc-build/actions/workflows/test.yml/badge.svg)](https://github.com/mcmtroffaes/ffmpeg-msvc-build/actions/workflows/test.yml)
 
 Scripts for building FFmpeg with MSVC.
 
@@ -12,7 +12,7 @@ The purpose of this repository is:
 
 1. To enable the latest git version of ffmpeg to be built with vcpkg, with a few minimal patches on top of upstream vcpkg.
 2. Do full feature testing for windows, linux, and osx (far more in-depth compared to what upstream vcpkg continuous integration is testing).
-3. Provide a few lightweight builds for convenience. Given that there are so many different combinations of features that might make sense for specific purposes, and given the one hour time limit on appveyor, what is currently provided is an LGPL build including all standard libraries (avcodec, avformat, avfilter, avdevice, swresample, and swscale), vpx (one of the best LGPL video codecs), opus (one of the best LGPL audio codecs), and nvcodec (to provide H.264 and HEVC hardware encoding support if you have an nvidia GPU).
+3. Provide a few lightweight builds for convenience. Given that there are so many different combinations of features that might make sense for specific purposes, and given the time limits on continuous integration, what is currently provided is an LGPL build including all standard libraries (avcodec, avformat, avfilter, avdevice, swresample, and swscale), vpx (one of the best LGPL video codecs), opus (one of the best LGPL audio codecs), and nvcodec (to provide H.264 and HEVC hardware encoding support if you have an nvidia GPU).
 
 ## Requirements
 
