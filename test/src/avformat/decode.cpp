@@ -148,6 +148,9 @@ int main(int argc, char** argv)
 	int nb_packets = 0;
 	while (av_read_frame(fmt_ctx.get(), pkt.get()) >= 0) {
 		logger::info() << "packet stream index: " << pkt->stream_index;
+		logger::debug() << "packet size: " << pkt->size;
+		logger::debug() << "packet duration: " << pkt->duration;
+		logger::debug() << "packet pos: " << pkt->pos;
 		int ret = streams[pkt->stream_index].decode_packet(*pkt);
 		av_packet_unref(pkt.get());
 		if (ret < 0)
