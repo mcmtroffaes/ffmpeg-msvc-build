@@ -284,9 +284,6 @@ def include_job(triplet: Triplet, test: Test):
     if not args.triplets:
         if triplet.triplet.startswith("x64-mingw"):
             return False
-    # avisynthplus only supported on windows with dynamic linkage
-    if test.test == "avisynthplus":
-        return triplet.triplet in {"x86-windows", "x64-windows"}
     # dav1d only supports 64 bit
     if test.test == "dav1d" and triplet.triplet.startswith("x86-windows"):
         return False
