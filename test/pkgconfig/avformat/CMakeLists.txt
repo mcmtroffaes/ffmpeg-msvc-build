@@ -16,10 +16,3 @@ target_link_libraries     (${TEST}_list_all_protocols PRIVATE PkgConfig::AVFORMA
 target_link_libraries     (${TEST}_find_protocol      PRIVATE PkgConfig::AVFORMAT)
 target_link_libraries     (${TEST}_list_all_formats   PRIVATE PkgConfig::AVFORMAT)
 target_link_libraries     (${TEST}_find_format        PRIVATE PkgConfig::AVFORMAT)
-if("avisynthplus" IN_LIST FEATURES)
-  add_custom_command(
-    TARGET ${TEST}_decode POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-      "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin/AviSynth${CMAKE_SHARED_LIBRARY_SUFFIX}"
-      $<TARGET_FILE_DIR:${TEST}_decode>)
-endif()

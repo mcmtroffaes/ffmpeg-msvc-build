@@ -20,10 +20,3 @@ target_include_directories(${TEST}_list_all_protocols PRIVATE ${FFMPEG_INCLUDE_D
 target_include_directories(${TEST}_find_protocol      PRIVATE ${FFMPEG_INCLUDE_DIRS})
 target_include_directories(${TEST}_list_all_formats   PRIVATE ${FFMPEG_INCLUDE_DIRS})
 target_include_directories(${TEST}_find_format        PRIVATE ${FFMPEG_INCLUDE_DIRS})
-if("avisynthplus" IN_LIST FEATURES)
-  add_custom_command(
-    TARGET ${TEST}_decode POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy
-      "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/bin/AviSynth${CMAKE_SHARED_LIBRARY_SUFFIX}"
-      $<TARGET_FILE_DIR:${TEST}_decode>)
-endif()
