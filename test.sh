@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 if [ $# -ne 2 ]
 then
     echo "Usage: $0 <vcpkg root folder> <triplet>"
@@ -25,14 +27,14 @@ echo "ffmpeg features: $ALL_FEATURES"
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
 # Test release
-mkdir $SCRIPT_DIR/test-$TRIPLET-rel
+mkdir -p $SCRIPT_DIR/test-$TRIPLET-rel
 cd $SCRIPT_DIR/test-$TRIPLET-rel
 cmake $SCRIPT_DIR/test -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=$TRIPLET -DFEATURES=$ALL_FEATURES
 cmake --build .
 ctest -V
 
 # Test debug
-mkdir $SCRIPT_DIR/test-$TRIPLET-dbg
+mkdir -p $SCRIPT_DIR/test-$TRIPLET-dbg
 cd $SCRIPT_DIR/test-$TRIPLET-dbg
 cmake $SCRIPT_DIR/test -G "Unix Makefiles" -DCMAKE_BUILD_TYPE=DEBUG -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=$TRIPLET -DFEATURES=$ALL_FEATURES
 cmake --build .
