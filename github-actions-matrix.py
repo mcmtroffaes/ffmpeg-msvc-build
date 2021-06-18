@@ -293,6 +293,9 @@ def include_job(triplet: Triplet, test: Test):
     # nvcodec not supported on osx
     if test.test == "nvcodec" and triplet.triplet == "x64-osx":
         return False
+    # opencl not supported on uwp
+    if test.test == "opencl" and triplet.triplet == "x64-uwp":
+        return False
     return True
 
 
