@@ -27,8 +27,8 @@ on:
         default: 0
 
   schedule:
-    # daily at 6am
-    - cron: "0 6 * * *"
+    # daily at 3am
+    - cron: "0 3 * * *"
 
 jobs:
   generate-matrix:
