@@ -268,6 +268,8 @@ def experimental_job(triplet: Triplet, test: Test):
         return is_experimental
     if test.test == "freetype2" and triplet.triplet == "x64-osx":
         return is_experimental
+    if test.test == "openh264" and triplet.triplet == "x64-uwp":
+        return is_experimental
     return dict(experimental=False)
 
 
@@ -294,7 +296,7 @@ def include_job(triplet: Triplet, test: Test):
     if test.test == "nvcodec" and triplet.triplet == "x64-osx":
         return False
     # features not supported on uwp
-    if test.test in {"opencl", "openh264"} and triplet.triplet == "x64-uwp":
+    if test.test == "opencl" and triplet.triplet == "x64-uwp":
         return False
     return True
 
