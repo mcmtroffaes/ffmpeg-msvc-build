@@ -12,17 +12,19 @@ cd ..
 $wc = New-Object System.Net.WebClient
 $wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
 
+$line = 135
+
 $portfile = Get-Content "vcpkg\ports\ffmpeg\portfile.cmake"
-if (-Not $portfile[6].StartsWith("    REF")) {
+if (-Not $portfile[$line].StartsWith("    REF")) {
   Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..20] ""
   throw "could not find REF field in portfile"
 }
-if (-Not $portfile[7].StartsWith("    SHA512")) {
+if (-Not $portfile[$line + 1].StartsWith("    SHA512")) {
   Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..20] ""
   throw "could not find SHA512 field in portfile"
 }
 
-$version_hash_old = $portfile[6].Substring(8)
+$version_hash_old = $portfile[$line].Substring(8)
 Write-Output "old version hash: $version_hash_old"
 
 $commits = $wc.DownloadString("https://api.github.com/repos/FFmpeg/FFmpeg/commits") | ConvertFrom-Json
@@ -43,8 +45,8 @@ if (-Not (Test-Path -Path $file -PathType leaf)) {
   $wc.DownloadFile("$server/$file", "$file")
 }
 $sha512 = (Get-FileHash -Algorithm SHA512 "$file").Hash.ToLower()
-$portfile[6] = "    REF $version_hash"
-$portfile[7] = "    SHA512 $sha512"
+$portfile[$line] = "    REF $version_hash"
+$portfile[$line + 1] = "    SHA512 $sha512"
 $portfile -join "`n" ` | Set-Content "vcpkg\ports\ffmpeg\portfile.cmake" -Encoding Ascii
 Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..12] ""
 
