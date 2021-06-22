@@ -12,6 +12,7 @@ class Test(NamedTuple):
     test: str
     features: str
     dependencies_ubuntu: str = ""
+    dependencies_macos: str = ""
 
 
 triplets = [
@@ -65,14 +66,20 @@ tests = [
     Test(
         test="all",
         features="all",
+        dependencies_ubuntu="autopoint gperf",  # fontconfig
+        dependencies_macos="gperf",  # fontconfig
         ),
     Test(
         test="all-gpl",
         features="all-gpl",
+        dependencies_ubuntu="autopoint gperf",  # fontconfig
+        dependencies_macos="gperf",  # fontconfig
         ),
     Test(
         test="all-nonfree",
         features="all-nonfree",
+        dependencies_ubuntu="autopoint gperf",  # fontconfig
+        dependencies_macos="gperf",  # fontconfig
         ),
     Test(
         test="avcodec",
@@ -114,6 +121,7 @@ tests = [
         test="ass",
         features="core,ass,avfilter",
         dependencies_ubuntu="autopoint gperf",  # fontconfig
+        dependencies_macos="gperf",  # fontconfig
         ),
     Test(
         test="bzip2",
@@ -131,6 +139,7 @@ tests = [
         test="freetype2",
         features="core,freetype,fontconfig,fribidi,avfilter",
         dependencies_ubuntu="autopoint gperf",  # fontconfig
+        dependencies_macos="gperf",  # fontconfig
         ),
     Test(
         test="iconv",

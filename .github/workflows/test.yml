@@ -76,7 +76,7 @@ jobs:
 
       - name: Install macos dependencies
         if: matrix.os == 'macos-latest'
-        run: brew install cmake ninja nasm
+        run: brew install cmake ninja nasm ${{ matrix.dependencies_macos }}
 
       - uses: actions/cache@v2
         id: vcpkg-executable-cache
