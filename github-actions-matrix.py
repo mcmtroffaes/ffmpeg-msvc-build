@@ -63,6 +63,18 @@ tests = [
         features="core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx",
         ),
     Test(
+        test="all",
+        features="all",
+        ),
+    Test(
+        test="all-gpl",
+        features="all-gpl",
+        ),
+    Test(
+        test="all-nonfree",
+        features="all-nonfree",
+        ),
+    Test(
         test="avcodec",
         features="core,avcodec",
         ),
@@ -285,6 +297,9 @@ def include_job(triplet: Triplet, test: Test):
     # (known to be broken)
     if not args.triplets:
         if triplet.triplet.startswith("x64-mingw"):
+            return False
+    if not arg.tests:
+        if test.test in {"all", "all-gpl", "all-nonfree"}:
             return False
     # avisynthplus only supported on windows with dynamic linkage
     if test.test == "avisynthplus":
