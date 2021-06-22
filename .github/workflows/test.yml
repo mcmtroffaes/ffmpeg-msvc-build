@@ -149,6 +149,6 @@ jobs:
       - name: Release
         if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && matrix.os == 'windows-latest' && matrix.test == 'release'
         run: |
-          gh release create ("${{ github.ref }}" -split '/')[-1] -n "Headers and libraries for FFmpeg.\n\nFeatures: ${{ matrix.features }}." ffmpeg*.7z
+          gh release create ("${{ github.ref }}" -split '/')[-1] -n "Headers and libraries for FFmpeg.\n\nFeatures: ${{ matrix.features }}." (Get-Item -Path ffmpeg*.7z).Name
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
