@@ -12,7 +12,7 @@ cd ..
 $wc = New-Object System.Net.WebClient
 $wc.Headers.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
 
-$line = 135
+$line = 6
 
 $portfile = Get-Content "vcpkg\ports\ffmpeg\portfile.cmake"
 if (-Not $portfile[$line].StartsWith("    REF")) {
