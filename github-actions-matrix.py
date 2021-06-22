@@ -298,7 +298,7 @@ def include_job(triplet: Triplet, test: Test):
     if not args.triplets:
         if triplet.triplet.startswith("x64-mingw"):
             return False
-    if not arg.tests:
+    if not args.tests:
         if test.test in {"all", "all-gpl", "all-nonfree"}:
             return False
     # avisynthplus only supported on windows with dynamic linkage
