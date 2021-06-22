@@ -1,3 +1,4 @@
 *.tar.gz
-/test-*-dbg/
-/test-*-rel/
+.vs
+out
+/test-*
