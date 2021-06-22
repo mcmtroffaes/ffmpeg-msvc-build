@@ -130,12 +130,12 @@ jobs:
         run: ./test.bat ${{ github.workspace }}\vcpkg ${{ matrix.triplet }}
 
       - name: Export
-        if: success() && matrix.os == 'windows-latest' && matrix.test == 'release'
+        if: success() && matrix.test == 'release'
         shell: pwsh
         run: ./export.ps1 -vcpkg ${{ github.workspace }}\vcpkg -triplet ${{ matrix.triplet }} -features "${{ matrix.features }}" -ErrorAction Stop
 
       - name: Upload export
-        if:  success() && matrix.os == 'windows-latest' && matrix.test == 'release'
+        if:  success() && matrix.test == 'release'
         uses: actions/upload-artifact@v2
         with:
           name: export-${{ matrix.triplet }}-${{ matrix.test }}
