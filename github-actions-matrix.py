@@ -67,7 +67,9 @@ tests = [
         ),
     Test(
         test="release",
-        features="core,avcodec,avformat,avdevice,avfilter,swresample,swscale,opus,vpx",
+        features="all",
+        dependencies_ubuntu=deps_ubuntu_all,
+        dependencies_macos=deps_macos_all,
         ),
     Test(
         test="all",
@@ -313,8 +315,9 @@ def include_job(triplet: Triplet, test: Test):
     if not args.triplets:
         if triplet.triplet.startswith("x64-mingw"):
             return False
+    # remove large builds bundling individual features
     if not args.tests:
-        if test.test in {"all", "all-gpl", "all-nonfree"}:
+        if test.test in {"release", "all", "all-gpl", "all-nonfree"}:
             return False
     # avisynthplus only supported on windows with dynamic linkage
     if test.test == "avisynthplus":
