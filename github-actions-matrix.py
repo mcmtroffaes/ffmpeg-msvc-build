@@ -309,10 +309,6 @@ def include_job(triplet: Triplet, test: Test):
     if not args.triplets:
         if triplet.triplet.startswith("x64-mingw"):
             return False
-    # remove large builds bundling individual features
-    if not args.tests:
-        if test.test in {"all", "all-gpl", "all-nonfree"}:
-            return False
     # avisynthplus only supported on windows with dynamic linkage
     if test.test == "avisynthplus":
         return triplet.triplet in {"x86-windows", "x64-windows"}
