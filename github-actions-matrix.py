@@ -17,7 +17,7 @@ class Test(NamedTuple):
 
 deps_ubuntu_fontconfig = "autopoint gperf"
 deps_macos_fontconfig = "automake gperf"
-deps_ubuntu_opengl = "libglx-dev"
+deps_ubuntu_opengl = "libgl-dev libglx-dev"
 deps_ubuntu_all = " ".join([deps_ubuntu_fontconfig, deps_ubuntu_opengl])
 deps_macos_all = deps_macos_fontconfig
 
