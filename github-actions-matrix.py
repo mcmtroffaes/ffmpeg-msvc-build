@@ -66,12 +66,6 @@ tests = [
         features="core",
         ),
     Test(
-        test="release",
-        features="all",
-        dependencies_ubuntu=deps_ubuntu_all,
-        dependencies_macos=deps_macos_all,
-        ),
-    Test(
         test="all",
         features="all",
         dependencies_ubuntu=deps_ubuntu_all,
@@ -317,7 +311,7 @@ def include_job(triplet: Triplet, test: Test):
             return False
     # remove large builds bundling individual features
     if not args.tests:
-        if test.test in {"release", "all", "all-gpl", "all-nonfree"}:
+        if test.test in {"all", "all-gpl", "all-nonfree"}:
             return False
     # avisynthplus only supported on windows with dynamic linkage
     if test.test == "avisynthplus":

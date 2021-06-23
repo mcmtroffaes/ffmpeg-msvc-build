@@ -50,7 +50,7 @@ jobs:
             python github-actions-matrix.py --triplets ${{ github.event.inputs.triplets }} --tests ${{ github.event.inputs.tests }} --period ${{ github.event.inputs.period }} --run ${{ github.event.inputs.run }}
           elif [[ "${{ github.event_name }}" == "push" ]]
           then
-            python github-actions-matrix.py --triplets x64-windows x64-windows-static x64-windows-static-md --tests release
+            python github-actions-matrix.py --triplets x64-windows x64-windows-static x64-windows-static-md --tests all
           fi
 
   build:
@@ -130,12 +130,12 @@ jobs:
         run: ./test.bat ${{ github.workspace }}\vcpkg ${{ matrix.triplet }}
 
       - name: Export
-        if: success() && matrix.test == 'release'
+        if: success() && matrix.test == 'all'
         shell: pwsh
         run: ./export.ps1 -vcpkg ${{ github.workspace }}\vcpkg -triplet ${{ matrix.triplet }} -features "${{ matrix.features }}" -ErrorAction Stop
 
       - name: Upload export
-        if:  success() && matrix.test == 'release'
+        if:  success() && matrix.test == 'all'
         uses: actions/upload-artifact@v2
         with:
           name: export-${{ matrix.triplet }}-${{ matrix.test }}
@@ -144,7 +144,7 @@ jobs:
           retention-days: 1
 
       - name: Release
-        if: success() && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && matrix.os == 'windows-latest' && matrix.test == 'release'
+        if: success() && github.event_name == 'push' && startsWith(github.ref, 'refs/tags/') && matrix.os == 'windows-latest' && matrix.test == 'all'
         shell: pwsh
         run: |
           gh release create ("${{ github.ref }}" -split '/')[-1] -n "Headers and libraries for FFmpeg.\n\nFeatures: ${{ matrix.features }}." (Get-Item -Path ffmpeg*.7z).Name
