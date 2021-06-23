@@ -15,6 +15,12 @@ class Test(NamedTuple):
     dependencies_macos: str = ""
 
 
+deps_ubuntu_fontconfig = "autopoint gperf"
+deps_macos_fontconfig = "automake gperf"
+deps_ubuntu_opengl = "libglx-dev"
+deps_ubuntu_all = " ".join([deps_ubuntu_fontconfig, deps_ubuntu_opengl])
+deps_macos_all = deps_macos_fontconfig
+
 triplets = [
     Triplet(
         triplet="x64-linux",
@@ -66,20 +72,20 @@ tests = [
     Test(
         test="all",
         features="all",
-        dependencies_ubuntu="autopoint gperf",  # fontconfig
-        dependencies_macos="automake gperf",  # fontconfig
+        dependencies_ubuntu=deps_ubuntu_all,
+        dependencies_macos=deps_macos_all,
         ),
     Test(
         test="all-gpl",
         features="all-gpl",
-        dependencies_ubuntu="autopoint gperf",  # fontconfig
-        dependencies_macos="automake gperf",  # fontconfig
+        dependencies_ubuntu=deps_ubuntu_all,
+        dependencies_macos=deps_macos_all,
         ),
     Test(
         test="all-nonfree",
         features="all-nonfree",
-        dependencies_ubuntu="autopoint gperf",  # fontconfig
-        dependencies_macos="automake gperf",  # fontconfig
+        dependencies_ubuntu=deps_ubuntu_all,
+        dependencies_macos=deps_macos_all,
         ),
     Test(
         test="avcodec",
@@ -120,8 +126,8 @@ tests = [
     Test(
         test="ass",
         features="core,ass,avfilter",
-        dependencies_ubuntu="autopoint gperf",  # fontconfig
-        dependencies_macos="automake gperf",  # fontconfig
+        dependencies_ubuntu=deps_ubuntu_fontconfig,
+        dependencies_macos=deps_macos_fontconfig,
         ),
     Test(
         test="bzip2",
@@ -138,8 +144,8 @@ tests = [
     Test(
         test="freetype2",
         features="core,freetype,fontconfig,fribidi,avfilter",
-        dependencies_ubuntu="autopoint gperf",  # fontconfig
-        dependencies_macos="automake gperf",  # fontconfig
+        dependencies_ubuntu=deps_ubuntu_fontconfig,
+        dependencies_macos=deps_macos_fontconfig,
         ),
     Test(
         test="iconv",
@@ -172,7 +178,7 @@ tests = [
     Test(
         test="opengl",
         features="core,opengl,avdevice",
-        dependencies_ubuntu="libglx-dev",
+        dependencies_ubuntu=deps_ubuntu_opengl,
         ),
     Test(
         test="openh264",
