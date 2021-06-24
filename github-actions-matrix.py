@@ -321,6 +321,8 @@ def include_job(triplet: Triplet, test: Test):
     # features not supported on uwp
     if test.test == "opencl" and triplet.triplet == "x64-uwp":
         return False
+    if test.test == "opengl" and triplet.triplet == "x64-uwp":
+        return False
     return True
 
 
