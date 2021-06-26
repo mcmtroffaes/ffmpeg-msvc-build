@@ -2,7 +2,6 @@
 
 #include <memory>
 #include "../../avpp/util/log.h"
-#include "../../avpp/util/error.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
