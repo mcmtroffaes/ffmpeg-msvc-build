@@ -2,8 +2,8 @@
 
 #include <memory>
 
-#include "../../avpp/util/error.h"
-#include "../../avpp/util/log.h"
+#include "../../avpp/avutil/error.h"
+#include "../../avpp/avutil/log.h"
 #include "../../avpp/avcodec/avcodec.h"
 
 extern "C" {

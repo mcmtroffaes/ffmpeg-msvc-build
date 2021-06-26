@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../avpp/util/log.h"
+#include "../avpp/avutil/log.h"
 #include <iostream>
 
 class SimpleLogger : public avpp::Logger
