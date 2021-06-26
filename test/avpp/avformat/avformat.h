@@ -1,15 +1,13 @@
 #pragma once
 
-#include <memory>
-
-#include "../../avpp/avutil/error.h"
-#include "../../avpp/avutil/log.h"
-#include "../../avpp/avcodec/avcodec.h"
-
 extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavformat/avformat.h>
 }
+
+#include <memory>
+#include "../avutil/error.h"
+#include "../avutil/log.h"
 
 namespace avpp {
 
@@ -36,7 +34,7 @@ AVFormatContextPtr open_input(const std::string& url, const std::string& format_
 		Log::error("failed to allocate output context for {}", url);
 	}
 	else {
-		auto ret2{ avformat_find_stream_info(context, 0) };
+		auto ret2{ avformat_find_stream_info(context, nullptr) };
 		if (ret2 < 0) {
 			Log::error("failed to retrieve input stream information for {}: {}", url, make_error_string(ret));
 			avformat_close_input(&context);
