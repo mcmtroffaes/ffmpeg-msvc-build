@@ -11,6 +11,8 @@ extern "C" {
 #include <libavformat/avformat.h>
 }
 
+namespace avpp {
+
 struct AVFormatContextDeleter {
 	void operator()(AVFormatContext* context) const {
 		avformat_close_input(&context);
@@ -42,4 +44,6 @@ AVFormatContextPtr open_input(const std::string& url, const std::string& format_
 		}
 	}
 	return AVFormatContextPtr{ context };
+}
+
 }
