@@ -4,7 +4,7 @@
 
 #include "../../avpp/util/error.h"
 #include "../../avpp/util/log.h"
-#include "../avcodec/codec.h"
+#include "../../avpp/avcodec/avcodec.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS

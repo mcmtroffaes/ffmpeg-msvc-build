@@ -5,6 +5,7 @@
 #include <string>
 
 extern "C" {
+#define __STDC_CONSTANT_MACROS
 #include <libavutil/log.h>
 }
 

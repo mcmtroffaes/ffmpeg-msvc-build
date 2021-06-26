@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-#include "../../avpp/util/log.h"
+#include "../util/log.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS

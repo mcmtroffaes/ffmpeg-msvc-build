@@ -3,6 +3,7 @@
 #include <string>
 
 extern "C" {
+#define __STDC_CONSTANT_MACROS
 #include <libavutil/error.h>
 }
 
