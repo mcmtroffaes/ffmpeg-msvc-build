@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "../../avpp/util/error.h"
+#include "../../avpp/util/log.h"
 #include "../avcodec/codec.h"
 
 extern "C" {
@@ -21,20 +23,20 @@ AVFormatContextPtr open_input(const std::string& url, const std::string& format_
 	AVFormatContext* context{ nullptr };
 	auto input_format{ av_find_input_format(format_name.c_str()) };
 	if (!input_format) {
-		logger::error() << "failed to find input format " << format_name;
+		Log::error("failed to find input format {}", format_name);
 		return nullptr;
 	}
 	auto ret{ avformat_open_input(&context, url.c_str(), input_format, nullptr) };
 	if (ret < 0) {
-		logger::error() << "failed to allocate output context for " << url << ": " << av_error_string(ret);
+		Log::error("failed to allocate output context for {}: {}", url, make_error_string(ret));
 	}
 	else if (!context) {
-		logger::error() << "failed to allocate output context for " << url;
+		Log::error("failed to allocate output context for {}", url);
 	}
 	else {
 		auto ret2{ avformat_find_stream_info(context, 0) };
 		if (ret2 < 0) {
-			logger::error() << "failed to retrieve input stream information for " << url << ": " << av_error_string(ret);
+			Log::error("failed to retrieve input stream information for {}: {}", url, make_error_string(ret));
 			avformat_close_input(&context);
 			context = nullptr;
 		}

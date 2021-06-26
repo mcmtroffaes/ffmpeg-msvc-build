@@ -1,9 +1,11 @@
-#include "../log.h"
+#include "../simple_logger.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavformat/avformat.h>
 }
+
+using namespace avpp;
 
 bool find_protocol(std::string name, int output)
 {
@@ -17,20 +19,19 @@ bool find_protocol(std::string name, int output)
 
 int main(int argc, char** argv)
 {
-	av_log_set_callback(av_log_default_callback);
-	av_log_set_level(AV_LOG_DEBUG);
+	simple_logger_init();
 	if (argc != 3) {
-		logger::error() << "expected two arguments";
+		Log::error("expected two arguments");
 		return -1;
 	}
 	if (argv[1] != std::string("output") && argv[1] != std::string("input")) {
-		logger::error() << "expected \"input\" or \"output\" for first argument";
+		Log::error("expected \"input\" or \"output\" for first argument");
 		return -1;
 	}
 	if (!find_protocol(argv[2], std::string("output") == argv[1])) {
-		logger::error() << argv[1] << " protocol " << argv[2] << " not found";
+		Log::error("{} protocol {} not found", argv[1], argv[2]);
 		return -1;
 	}
-	logger::info() << argv[1] << " protocol " << argv[2] << " found";
+	Log::info("{} protocol {} found", argv[1], argv[2]);
 	return 0;
 }

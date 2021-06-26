@@ -1,10 +1,13 @@
 #include <vector>
 #include "format.h"
+#include "../simple_logger.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavutil/pixdesc.h>
 }
+
+using namespace avpp;
 
 struct Stream {
 	AVCodecContextPtr context;
@@ -14,22 +17,22 @@ struct Stream {
 		auto codec = find_decoder(par.codec_id);
 		if (!codec)
 			throw std::invalid_argument("decoder not found");
-		logger::info() << "found codec " << codec->name;
+		Log::info("found codec {}", codec->name);
 		context = codec_alloc_context(*codec);
 		if (!context) {
-			logger::critical() << "failed to allocate codec context";
+			Log::fatal("failed to allocate codec context");
 			throw std::runtime_error("failed to allocate codec context");
 		}
 		int ret = avcodec_parameters_to_context(context.get(), &par);
 		if (ret < 0) {
-			logger::critical() << "failed to copy codec parameters to codec context";
+			Log::fatal("failed to copy codec parameters to codec context");
 			throw std::runtime_error("failed to copy codec parameters to codec context");
 		}
 		auto dict = options.release();
 		ret = avcodec_open2(context.get(), codec, &dict);
 		options.reset(dict);
 		if (ret < 0) {
-			logger::critical() << "failed to open codec";
+			Log::fatal("failed to open codec");
 			throw std::runtime_error("failed to open codec");
 		}
 	}
@@ -44,7 +47,7 @@ struct Stream {
 			return decode_subtitle_packet(pkt);
 			break;
 		default:
-			logger::error() << "cannot handle packet media type " << av_get_media_type_string(context->codec->type);
+			Log::error("cannot handle packet media type {}", av_get_media_type_string(context->codec->type));
 			return -1;
 		}
 	}
@@ -55,14 +58,14 @@ struct Stream {
 		// submit the packet to the decoder
 		ret = avcodec_send_packet(context.get(), &pkt);
 		if (ret < 0) {
-			logger::error() << "error submitting a packet for decoding: " << av_error_string(ret);
+			Log::error("error submitting a packet for decoding: {}", make_error_string(ret));
 			return -1;
 		}
 		// get all the available frames from the decoder
 		while (ret >= 0) {
 			auto frame = frame_alloc();
 			if (!frame) {
-				logger::critical() << "failed to allocate frame";
+				Log::fatal("failed to allocate frame");
 				throw std::runtime_error("failed to allocate frame");
 			}
 			ret = avcodec_receive_frame(context.get(), frame.get());
@@ -71,20 +74,20 @@ struct Stream {
 				// frame available, but there were no errors during decoding
 				if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN))
 					return 0;
-				logger::error() << "error during decoding: " << av_error_string(ret);
+				Log::error("error during decoding: {}", make_error_string(ret));
 				return -1;
 			}
 			if (context->codec->type == AVMEDIA_TYPE_VIDEO) {
-				logger::debug() << "frame dimensions: " << frame->width << "x" << frame->height;
+				Log::debug("frame dimensions: {}x{}", frame->width ,frame->height);
 				auto desc = av_pix_fmt_desc_get((AVPixelFormat)frame->format);
-				logger::debug() << "frame pixel format: " << desc->name;
+				Log::debug("frame pixel format: {}", desc->name);
 			}
 			else if (context->codec->type == AVMEDIA_TYPE_AUDIO) {
-				logger::debug() << "frame samples: " << frame->nb_samples;
-				logger::debug() << "frame sample format: " << av_get_sample_fmt_name((AVSampleFormat)frame->format);
+				Log::debug("frame samples: {}", frame->nb_samples);
+				Log::debug("frame sample format: {}", av_get_sample_fmt_name((AVSampleFormat)frame->format));
 			}
 			else {
-				logger::error() << "cannot handle codec type " << av_get_media_type_string(context->codec->type);
+				Log::error("cannot handle codec type {}", av_get_media_type_string(context->codec->type));
 				return -1;
 			}
 			av_frame_unref(frame.get());
@@ -97,20 +100,20 @@ struct Stream {
 		int sub_decoded = 0;
 		int ret = avcodec_decode_subtitle2(context.get(), &sub, &sub_decoded, &pkt);
 		if (ret < 0 || !sub_decoded) {
-			logger::error() << "failed to decode subtitle: " << av_error_string(ret);
+			Log::error("failed to decode subtitle: {}", make_error_string(ret));
 			return -1;
 		}
 		else {
-			logger::debug() << "start display time: " << sub.start_display_time;
-			logger::debug() << "end display time: " << sub.end_display_time;
-			logger::debug() << "num rects: " << sub.num_rects;
+			Log::debug("start display time: {}", sub.start_display_time);
+			Log::debug("end display time: {}", sub.end_display_time);
+			Log::debug("num rects: {}", sub.num_rects);
 			for (unsigned int i = 0; i < sub.num_rects; i++) {
-				logger::debug() << "rect " << i;
-				logger::debug() << "  type: " << sub.rects[i]->type;
+				Log::debug("rect {}", i);
+				Log::debug("  type: {}", sub.rects[i]->type);
 				if (sub.rects[i]->text)
-					logger::debug() << "  text: " << sub.rects[i]->text;
+					Log::debug("  text: {}", sub.rects[i]->text);
 				if (sub.rects[i]->ass)
-					logger::debug() << "  ass: " << sub.rects[i]->ass;
+					Log::debug("  ass: {}", sub.rects[i]->ass);
 			}
 			avsubtitle_free(&sub);
 		}
@@ -121,12 +124,11 @@ struct Stream {
 
 int main(int argc, char** argv)
 {
+	simple_logger_init();
 	if (argc < 3) {
-		logger::error() << "expected at least two arguments";
+		Log::error("expected at least two arguments");
 		return -1;
 	}
-	av_log_set_callback(av_log_default_callback);
-	av_log_set_level(AV_LOG_DEBUG);
 	auto fmt_ctx = open_input(argv[1], argv[2]);
 	if (!fmt_ctx)
 		return -1;
@@ -134,9 +136,9 @@ int main(int argc, char** argv)
 	if (argc >= 4) {
 		options = dict_parse_string(argv[3], "=", ",");
 	}
-	logger::info() << "input format: " << fmt_ctx->iformat->name;
+	Log::info("input format: {}", fmt_ctx->iformat->name);
 	std::vector<Stream> streams;
-	logger::info() << "number of streams: " << fmt_ctx->nb_streams;
+	Log::info("number of streams: {}", fmt_ctx->nb_streams);
 	for (unsigned int i = 0; i < fmt_ctx->nb_streams; i++) {
 		if (!fmt_ctx->streams[i])
 			throw std::runtime_error("stream is null");
@@ -147,10 +149,10 @@ int main(int argc, char** argv)
 	auto pkt = packet_alloc();
 	int nb_packets = 0;
 	while (av_read_frame(fmt_ctx.get(), pkt.get()) >= 0) {
-		logger::info() << "packet stream index: " << pkt->stream_index;
-		logger::debug() << "packet size: " << pkt->size;
-		logger::debug() << "packet duration: " << pkt->duration;
-		logger::debug() << "packet pos: " << pkt->pos;
+		Log::info("packet stream index: {}", pkt->stream_index);
+		Log::debug("packet size: {}", pkt->size);
+		Log::debug("packet duration: {}", pkt->duration);
+		Log::debug("packet pos: {}", pkt->pos);
 		int ret = streams[pkt->stream_index].decode_packet(*pkt);
 		av_packet_unref(pkt.get());
 		if (ret < 0)
@@ -158,7 +160,7 @@ int main(int argc, char** argv)
 		nb_packets++;
 	}
 	if (nb_packets == 0) {
-		logger::error() << "no packets decoded, something must be wrong";
+		Log::error("no packets decoded, something must be wrong");
 		return -1;
 	}
 	return 0;

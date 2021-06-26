@@ -1,14 +1,17 @@
-#include "../log.h"
+#include "../simple_logger.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavdevice/avdevice.h>
 }
 
+using namespace avpp;
+
 int main()
 {
-    logger::info() << "avdevice version " << avdevice_version();
-    logger::info() << avdevice_configuration();
-    logger::info() << avdevice_license();
+    simple_logger_init();
+    Log::info("avdevice version {}", avdevice_version());
+    Log::info(avdevice_configuration());
+    Log::info(avdevice_license());
     return 0;
 }

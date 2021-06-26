@@ -1,22 +1,22 @@
-#include "../log.h"
+#include "../simple_logger.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
-#include <libavutil/log.h>
 #include <libavutil/opt.h>
 #include <libavutil/channel_layout.h>
 #include <libavutil/samplefmt.h>
 #include <libswresample/swresample.h>
 }
 
+using namespace avpp;
+
 int main(int argc, char** argv)
 {
+    simple_logger_init();
     if (argc != 2) {
-        logger::error() << "expected one argument";
+        Log::error("expected one argument");
         return -1;
     }
-    av_log_set_callback(av_log_default_callback);
-    av_log_set_level(AV_LOG_DEBUG);
     SwrEngine engine{ SWR_ENGINE_NB };
     if (std::string("swr").compare(argv[1]) == 0) {
         engine = SWR_ENGINE_SWR;
@@ -25,13 +25,13 @@ int main(int argc, char** argv)
         engine = SWR_ENGINE_SOXR;
     }
     else {
-        logger::error() << "expected swr or soxr as first argument";
+        Log::error("expected swr or soxr as first argument");
         return -1;
     }
     struct SwrContext* swr_ctx;
     swr_ctx = swr_alloc();
     if (!swr_ctx) {
-        logger::error() << "could not allocate resampler context";
+        Log::error("could not allocate resampler context");
         return -1;
     }
     av_opt_set_int(swr_ctx, "in_channel_layout", AV_CH_LAYOUT_STEREO, 0);
@@ -42,7 +42,7 @@ int main(int argc, char** argv)
     av_opt_set_sample_fmt(swr_ctx, "out_sample_fmt", AV_SAMPLE_FMT_U8, 0);
     av_opt_set_int(swr_ctx, "resampler", engine, 0);
     if (swr_init(swr_ctx) < 0) {
-        logger::error() << "could not initialize resampler context";
+        Log::error("could not initialize resampler context");
         swr_free(&swr_ctx);
         return -1;
     }

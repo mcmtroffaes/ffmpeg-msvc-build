@@ -1,34 +1,35 @@
-#include "../log.h"
+#include "../simple_logger.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavformat/avformat.h>
 }
 
+using namespace avpp;
+
 int main(int argc, char** argv)
 {
-	av_log_set_callback(av_log_default_callback);
-	av_log_set_level(AV_LOG_DEBUG);
+	simple_logger_init();
 	if (argc != 3) {
-		logger::error() << "expected two arguments";
+		Log::error("expected two arguments");
 		return -1;
 	}
 	if (argv[1] == std::string("input")) {
 		if (!av_find_input_format(argv[2])) {
-			logger::error() << "input format " << argv[2] << " not found";
+			Log::error("input format {} not found", argv[2]);
 			return -1;
 		}
-		logger::info() << "input format " << argv[2] << " found";
+		Log::info("input format {} found", argv[2]);
 	}
 	else if (argv[1] == std::string("output")) {
 		if (!av_guess_format(argv[2], nullptr, nullptr)) {
-			logger::error() << "output format " << argv[2] << " not found";
+			Log::error("output format {} not found", argv[2]);
 			return -1;
 		}
-		logger::info() << "output format " << argv[2] << " found";
+		Log::info("output format {} found", argv[2]);
 	}
 	else {
-		logger::error() << "expected \"input\" or \"output\" for first argument";
+		Log::error("expected \"input\" or \"output\" for first argument");
 		return -1;
 	}
 	return 0;

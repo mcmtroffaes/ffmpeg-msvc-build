@@ -1,7 +1,8 @@
 #pragma once
 
 #include <memory>
-#include "../log.h"
+#include "../../avpp/util/log.h"
+#include "../../avpp/util/error.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -10,11 +11,7 @@ extern "C" {
 #include <libavutil/log.h>
 }
 
-std::string av_error_string(int errnum) {
-	char buffer[AV_ERROR_MAX_STRING_SIZE] = { 0 };
-	av_make_error_string(buffer, sizeof(buffer), errnum);
-	return std::string(buffer);
-}
+using namespace avpp;
 
 struct AVCodecContextDeleter {
 	void operator()(AVCodecContext* context) const {
@@ -49,28 +46,28 @@ using AVDictionaryPtr = std::unique_ptr<AVDictionary, AVDictionaryDeleter>;
 AVCodecPtr find_decoder(const AVCodecID& codec_id) {
 	auto codec = avcodec_find_decoder(codec_id);
 	if (!codec)
-		logger::error() << "failed find decoder with id " << codec_id;
+		Log::error("failed find decoder with id {}", codec_id);
 	return codec;
 }
 
 AVCodecContextPtr codec_alloc_context(const AVCodec& codec) {
 	auto context = avcodec_alloc_context3(&codec);
 	if (!context)
-		logger::error() << "failed to allocate context for " << codec.name << "codec";
+		Log::error("failed to allocate context for {} codec", codec.name);
 	return AVCodecContextPtr{ context };
 }
 
 AVPacketPtr packet_alloc() {
 	auto pkt = av_packet_alloc();
 	if (!pkt)
-		logger::error() << "failed to allocate packet";
+		Log::error("failed to allocate packet");
 	return AVPacketPtr{ pkt };
 }
 
 AVFramePtr frame_alloc() {
 	auto frame = av_frame_alloc();
 	if (!frame) {
-		logger::error() << "failed to allocate frame";
+		Log::error("failed to allocate frame");
 	}
 	else {
 		frame->pts = 0;
@@ -83,6 +80,6 @@ AVDictionaryPtr dict_parse_string(const std::string& options, const std::string&
 	AVDictionary* dict{};
 	auto ret = av_dict_parse_string(&dict, options.c_str(), key_val_sep.c_str(), pairs_sep.c_str(), 0);
 	if (ret < 0)
-		logger::error() << "failed to parse dictionary";
+		Log::error("failed to parse dictionary");
 	return AVDictionaryPtr{ dict };
 }

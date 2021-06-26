@@ -1,4 +1,4 @@
-#include "../log.h"
+#include "../simple_logger.h"
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
@@ -6,18 +6,19 @@ extern "C" {
 #include <libavutil/log.h>
 }
 
+using namespace avpp;
+
 int main(int argc, char** argv)
 {
-	av_log_set_callback(av_log_default_callback);
-	av_log_set_level(AV_LOG_DEBUG);
+	simple_logger_init();
 	if (argc != 2) {
-		logger::error() << "expected one argument";
+		Log::error("expected one argument");
 		return -1;
 	}
 	if (avfilter_get_by_name(argv[1]) == nullptr) {
-		logger::error() << "filter " << argv[1] << " not found";
+		Log::error("filter {} not found", argv[1]);
 		return -1;
 	}
-	logger::info() << "filter " << argv[1] << " found";
+	Log::info("filter {} found", argv[1]);
 	return 0;
 }
