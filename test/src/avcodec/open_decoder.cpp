@@ -1,5 +1,6 @@
 #include "../simple_logger.h"
 #include "../../avpp/avcodec/avcodec.h"
+#include "../../avpp/avcodec/codec.h"
 #include "../../avpp/avutil/dict.h"
 
 using namespace avpp;

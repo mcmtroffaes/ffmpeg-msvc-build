@@ -1,12 +1,12 @@
 #pragma once
 
-#include <memory>
-#include "../avutil/log.h"
-
 extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavcodec/avcodec.h>
 }
+
+#include <memory>
+#include "../avutil/log.h"
 
 using namespace avpp;
 
@@ -28,17 +28,9 @@ struct AVPacketDeleter {
 	};
 };
 
-using AVCodecPtr = const AVCodec*;
 using AVCodecContextPtr = std::unique_ptr<AVCodecContext, AVCodecContextDeleter>;
 using AVFramePtr = std::unique_ptr<AVFrame, AVFrameDeleter>;
 using AVPacketPtr = std::unique_ptr<AVPacket, AVPacketDeleter>;
-
-AVCodecPtr find_decoder(const AVCodecID& codec_id) {
-	auto codec = avcodec_find_decoder(codec_id);
-	if (!codec)
-		Log::error("failed find decoder with id {}", codec_id);
-	return codec;
-}
 
 AVCodecContextPtr codec_alloc_context(const AVCodec& codec) {
 	auto context = avcodec_alloc_context3(&codec);

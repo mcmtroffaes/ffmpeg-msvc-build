@@ -1,7 +1,9 @@
-#include <vector>
-#include "../../avpp/avutil/dict.h"
 #include "format.h"
+#include "../../avpp/avutil/dict.h"
+#include "../../avpp/avcodec/codec.h"
 #include "../simple_logger.h"
+
+#include <vector>
 
 extern "C" {
 #define __STDC_CONSTANT_MACROS
