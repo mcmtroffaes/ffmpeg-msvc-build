@@ -119,6 +119,8 @@ jobs:
           path: |
             vcpkg/buildtrees/**/*.log
             vcpkg/buildtrees/**/meson-log.txt
+            vcpkg/packages/**/*.pc
+            vcpkg/packages/**/*.cmake
           retention-days: 7
 
       - name: Test (non-windows)
