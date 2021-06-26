@@ -12,7 +12,7 @@ namespace avpp {
 
 using AVCodecPtr = const AVCodec*;
 
-AVCodecPtr find_decoder(const AVCodecID& codec_id) {
+AVCodecPtr find_decoder(AVCodecID codec_id) {
 	auto codec = avcodec_find_decoder(codec_id);
 	if (!codec)
 		Log::error("failed find decoder with id {}", codec_id);
