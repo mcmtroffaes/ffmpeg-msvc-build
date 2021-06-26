@@ -6,8 +6,6 @@
 extern "C" {
 #define __STDC_CONSTANT_MACROS
 #include <libavcodec/avcodec.h>
-#include <libavutil/error.h>
-#include <libavutil/log.h>
 }
 
 using namespace avpp;
