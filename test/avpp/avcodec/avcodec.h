@@ -28,17 +28,10 @@ struct AVPacketDeleter {
 	};
 };
 
-struct AVDictionaryDeleter {
-	void operator()(AVDictionary* dict) const {
-		av_dict_free(&dict);
-	};
-};
-
 using AVCodecPtr = const AVCodec*;
 using AVCodecContextPtr = std::unique_ptr<AVCodecContext, AVCodecContextDeleter>;
 using AVFramePtr = std::unique_ptr<AVFrame, AVFrameDeleter>;
 using AVPacketPtr = std::unique_ptr<AVPacket, AVPacketDeleter>;
-using AVDictionaryPtr = std::unique_ptr<AVDictionary, AVDictionaryDeleter>;
 
 AVCodecPtr find_decoder(const AVCodecID& codec_id) {
 	auto codec = avcodec_find_decoder(codec_id);
@@ -70,13 +63,4 @@ AVFramePtr frame_alloc() {
 		frame->pts = 0;
 	}
 	return AVFramePtr{ frame };
-}
-
-AVDictionaryPtr dict_parse_string(const std::string& options, const std::string& key_val_sep, const std::string& pairs_sep)
-{
-	AVDictionary* dict{};
-	auto ret = av_dict_parse_string(&dict, options.c_str(), key_val_sep.c_str(), pairs_sep.c_str(), 0);
-	if (ret < 0)
-		Log::error("failed to parse dictionary");
-	return AVDictionaryPtr{ dict };
 }

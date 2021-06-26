@@ -1,4 +1,5 @@
 #include <vector>
+#include "../../avpp/util/dict.h"
 #include "format.h"
 #include "../simple_logger.h"
 
