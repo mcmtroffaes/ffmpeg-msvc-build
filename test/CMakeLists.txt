@@ -9,6 +9,8 @@ endif()
 project(ffmpeg_test)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+# see https://trac.ffmpeg.org/wiki/Including%20FFmpeg%20headers%20in%20a%20C%2B%2B%20application
+add_compile_definitions(__STDC_CONSTANT_MACROS)
 set(FEATURES "avcodec;avdevice;avformat;avfilter;avisynthplus;bzip2;ffmpeg;ffplay;ffprobe;ass;dav1d;freetype;iconv;ilbc;lzma;modplug;mp3lame;nvcodec;opencl;opengl;openh264;openjpeg;opus;postproc;sdl2;snappy;soxr;speex;ssh;swresample;tesseract;theora;vorbis;vpx;webp;x264;x265;xml2;zlib" CACHE STRING "List of all features enabled through vcpkg.")
 include(CTest)
 

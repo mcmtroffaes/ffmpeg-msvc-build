@@ -9,7 +9,6 @@
 #include <vector>
 
 extern "C" {
-#define __STDC_CONSTANT_MACROS
 #include <libavutil/pixdesc.h>
 }
 
@@ -20,7 +19,7 @@ struct Stream {
 	Stream(const AVCodecParameters& par, AVDictionaryPtr& options)
 		: context{ nullptr }
 	{
-		auto codec = find_decoder(par.codec_id);
+		auto codec = codec_find_decoder(par.codec_id);
 		if (!codec)
 			throw std::invalid_argument("decoder not found");
 		Log::info("found codec {}", codec->name);

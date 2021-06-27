@@ -1,7 +1,6 @@
 #pragma once
 
 extern "C" {
-#define __STDC_CONSTANT_MACROS
 #include <libavcodec/codec.h>
 }
 
@@ -12,10 +11,10 @@ namespace avpp {
 
 using AVCodecPtr = const AVCodec*;
 
-AVCodecPtr find_decoder(AVCodecID codec_id) {
+AVCodecPtr codec_find_decoder(AVCodecID codec_id) {
 	auto codec = avcodec_find_decoder(codec_id);
 	if (!codec)
-		Log::error("failed find decoder with id {}", codec_id);
+		Log::error("failed to find decoder with id {}", codec_id);
 	return codec;
 }
 
