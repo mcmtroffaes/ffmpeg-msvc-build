@@ -31,14 +31,8 @@ AVCodecContextPtr codec_alloc_context(const AVCodec& codec) {
 
 int codec_open(AVCodecContext& context, const AVCodec& codec, AVDictionaryPtr& options) {
 	AVPP_TRACE_ENTER;
-	int ret{ 0 };
 	auto dict = options.release();
-	if (dict == nullptr) {
-		ret = avcodec_open2(&context, &codec, nullptr);
-	}
-	else {
-		ret = avcodec_open2(&context, &codec, &dict);
-	}
+	int ret = avcodec_open2(&context, &codec, &dict);
 	options.reset(dict);
 	AVPP_TRACE_RETURN(ret);
 }

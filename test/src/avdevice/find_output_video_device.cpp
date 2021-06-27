@@ -1,21 +1,7 @@
+#include "../../avpp/avdevice/avdevice.h"
 #include "../logger.h"
 
-extern "C" {
-#include <libavutil/avstring.h>
-#include <libavdevice/avdevice.h>
-}
-
 using namespace avpp;
-
-template <typename T>
-bool find_device(T*(*func_next)(T*), const char* name)
-{
-	T* format = nullptr;
-	while (format = func_next(format)) {
-		if (av_match_name(name, format->name)) return true;
-	};
-	return false;
-}
 
 int main(int argc, char** argv)
 {
@@ -26,7 +12,8 @@ int main(int argc, char** argv)
 	}
 
 	avdevice_register_all();
-	if (!find_device(av_output_video_device_next, argv[1])) {
+	auto format = output_video_device_get_by_name(argv[1]);
+	if (format == nullptr) {
 		Log::error("output video device {} not found", argv[1]);
 		return -1;
 	};
