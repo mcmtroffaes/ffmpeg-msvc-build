@@ -32,9 +32,7 @@ int main(int argc, char** argv)
 		}
 		Log::debug("options {} parsed", argv[2]);
 	}
-	auto dict = options.release();
-	auto ret = avcodec_open2(context.get(), codec, &dict);
-	options.reset(dict);
+	auto ret = codec_open(*context, *codec, options);
 	if (ret < 0) {
 		Log::error("failed to open codec {}", argv[1]);
 		return -1;

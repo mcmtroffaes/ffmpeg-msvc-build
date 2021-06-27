@@ -79,9 +79,12 @@ if "%TRIPLET%" == "x64-uwp" (
   echo not running tests for x64-uwp triplet
   echo ***********************************************************************
 ) else (
-  ctest -V
+  ctest
 )
-if %ERRORLEVEL% neq 0 ( exit )
+if %ERRORLEVEL% neq 0 (
+  ctest --rerun-failed --output-on-failure
+  exit /b %ERRORLEVEL%
+)
 
 rem Test debug
 mkdir %~dp0\test-%TRIPLET%-dbg
@@ -95,6 +98,9 @@ if "%TRIPLET%" == "x64-uwp" (
   echo not running tests for x64-uwp triplet
   echo ***********************************************************************
 ) else (
-  ctest -V
+  ctest
 )
-if %ERRORLEVEL% neq 0 exit /b %ERRORLEVEL%
+if %ERRORLEVEL% neq 0 (
+  ctest --rerun-failed --output-on-failure
+  exit /b %ERRORLEVEL%
+)
