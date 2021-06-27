@@ -20,7 +20,7 @@ struct AVFormatContextDeleter {
 
 using AVFormatContextPtr = std::unique_ptr<AVFormatContext, AVFormatContextDeleter>;
 
-AVFormatContextPtr open_input(const std::string& url, const std::string& format_name) {
+AVFormatContextPtr open_input(std::string url, std::string format_name) {
 	AVPP_TRACE_ENTER;
 	AVFormatContext* context{ nullptr };
 	auto input_format{ av_find_input_format(format_name.c_str()) };
