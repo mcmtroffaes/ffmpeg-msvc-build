@@ -4,7 +4,7 @@
 #include "../../avpp/avcodec/codec.h"
 #include "../../avpp/avcodec/packet.h"
 #include "../../avpp/avformat/avformat.h"
-#include "../simple_logger.h"
+#include "../logger.h"
 
 #include <vector>
 
@@ -19,6 +19,7 @@ struct Stream {
 	Stream(const AVCodecParameters& par, AVDictionaryPtr& options)
 		: context{ nullptr }
 	{
+		AVPP_TRACE_ENTER;
 		auto codec = codec_find_decoder(par.codec_id);
 		if (!codec)
 			throw std::invalid_argument("decoder not found");
@@ -40,31 +41,35 @@ struct Stream {
 			Log::fatal("failed to open codec");
 			throw std::runtime_error("failed to open codec");
 		}
+		AVPP_TRACE_EXIT;
 	}
 
 	int decode_packet(AVPacket& pkt) {
+		AVPP_TRACE_ENTER;
+		int ret = -1;
 		switch (context->codec->type) {
 		case AVMEDIA_TYPE_AUDIO:
 		case AVMEDIA_TYPE_VIDEO:
-			return decode_audio_video_packet(pkt);
-			break;
+			ret = decode_audio_video_packet(pkt);
+			AVPP_TRACE_RETURN(ret);
 		case AVMEDIA_TYPE_SUBTITLE:
-			return decode_subtitle_packet(pkt);
-			break;
+			ret = decode_subtitle_packet(pkt);
+			AVPP_TRACE_RETURN(ret);
 		default:
 			Log::error("cannot handle packet media type {}", av_get_media_type_string(context->codec->type));
-			return -1;
+			AVPP_TRACE_RETURN(-1);
 		}
 	}
 
 	int decode_audio_video_packet(const AVPacket& pkt)
 	{
+		AVPP_TRACE_ENTER;
 		int ret = 0;
 		// submit the packet to the decoder
 		ret = avcodec_send_packet(context.get(), &pkt);
 		if (ret < 0) {
 			Log::error("error submitting a packet for decoding: {}", make_error_string(ret));
-			return -1;
+			AVPP_TRACE_RETURN(-1);
 		}
 		// get all the available frames from the decoder
 		while (ret >= 0) {
@@ -80,7 +85,7 @@ struct Stream {
 				if (ret == AVERROR_EOF || ret == AVERROR(EAGAIN))
 					return 0;
 				Log::error("error during decoding: {}", make_error_string(ret));
-				return -1;
+				AVPP_TRACE_RETURN(-1);
 			}
 			if (context->codec->type == AVMEDIA_TYPE_VIDEO) {
 				Log::debug("frame dimensions: {}x{}", frame->width ,frame->height);
@@ -93,20 +98,21 @@ struct Stream {
 			}
 			else {
 				Log::error("cannot handle codec type {}", av_get_media_type_string(context->codec->type));
-				return -1;
+				AVPP_TRACE_RETURN(-1);
 			}
 			av_frame_unref(frame.get());
 		}
-		return 0;
+		AVPP_TRACE_RETURN(0);
 	}
 
 	int decode_subtitle_packet(AVPacket& pkt) {
+		AVPP_TRACE_ENTER;
 		AVSubtitle sub;
 		int sub_decoded = 0;
 		int ret = avcodec_decode_subtitle2(context.get(), &sub, &sub_decoded, &pkt);
 		if (ret < 0 || !sub_decoded) {
 			Log::error("failed to decode subtitle: {}", make_error_string(ret));
-			return -1;
+			AVPP_TRACE_RETURN(-1);
 		}
 		else {
 			Log::debug("start display time: {}", sub.start_display_time);
@@ -122,14 +128,14 @@ struct Stream {
 			}
 			avsubtitle_free(&sub);
 		}
-		return 0;
+		AVPP_TRACE_RETURN(0);
 	}
 };
 
 
 int main(int argc, char** argv)
 {
-	simple_logger_init();
+	logger_init();
 	if (argc < 3) {
 		Log::error("expected at least two arguments");
 		return -1;

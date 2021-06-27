@@ -1,4 +1,4 @@
-#include "../simple_logger.h"
+#include "../logger.h"
 #include <stdio.h>
 
 extern "C" {
@@ -9,7 +9,7 @@ using namespace avpp;
 
 int main()
 {
-    simple_logger_init();
+    logger_init();
     Log::info(av_version_info());
     Log::info("avutil version {}", avutil_version());
     Log::info(avutil_configuration());

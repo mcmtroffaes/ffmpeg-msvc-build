@@ -12,13 +12,16 @@ namespace avpp {
 
 struct AVFormatContextDeleter {
 	void operator()(AVFormatContext* context) const {
+		AVPP_TRACE_ENTER;
 		avformat_close_input(&context);
+		AVPP_TRACE_EXIT;
 	};
 };
 
 using AVFormatContextPtr = std::unique_ptr<AVFormatContext, AVFormatContextDeleter>;
 
 AVFormatContextPtr open_input(const std::string& url, const std::string& format_name) {
+	AVPP_TRACE_ENTER;
 	AVFormatContext* context{ nullptr };
 	auto input_format{ av_find_input_format(format_name.c_str()) };
 	if (!input_format) {
@@ -40,7 +43,7 @@ AVFormatContextPtr open_input(const std::string& url, const std::string& format_
 			context = nullptr;
 		}
 	}
-	return AVFormatContextPtr{ context };
+	AVPP_TRACE_RETURN(AVFormatContextPtr{ context });
 }
 
 }

@@ -143,3 +143,15 @@ const char* log_get_level_str(int level)
 }
 
 } // namespace avpp
+
+#ifndef AVPP_TRACE_ENTER
+#define AVPP_TRACE_ENTER avpp::Log::trace("{}: enter", __FUNCTION__)
+#endif
+
+#ifndef AVPP_TRACE_EXIT
+#define AVPP_TRACE_EXIT avpp::Log::trace("{}: exit", __FUNCTION__)
+#endif
+
+#ifndef AVPP_TRACE_RETURN
+#define AVPP_TRACE_RETURN(VALUE) AVPP_TRACE_EXIT; return VALUE
+#endif

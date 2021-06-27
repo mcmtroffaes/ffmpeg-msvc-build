@@ -1,4 +1,4 @@
-#include "../simple_logger.h"
+#include "../logger.h"
 
 extern "C" {
 #include <libavutil/avstring.h>
@@ -19,7 +19,7 @@ bool find_device(T*(*func_next)(T*), const char* name)
 
 int main(int argc, char** argv)
 {
-	simple_logger_init();
+	logger_init();
 	if (argc != 2) {
 		Log::error("expected one argument");
 		return -1;

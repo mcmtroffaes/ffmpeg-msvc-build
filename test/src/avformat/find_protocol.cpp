@@ -1,4 +1,4 @@
-#include "../simple_logger.h"
+#include "../logger.h"
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -18,7 +18,7 @@ bool find_protocol(std::string name, int output)
 
 int main(int argc, char** argv)
 {
-	simple_logger_init();
+	logger_init();
 	if (argc != 3) {
 		Log::error("expected two arguments");
 		return -1;

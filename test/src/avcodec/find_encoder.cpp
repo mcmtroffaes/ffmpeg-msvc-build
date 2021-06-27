@@ -1,11 +1,11 @@
-#include "../simple_logger.h"
+#include "../logger.h"
 #include "../../avpp/avcodec/avcodec.h"
 
 using namespace avpp;
 
 int main(int argc, char** argv)
 {
-	simple_logger_init();
+	logger_init();
 	if (argc != 2) {
 		Log::error("expected one argument");
 		return -1;
