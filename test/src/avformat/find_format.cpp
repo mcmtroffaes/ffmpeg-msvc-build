@@ -1,7 +1,6 @@
 #include "../simple_logger.h"
 
 extern "C" {
-#define __STDC_CONSTANT_MACROS
 #include <libavformat/avformat.h>
 }
 
