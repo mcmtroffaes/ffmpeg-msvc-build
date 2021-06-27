@@ -1,8 +1,5 @@
 #include <iostream>
-
-extern "C" {
-#include <libavcodec/avcodec.h>
-}
+#include "../../avpp/avcodec/codec.h"
 
 int main()
 {
