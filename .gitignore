@@ -2,3 +2,5 @@
 .vs
 out
 /test-*
+.idea/
+cmake-build-*/
