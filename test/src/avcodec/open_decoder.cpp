@@ -32,7 +32,7 @@ int main(int argc, char** argv)
 		}
 		Log::debug("options {} parsed", argv[2]);
 	}
-	auto ret = codec_open(*context, *codec, options);
+	auto ret = codec_open2(*context, *codec, options);
 	if (ret < 0) {
 		Log::error("failed to open codec {}", argv[1]);
 		return -1;

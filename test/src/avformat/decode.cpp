@@ -34,7 +34,7 @@ struct Stream {
 			Log::fatal("failed to copy codec parameters to codec context");
 			throw std::runtime_error("failed to copy codec parameters to codec context");
 		}
-		ret = codec_open(*context, *codec, options);
+		ret = codec_open2(*context, *codec, options);
 		if (ret < 0) {
 			Log::fatal("failed to open codec");
 			throw std::runtime_error("failed to open codec");
