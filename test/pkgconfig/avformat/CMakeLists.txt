@@ -17,7 +17,7 @@ target_link_libraries     (${TEST}_list_all_protocols PRIVATE PkgConfig::AVFORMA
 target_link_libraries     (${TEST}_find_protocol      PRIVATE PkgConfig::AVFORMAT fmt::fmt)
 target_link_libraries     (${TEST}_list_all_formats   PRIVATE PkgConfig::AVFORMAT fmt::fmt)
 target_link_libraries     (${TEST}_find_format        PRIVATE PkgConfig::AVFORMAT fmt::fmt)
-if("avisynthplus" IN_LIST FEATURES)
+if("avisynthplus" IN_LIST FEATURES AND VCPKG_TARGET_TRIPLET MATCHES "^(x86|x64)-windows$")
   add_custom_command(
     TARGET ${TEST}_decode POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy
