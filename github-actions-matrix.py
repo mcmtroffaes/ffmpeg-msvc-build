@@ -73,7 +73,7 @@ tests = [
         ),
     Test(
         test="all-gpl",
-        features="core,all-gpl,postproc",
+        features="core,all-gpl",
         dependencies_ubuntu=deps_ubuntu_all,
         dependencies_macos=deps_macos_all,
         ),
