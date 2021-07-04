@@ -1,3 +1,6 @@
 [submodule "vcpkg"]
 	path = vcpkg
 	url = https://github.com/mcmtroffaes/vcpkg.git
+[submodule "minavpp"]
+	path = minavpp
+	url = https://github.com/mcmtroffaes/minavpp.git
