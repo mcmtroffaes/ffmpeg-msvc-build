@@ -67,18 +67,18 @@ tests = [
         ),
     Test(
         test="all",
-        features="all",
+        features="core,all",
         dependencies_ubuntu=deps_ubuntu_all,
         dependencies_macos=deps_macos_all,
         ),
     Test(
         test="all-gpl",
-        features="all-gpl",
+        features="core,all-gpl",
         dependencies_ubuntu=deps_ubuntu_all,
         dependencies_macos=deps_macos_all,
         ),
     Test(
-        test="all-nonfree",
+        test="core,all-nonfree",
         features="all-nonfree",
         dependencies_ubuntu=deps_ubuntu_all,
         dependencies_macos=deps_macos_all,
