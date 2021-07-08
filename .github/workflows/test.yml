@@ -108,8 +108,8 @@ jobs:
         shell: pwsh
         run: |
           ./vcpkg/vcpkg install pkgconf:x64-windows --recurse
-          Remove-Item -Path ./vcpkg/packages -Recurse
-          Remove-Item -Path ./vcpkg/buildtrees -Recurse
+          Remove-Item -Path ./vcpkg/packages -Recurse -ErrorAction Ignore
+          Remove-Item -Path ./vcpkg/buildtrees -Recurse -ErrorAction Ignore
 
       - name: Install ffmpeg
         if: success() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
@@ -130,16 +130,16 @@ jobs:
       - name: Cleanup
         shell: pwsh
         run: |
-          Remove-Item -Path ./vcpkg/packages -Recurse
-          Remove-Item -Path ./vcpkg/buildtrees -Recurse
+          Remove-Item -Path ./vcpkg/packages -Recurse -ErrorAction Ignore
+          Remove-Item -Path ./vcpkg/buildtrees -Recurse -ErrorAction Ignore
 
       - name: Install test dependencies
         if: success() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
           ./vcpkg/vcpkg install fmt:${{ matrix.triplet }} --recurse
-          Remove-Item -Path ./vcpkg/packages -Recurse
-          Remove-Item -Path ./vcpkg/buildtrees -Recurse
+          Remove-Item -Path ./vcpkg/packages -Recurse -ErrorAction Ignore
+          Remove-Item -Path ./vcpkg/buildtrees -Recurse -ErrorAction Ignore
 
       - name: Test (non-windows)
         if: success() && matrix.os != 'windows-latest'
