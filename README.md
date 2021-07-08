@@ -31,7 +31,7 @@ cd vcpkg
 
 You can pick another triplet, or another set of features. See the [ffmpeg vcpkg.json file](https://github.com/microsoft/vcpkg/blob/master/ports/ffmpeg/vcpkg.json) for a list of all features. The above will result in an LGPLv2 licensed ffmpeg library built with all LGPL compatible features that are supported in vcpkg.
 
-Prebuilt static LGPL builds for Visual Studio 2019 can be found
+Prebuilt LGPLv2 builds for Visual Studio 2019 can be found
 [here](https://github.com/mcmtroffaes/ffmpeg-msvc-build/releases).
 See the
 [vcpkg export documentation](https://vcpkg.readthedocs.io/en/latest/users/integration/#export)
