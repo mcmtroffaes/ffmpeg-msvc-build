@@ -291,6 +291,8 @@ def experimental_job(triplet: Triplet, test: Test):
         return is_experimental
     if test.test == "freetype2" and triplet.triplet == "x64-osx":
         return is_experimental
+    if test.test == "modplug" and triplet.triplet == "x64-uwp":
+        return is_experimental
     if test.test == "openh264" and triplet.triplet == "x64-uwp":
         return is_experimental
     return dict(experimental=False)
