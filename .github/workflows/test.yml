@@ -92,11 +92,6 @@ jobs:
         if: success() && matrix.os == 'windows-latest' && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
         run: ./vcpkg/bootstrap-vcpkg.bat
 
-      # https://github.com/microsoft/vcpkg/issues/18291
-      - name: Create vcpkg/downloads to work around vcpkg bug
-        shell: pwsh
-        run: New-Item -Path ./vcpkg/downloads -ItemType "directory" -Force
-
       - uses: actions/cache@v2
         id: vcpkg-installed-cache
         with:
