@@ -78,8 +78,8 @@ tests = [
         dependencies_macos=deps_macos_all,
         ),
     Test(
-        test="core,all-nonfree",
-        features="all-nonfree",
+        test="all-nonfree",
+        features="core,all-nonfree",
         dependencies_ubuntu=deps_ubuntu_all,
         dependencies_macos=deps_macos_all,
         ),
