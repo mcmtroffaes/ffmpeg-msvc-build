@@ -82,7 +82,7 @@ jobs:
         id: vcpkg-executable-cache
         with:
           path: ./vcpkg/vcpkg*
-          key: vcpkg-${{ runner.os }}
+          key: vcpkg-${{ runner.os }}-2
 
       - name: Bootstrap vcpkg (non-windows)
         if: success() && matrix.os != 'windows-latest' && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
