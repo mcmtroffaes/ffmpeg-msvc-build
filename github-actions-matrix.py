@@ -1,6 +1,6 @@
 import argparse
 import json
-from typing import NamedTuple, Optional
+from typing import NamedTuple
 
 
 class Triplet(NamedTuple):
