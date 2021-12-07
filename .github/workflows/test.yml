@@ -102,13 +102,13 @@ jobs:
         if: success() && matrix.os == 'windows-latest' && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
-          ./vcpkg/vcpkg install pkgconf:x64-windows --recurse
+          ./vcpkg/vcpkg install pkgconf:x64-windows --recurse --clean-after-build
           Remove-Item -Path ./vcpkg/packages -Recurse -ErrorAction Ignore
           Remove-Item -Path ./vcpkg/buildtrees -Recurse -ErrorAction Ignore
 
       - name: Install ffmpeg
         if: success() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
-        run: ./vcpkg/vcpkg install ffmpeg[${{ matrix.features }}]:${{ matrix.triplet }} --recurse
+        run: ./vcpkg/vcpkg install ffmpeg[${{ matrix.features }}]:${{ matrix.triplet }} --recurse --clean-after-build
 
       - name: Upload logs
         if: failure() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
@@ -132,7 +132,7 @@ jobs:
         if: success() && steps.vcpkg-installed-cache.outputs.cache-hit != 'true'
         shell: pwsh
         run: |
-          ./vcpkg/vcpkg install fmt:${{ matrix.triplet }} --recurse
+          ./vcpkg/vcpkg install fmt:${{ matrix.triplet }} --recurse --clean-after-build
           Remove-Item -Path ./vcpkg/packages -Recurse -ErrorAction Ignore
           Remove-Item -Path ./vcpkg/buildtrees -Recurse -ErrorAction Ignore
 
