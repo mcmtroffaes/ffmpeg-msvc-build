@@ -54,16 +54,16 @@ echo ffmpeg features: %ALL_FEATURES%
 rem Set up developer prompt
 for %%G in (Community,Professional,Enterprise) do (
   if exist "C:\Program Files (x86)\Microsoft Visual Studio\2019\%%G" (
-    set VSFOLDER="C:\Program Files (x86)\Microsoft Visual Studio\2019\%%G"
+    set "VSFOLDER=C:\Program Files (x86)\Microsoft Visual Studio\2019\%%G"
   )
   if exist "C:\Program Files\Microsoft Visual Studio\2019\%%G" (
-    set VSFOLDER="C:\Program Files\Microsoft Visual Studio\2019\%%G"
+    set "VSFOLDER=C:\Program Files\Microsoft Visual Studio\2019\%%G"
   )
   if exist "C:\Program Files (x86)\Microsoft Visual Studio\2022\%%G" (
-    set VSFOLDER="C:\Program Files (x86)\Microsoft Visual Studio\2022\%%G"
+    set "VSFOLDER=C:\Program Files (x86)\Microsoft Visual Studio\2022\%%G"
   )
   if exist "C:\Program Files\Microsoft Visual Studio\2022\%%G" (
-    set VSFOLDER="C:\Program Files\Microsoft Visual Studio\2022\%%G"
+    set "VSFOLDER=C:\Program Files\Microsoft Visual Studio\2022\%%G"
   )
 )
 if "%VSFOLDER%" == "" (
