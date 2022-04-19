@@ -86,7 +86,7 @@ jobs:
 
       - name: Bootstrap vcpkg (non-windows)
         if: success() && matrix.os != 'windows-latest' && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
-        run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics -useSystemBinaries
+        run: ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
       - name: Bootstrap vcpkg (windows)
         if: success() && matrix.os == 'windows-latest' && steps.vcpkg-executable-cache.outputs.cache-hit != 'true'
