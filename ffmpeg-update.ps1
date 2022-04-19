@@ -51,7 +51,7 @@ $portfile -join "`n" ` | Set-Content "vcpkg\ports\ffmpeg\portfile.cmake" -Encodi
 Write-Output "" "portfile.cmake" "~~~~~~~~~~~~~~" "" $portfile[0..12] ""
 
 $control = Get-Content "vcpkg\ports\ffmpeg\vcpkg.json"
-if (-Not $control[2].StartsWith("  ""version-string"":")) { throw "could not find version field in vcpkg.json file" }
+if (-Not $control[2].StartsWith("  ""version"":")) { throw "could not find version field in vcpkg.json file" }
 if (-Not $control[3].StartsWith("  ""port-version"":")) { throw "could not find port-version field in vcpkg.json file" }
 $version_old = $control[2].Split(":")[1].Trim(" "",")
 $port_version_old = $control[3].Split(":")[1].Trim(" "",")
@@ -65,7 +65,7 @@ else {
 }
 Write-Output "new version: $version"
 Write-Output "new port version: $port_version"
-$control[2] = "  ""version-string"": ""$version"","
+$control[2] = "  ""version"": ""$version"","
 $control[3] = "  ""port-version"": $port_version,"
 $control -join "`n" | Set-Content "vcpkg\ports\ffmpeg\vcpkg.json" -Encoding Ascii
 Write-Output "" "vcpkg.json" "~~~~~~~~~~" "" $control[0..4]
