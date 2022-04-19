@@ -55,7 +55,7 @@ else {
 $ffmpeg = "ffmpeg-$version-$license-$triplet"
 Write-Output "Exporting $ffmpeg..."
 
-& "$vcpkg\vcpkg" export "ffmpeg[$features]:$triplet" --output=$ffmpeg --7zip
+& "$vcpkg\vcpkg" export "ffmpeg:$triplet" --output=$ffmpeg --7zip
 
 # move vcpkg export to the right location
 
